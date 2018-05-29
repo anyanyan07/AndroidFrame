@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+def config = rootProject.ext.appConfigVersion
+def depend = rootProject.ext.dependencies
+android {
+    compileSdkVersion config.targetSdkVersion
+    defaultConfig {
+        applicationId config.applicationId
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation depend["appcompat-v7"]
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //rx+net
+    implementation depend["rxandroid"]
+    implementation depend["rxjava"]
+    implementation depend["rxrelay2"]
+    implementation depend["retrofit"]
+    implementation depend["retrofit-converter-gson"]
+    implementation depend["retrofit-adapter-rxjava2"]
+    implementation depend["okhttp"]
+    implementation depend["okhttp-interceptor"]
+    implementation depend["gson"]
+    implementation depend["glide"]
+    //di
+    implementation depend["dagger"]
+    annotationProcessor depend["dagger-compiler"]
+    compileOnly depend["annotation"]
+    implementation depend["dagger-android"]
+    implementation depend["dagger-android-support"]
+    annotationProcessor depend["dagger-android-compiler"]
+    //注解
+    implementation depend["butterknife"]
+    annotationProcessor depend["butterknife-compiler"]
+    //log
+    implementation depend["logger"]
+    implementation 'com.blankj:utilcode:1.10.0'
+
+}

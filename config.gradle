@@ -1,0 +1,60 @@
+ext {
+    appConfigVersion=[
+            applicationId    : "com.xwtec.androidframe",
+            compileVersion   : 27,
+            minSdkVersion    : 16,
+            targetSdkVersion : 27,
+            versionCode      : 1,
+            versionName      : "1.0.0"
+    ]
+    dependVersion = [
+            support     : "27+",
+            retrofit    : "2.3.0",
+            rxjava      : "2.1.10",
+            rxandroid   : "2.0.2",
+            okhttp      : "3.9.1",
+            dagger2     : "2.14.1",
+            permission  : "2.0.0-rc4",
+            butterknife : "8.8.1",
+            glide       : "4.6.1",
+            blockcanary : "1.5.0",
+            leakcanary  : "1.5.4"
+    ]
+    dependencies = [
+            "appcompat-v7"             : "com.android.support:appcompat-v7:${dependVersion.support}",
+            //rx
+            "rxjava"                   : "io.reactivex.rxjava2:rxjava:${dependVersion.rxjava}",
+            "rxandroid"                : "io.reactivex.rxjava2:rxandroid:${dependVersion.rxandroid}",
+            "rxrelay2"                 : "com.jakewharton.rxrelay2:rxrelay:2.0.0",
+            "retrofit"                 : "com.squareup.retrofit2:retrofit:${dependVersion.retrofit}",
+            "retrofit-converter-gson"  : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofit}",
+            "retrofit-adapter-rxjava2" : "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofit}",
+            "okhttp"                   : "com.squareup.okhttp3:okhttp:${dependVersion.okhttp}",
+            "okhttp-interceptor"       : "com.squareup.okhttp3:logging-interceptor:${dependVersion.okhttp}",
+            //数据解析
+            "gson"                     : "com.google.code.gson:gson:2.7",
+            //图片
+            "glide"                    : "com.github.bumptech.glide:glide:${dependVersion.glide}",
+            "glide-compiler"           : "com.github.bumptech.glide:compiler:${dependVersion.glide}",
+            "glide-okhttp3-integration": "com.github.bumptech.glide:okhttp3-integration:${dependVersion.glide}",
+            "glide-transformations"    : "jp.wasabeef:glide-transformations:1.2.1",
+            //di
+            "dagger"                   : "com.google.dagger:dagger:${dependVersion.dagger2}",
+            "dagger-compiler"          : "com.google.dagger:dagger-compiler:${dependVersion.dagger2}",
+            "annotation"               : "org.glassfish:javax.annotation:10.0-b28",
+            "dagger-android"           : "com.google.dagger:dagger-android:${dependVersion.dagger2}",
+            "dagger-android-support"   : "com.google.dagger:dagger-android-support:${dependVersion.dagger2}",
+            "dagger-android-compiler"  : "com.google.dagger:dagger-android-processor:${dependVersion.dagger2}",
+            //注解
+            "butterknife"              : "com.jakewharton:butterknife:${dependVersion.butterknife}",
+            "butterknife-compiler"     : "com.jakewharton:butterknife-compiler:${dependVersion.butterknife}",
+            //other
+            "multidex"                 : "com.android.support:multidex:1.0.1",
+            "logger"                   : "com.orhanobut:logger:2.1.1",
+            //canary
+            "blockcanary-android"      : "com.github.moduth:blockcanary-android:${dependVersion.blockcanary}",
+            "blockcanary-no-op"        : "com.github.moduth:blockcanary-no-op:${dependVersion.blockcanary}",
+            "leakcanary-android"       : "com.squareup.leakcanary:leakcanary-android:${dependVersion.leakcanary}",
+            "leakcanary-android-no-op" : "com.squareup.leakcanary:leakcanary-android-no-op:${dependVersion.leakcanary}"
+    ]
+}
