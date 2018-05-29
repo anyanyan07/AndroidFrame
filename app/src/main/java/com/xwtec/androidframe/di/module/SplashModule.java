@@ -1,4 +1,4 @@
-package com.xwtec.androidframe.ui.main;
+package com.xwtec.androidframe.di.module;
 
 import dagger.Module;
 
@@ -7,5 +7,5 @@ import dagger.Module;
  * Describe:xxx
  */
 @Module
-public class MainModule {
+public class SplashModule {
 }

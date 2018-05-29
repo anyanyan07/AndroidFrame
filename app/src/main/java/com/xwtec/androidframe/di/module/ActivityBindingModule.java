@@ -3,7 +3,7 @@ package com.xwtec.androidframe.di.module;
 
 import com.xwtec.androidframe.di.scope.ActivityScope;
 import com.xwtec.androidframe.ui.main.MainActivity;
-import com.xwtec.androidframe.ui.main.MainModule;
+import com.xwtec.androidframe.ui.splash.SplashActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -20,4 +20,8 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = {MainModule.class})
     abstract MainActivity mainActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = {SplashModule.class})
+    abstract SplashActivity splashActivity();
 }

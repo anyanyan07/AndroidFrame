@@ -14,11 +14,11 @@ import javax.inject.Inject;
  * Describe:xxx
  */
 
-public class MainPresenter extends BasePresenter<MainConcat.MainView> implements MainConcat.MainPresenter {
+public class MainPresenterImpl extends BasePresenter<MainContact.MainView> implements MainContact.MainPresenter {
     private NetResourceRepo mNetResourceRepo;
 
     @Inject
-    public MainPresenter( NetResourceRepo netResourceRepo) {
+    public MainPresenterImpl(NetResourceRepo netResourceRepo) {
         this.mNetResourceRepo = netResourceRepo;
     }
 

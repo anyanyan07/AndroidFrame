@@ -2,6 +2,7 @@ package com.xwtec.androidframe.ui.main;
 
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
@@ -12,13 +13,12 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainConcat.MainView {
+@Route(path = "/activity/main")
+public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainContact.MainView {
 
 
     @BindView(R.id.tv_result)
     TextView tvResult;
-
-
 
     @Override
     protected void init() {

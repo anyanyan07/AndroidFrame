@@ -9,7 +9,7 @@ import java.util.Map;
  * Describe:xxx
  */
 
-public interface MainConcat {
+public interface MainContact {
     interface MainView extends BaseView{
         void loginSuccess();
 
