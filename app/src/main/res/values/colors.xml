@@ -6,4 +6,6 @@
 
     <color name="tab_selected">#80d147</color>
     <color name="tab_unselected">#9a9a9a</color>
+    <color name="home_bg">#f3f2f0</color>
+    <color name="cur_price">#ff0000</color>
 </resources>

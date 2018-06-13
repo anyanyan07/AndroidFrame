@@ -11,10 +11,15 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassifyFragment extends BaseFragment {
+public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implements ClassifyContact.ClassifyView {
 
     @Inject
     public ClassifyFragment() {
+    }
+
+    @Override
+    protected void init() {
+
     }
 
     @Override

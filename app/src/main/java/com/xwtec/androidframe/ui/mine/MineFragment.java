@@ -11,10 +11,15 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MineFragment extends BaseFragment {
+public class MineFragment extends BaseFragment<MinePresenterImpl> implements MineContact.MineView{
 
     @Inject
     public MineFragment() {
+    }
+
+    @Override
+    protected void init() {
+
     }
 
     @Override

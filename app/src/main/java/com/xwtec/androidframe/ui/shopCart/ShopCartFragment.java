@@ -11,10 +11,15 @@ import javax.inject.Inject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShopCartFragment extends BaseFragment {
+public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implements ShopCartContact.ShopCartView {
 
     @Inject
     public ShopCartFragment() {
+    }
+
+    @Override
+    protected void init() {
+
     }
 
     @Override
