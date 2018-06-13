@@ -37,8 +37,8 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     RecyclerView rvContent;
 
     private String[] tabList = {"推荐","热销","精品","推荐","热销","精品"};
-    private List<String> images = new ArrayList<>();
     private RecycleViewSimpleAdapter<GoodListBean> contentAdapter;
+    private List<BannerBean> bannerBeanList;
 
     @Inject
     public HomeFragment() {
@@ -49,6 +49,8 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         initTitle();
         initContent();
         initBanner();
+        presenter.getHomeBanner();
+        presenter.getGoodList();
     }
 
     private void initTitle(){
@@ -89,9 +91,6 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         rvContent.setAdapter(contentAdapter);
     }
     private void initBanner(){
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528902547053&di=e0d004127d8c2eb1cfb124ad9a994c02&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0128605793108e0000012e7e5c9fc4.jpg%401280w_1l_2o_100sh.png");
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528902528618&di=a904d15d8394cc65adda22d01d418030&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F017bc158d0fb95a801219c77d5d770.png%401280w_1l_2o_100sh.png");
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528902470507&di=26a7ce9bc45675c7e4a60a0683a718cb&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F012daa59ad0aaca801211d25fb3a0e.png%401280w_1l_2o_100sh.png");
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置图片加载器
@@ -101,8 +100,6 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
                 ImageLoadUtil.load(context,path,imageView);
             }
         });
-        //设置图片集合
-        banner.setImages(images);
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.Default);
         //设置自动轮播，默认为true
@@ -118,6 +115,10 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
                 //banner点击事件
             }
         });
+    }
+
+    private void startBanner(List<String> images){
+        banner.setImages(images);
         banner.start();
     }
     @Override
@@ -125,4 +126,23 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         return R.layout.fragment_home;
     }
 
+    @Override
+    public void bannerSuccess(List<BannerBean> bannerBeanList) {
+        this.bannerBeanList = bannerBeanList;
+        List<String> images = new ArrayList<>();
+        for(BannerBean bannerBean:bannerBeanList){
+            images.add(bannerBean.getImgUrl());
+        }
+        startBanner(images);
+    }
+
+    @Override
+    public void goodListSuccess(List<GoodListBean> goodListBeanList) {
+
+    }
+
+    @Override
+    public void fail(String errorMsg) {
+
+    }
 }

@@ -1,8 +1,11 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
+import com.xwtec.androidframe.ui.home.BannerBean;
+import com.xwtec.androidframe.ui.home.GoodListBean;
 
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,13 +28,24 @@ public class NetResourceRepoSupport implements NetResourceRepo{
         this.service = service;
     }
 
-    //登录
     @Override
-    public Observable<BaseResponse> login(Map<String, String> map) {
-        return service.shopLogin(map)
-                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+    public Observable<BaseResponse<List<BannerBean>>> getHomeBanner(int showNumber) {
+        return service.getHomeBanner(showNumber)
+                .compose(new ObservableTransformer<BaseResponse<List<BannerBean>>, BaseResponse<List<BannerBean>>>() {
                     @Override
-                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                    public ObservableSource<BaseResponse<List<BannerBean>>> apply(Observable<BaseResponse<List<BannerBean>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<List<GoodListBean>>> getGoodList(HashMap map) {
+        return service.getGoodList(map)
+                .compose(new ObservableTransformer<BaseResponse<List<GoodListBean>>, BaseResponse<List<GoodListBean>>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<List<GoodListBean>>> apply(Observable<BaseResponse<List<GoodListBean>>> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

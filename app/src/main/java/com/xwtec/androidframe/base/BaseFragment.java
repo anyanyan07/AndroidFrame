@@ -25,7 +25,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     protected Context context;
 
     @Inject
-    T presenter;
+    protected T presenter;
 
     @Override
     public void onAttach(Context context) {
