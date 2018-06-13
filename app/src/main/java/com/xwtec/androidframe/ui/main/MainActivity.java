@@ -1,14 +1,19 @@
 package com.xwtec.androidframe.ui.main;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.ui.classify.ClassifyFragment;
+import com.xwtec.androidframe.ui.home.HomeFragment;
+import com.xwtec.androidframe.ui.mine.MineFragment;
+import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -16,13 +21,31 @@ import butterknife.OnClick;
 @Route(path = "/activity/main")
 public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainContact.MainView {
 
+    @Inject
+    HomeFragment homeFragment;
 
-    @BindView(R.id.tv_result)
-    TextView tvResult;
+    @Inject
+    ClassifyFragment classifyFragment;
+
+    @Inject
+    ShopCartFragment shopCartFragment;
+
+    @Inject
+    MineFragment mineFragment;
+
+    @BindView(R.id.tab_home)
+    TextView tabHome;
+    @BindView(R.id.tab_classify)
+    TextView tabClassify;
+    @BindView(R.id.tab_shop_cart)
+    TextView tabShopCart;
+    @BindView(R.id.tab_mine)
+    TextView tabMine;
+
 
     @Override
     protected void init() {
-
+        setCurFragment(tabHome,homeFragment);
     }
 
     @Override
@@ -30,21 +53,58 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         return R.layout.activity_main;
     }
 
-    @Override
-    public void loginSuccess() {
-        ToastUtils.showShort("登录成功");
+
+    @OnClick({R.id.tab_home, R.id.tab_classify, R.id.tab_shop_cart, R.id.tab_mine})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tab_home:
+                setCurFragment(tabHome,homeFragment);
+                break;
+            case R.id.tab_classify:
+                setCurFragment(tabClassify,classifyFragment);
+                break;
+            case R.id.tab_shop_cart:
+                setCurFragment(tabShopCart,shopCartFragment);
+                break;
+            case R.id.tab_mine:
+                setCurFragment(tabMine,mineFragment);
+                break;
+        }
     }
 
-    @Override
-    public void loginFail() {
-        ToastUtils.showShort("登录失败");
+    private void setCurFragment(TextView tab, Fragment targetFragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        setAllTabsUnselected();
+        hideAllFragments(fragmentTransaction);
+        tab.setSelected(true);
+        if (targetFragment.isAdded()) {
+            fragmentTransaction.show(targetFragment);
+        } else {
+            fragmentTransaction.add(R.id.frameLayout, targetFragment);
+        }
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
-    @OnClick(R.id.btn_login)
-    public void onClick() {
-        Map<String,String> map =  new HashMap<>();
-        map.put("link_mobile","15912460032");
-        map.put("v_code","888888");
-        presenter.login(map);
+    private void setAllTabsUnselected() {
+        tabHome.setSelected(false);
+        tabClassify.setSelected(false);
+        tabShopCart.setSelected(false);
+        tabMine.setSelected(false);
     }
+
+    private void hideAllFragments(FragmentTransaction fragmentTransaction) {
+        if (homeFragment.isAdded()) {
+            fragmentTransaction.hide(homeFragment);
+        }
+        if (classifyFragment.isAdded()) {
+            fragmentTransaction.hide(classifyFragment);
+        }
+        if (shopCartFragment.isAdded()) {
+            fragmentTransaction.hide(shopCartFragment);
+        }
+        if (mineFragment.isAdded()) {
+            fragmentTransaction.hide(mineFragment);
+        }
+    }
+
 }

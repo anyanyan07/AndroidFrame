@@ -56,6 +56,7 @@ public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
                     public void onComplete() {
                         ToastUtils.showShort("倒计时结束");
                         ARouter.getInstance().build("/activity/main").navigation();
+                        finish();
                     }
                 });
     }
