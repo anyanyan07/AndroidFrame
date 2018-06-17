@@ -5,6 +5,7 @@ import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
  * Describe:网络接口调用
  */
 
-public class NetResourceRepoSupport implements NetResourceRepo{
+public class NetResourceRepoSupport implements NetResourceRepo {
     private Service service;
 
     @Inject
@@ -43,7 +44,7 @@ public class NetResourceRepoSupport implements NetResourceRepo{
     }
 
     @Override
-    public Observable<BaseResponse<List<GoodListBean>>> getGoodList(HashMap<String,Object> map) {
+    public Observable<BaseResponse<List<GoodListBean>>> getGoodList(HashMap<String, Object> map) {
         return service.getGoodList(map)
                 .compose(new ObservableTransformer<BaseResponse<List<GoodListBean>>, BaseResponse<List<GoodListBean>>>() {
                     @Override
@@ -72,6 +73,30 @@ public class NetResourceRepoSupport implements NetResourceRepo{
                 .compose(new ObservableTransformer<BaseResponse<List<CategoryContentBean>>, BaseResponse<List<CategoryContentBean>>>() {
                     @Override
                     public ObservableSource<BaseResponse<List<CategoryContentBean>>> apply(Observable<BaseResponse<List<CategoryContentBean>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<List<ShopCartBean>>> fetchShopCartData(HashMap<String, Object> map) {
+        return service.fetchShopCartData(map)
+                .compose(new ObservableTransformer<BaseResponse<List<ShopCartBean>>, BaseResponse<List<ShopCartBean>>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<List<ShopCartBean>>> apply(Observable<BaseResponse<List<ShopCartBean>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> updateShopCart(HashMap<String, Object> map) {
+        return service.updateShopCart(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

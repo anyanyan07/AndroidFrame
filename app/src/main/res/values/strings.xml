@@ -7,4 +7,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">首页</string>
+    <string name="add">+</string>
+    <string name="reduce">-</string>
+    <string name="myOrders">我的订单</string>
+    <string name="lookAllOrders">查看全部订单</string>
+    <string name="obligation">待付款</string>
+    <string name="waitSend">待发货</string>
+    <string name="waitReceive">待收货</string>
+    <string name="hadCancel">已取消</string>
+    <string name="hadFinished">已完成</string>
+    <string name="onlineService">在线反馈</string>
+    <string name="feedback">意见反馈</string>
+    <string name="setting">设置</string>
 </resources>
