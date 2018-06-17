@@ -1,8 +1,10 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
-import com.xwtec.androidframe.ui.home.BannerBean;
-import com.xwtec.androidframe.ui.home.GoodListBean;
+import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
+import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.home.bean.BannerBean;
+import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,5 +25,15 @@ public interface NetResourceRepo {
     /**
      *首页商品列表
      */
-    Observable<BaseResponse<List<GoodListBean>>> getGoodList(HashMap map);
+    Observable<BaseResponse<List<GoodListBean>>> getGoodList(HashMap<String,Object> map);
+
+    /**
+     * 分类-左侧
+     */
+    Observable<BaseResponse<List<CategoryBean>>> fetchCategories();
+
+    /**
+     * 分类-右侧
+     */
+    Observable<BaseResponse<List<CategoryContentBean>>> fetchCategoryContent(HashMap<String,Object> map);
 }

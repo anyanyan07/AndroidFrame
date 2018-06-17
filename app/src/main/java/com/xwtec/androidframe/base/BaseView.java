@@ -21,10 +21,5 @@ public interface BaseView {
      */
     void showLoadFail(String msg);
 
-    /**
-     * 请求数据失败
-     * @param errorMsg
-     */
-    void fail(String errorMsg);
 
 }

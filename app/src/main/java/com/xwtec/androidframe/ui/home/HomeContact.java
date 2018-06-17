@@ -1,7 +1,10 @@
 package com.xwtec.androidframe.ui.home;
 
 import com.xwtec.androidframe.base.BaseView;
+import com.xwtec.androidframe.ui.home.bean.BannerBean;
+import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,6 +28,6 @@ public interface HomeContact {
         /**
          * 请求商品列表
          */
-        void getGoodList();
+        void getGoodList(HashMap<String,Object> map);
     }
 }

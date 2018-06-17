@@ -4,7 +4,10 @@ import com.xwtec.androidframe.base.BasePresenter;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
+import com.xwtec.androidframe.ui.home.bean.BannerBean;
+import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,13 +32,13 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
                 .subscribe(new ResponseObserver<BaseResponse<List<BannerBean>>>(this) {
                     @Override
                     public void onNext(BaseResponse<List<BannerBean>> baseResponse) {
-                        if (baseResponse.getCode()==0){
+                        if (baseResponse.getCode() == 0) {
                             if (view != null) {
                                 view.bannerSuccess(baseResponse.getContent());
                             }
-                        }else{
+                        } else {
                             if (view != null) {
-                                view.fail(baseResponse.getMsg());
+                                view.showLoadFail(baseResponse.getMsg());
                             }
                         }
                     }
@@ -43,14 +46,33 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
                     @Override
                     public void onError(Throwable e) {
                         if (view != null) {
-                            view.fail("请求banner失败");
+                            view.showLoadFail("请求banner失败");
                         }
                     }
                 });
     }
 
     @Override
-    public void getGoodList() {
+    public void getGoodList(HashMap<String,Object> map) {
+        mNetResourceRepo.getGoodList(map)
+                .subscribe(new ResponseObserver<BaseResponse<List<GoodListBean>>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<List<GoodListBean>> baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.getCode() == 0) {
+                                view.goodListSuccess(baseResponse.getContent());
+                            } else {
+                                view.showLoadFail("请求数据失败");
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view != null) {
+                            view.showLoadFail("请求数据失败");
+                        }
+                    }
+                });
     }
 }

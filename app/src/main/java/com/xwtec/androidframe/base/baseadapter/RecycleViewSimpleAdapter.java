@@ -76,6 +76,7 @@ public abstract class RecycleViewSimpleAdapter<T> extends RecyclerView.Adapter<B
 
     public void setSelectItem(int selectItem) {
         this.choosePosion = selectItem;
+        notifyDataSetChanged();
     }
 
     public int getSelectItem() {

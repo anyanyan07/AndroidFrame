@@ -4,8 +4,17 @@
     <color name="colorPrimaryDark">#30af66</color>
     <color name="colorAccent">#80d147</color>
 
-    <color name="tab_selected">#80d147</color>
-    <color name="tab_unselected">#9a9a9a</color>
-    <color name="home_bg">#f3f2f0</color>
+    <color name="c_31af68">#31af68</color>
     <color name="cur_price">#ff0000</color>
+    <color name="divider">#ededed</color>
+    <color name="white">#ffffff</color>
+    <color name="c_2eb167">#2eb167</color>
+    <color name="c_eaeaea">#eaeaea</color>
+    <color name="c_333333">#333333</color>
+    <color name="c_f5f3f3">#f5f3f3</color>
+    <color name="c_999999">#999999</color>
+    <color name="c_ff5757">#ff5757</color>
+    <color name="c_e7e7e7">#e7e7e7</color>
+
+
 </resources>

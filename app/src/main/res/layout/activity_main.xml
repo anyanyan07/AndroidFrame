@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@id/ll_tabs"
-        android:background="@color/tab_unselected" />
+        android:background="@color/c_e7e7e7" />
 
     <FrameLayout
         android:id="@+id/frameLayout"

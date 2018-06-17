@@ -6,7 +6,5 @@ import android.view.View;
  * Created by zhujie on 2018-2-8.
  */
 public interface RVItemClickListener {
-    void onItemClick(View view, int postion);
-
-//    void onItemLongClick(View view, int postion);
+    void onItemClick(View view, int position);
 }

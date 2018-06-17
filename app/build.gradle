@@ -64,4 +64,5 @@ dependencies {
     implementation depend["recyclerview-v7"]
     implementation depend["design"]
     implementation depend["banner"]
+    implementation depend["adapter"]
 }

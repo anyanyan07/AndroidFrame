@@ -1,11 +1,11 @@
-package com.xwtec.androidframe.ui.home;
+package com.xwtec.androidframe.ui.classify.bean;
 
 /**
- * Created by ayy on 2018/6/13.
- * Describe:首页-商品列表bean
+ * Created by ayy on 2018/6/16.
+ * Describe:xxx
  */
 
-public class GoodListBean {
+public class CategoryContentBean {
 
     /**
      * id : 1

@@ -6,5 +6,5 @@ package com.xwtec.androidframe.manager;
  */
 
 public class Constant {
-    public static final String BASE_URL = "http://192.168.9.32:8001/xw-pad/";
+    public static final String BASE_URL = "http://118.31.11.130:8080/farm/";
 }

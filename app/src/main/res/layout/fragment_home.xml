@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,24 +8,10 @@
 
     <include layout="@layout/title_layout" />
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:indicator_height="6dp"
-        app:indicator_width="6dp"
-        app:indicator_margin="5dp"
-        app:indicator_drawable_selected="@drawable/banner_indicator_selected"
-        app:indicator_drawable_unselected="@drawable/banner_indicator_unselected"/>
-
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/rv_title"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_content"
+        android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/c_f5f3f3"/>
 
 </LinearLayout>

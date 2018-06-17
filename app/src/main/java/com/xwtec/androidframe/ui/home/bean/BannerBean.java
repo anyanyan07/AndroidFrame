@@ -1,4 +1,4 @@
-package com.xwtec.androidframe.ui.home;
+package com.xwtec.androidframe.ui.home.bean;
 
 /**
  * Created by ayy on 2018/6/13.
