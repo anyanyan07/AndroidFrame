@@ -28,10 +28,6 @@ public interface ShopCartContact {
          */
         void fetchShopCartData(HashMap<String, Object> map);
 
-        /**
-         * 添加
-         */
-        void addShopCart(HashMap<String, Object> map);
 
         /**
          * 修改数量

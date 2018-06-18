@@ -4,9 +4,11 @@ package com.xwtec.androidframe.di.module;
 import com.xwtec.androidframe.di.scope.ActivityScope;
 import com.xwtec.androidframe.di.scope.FragmentScope;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
+import com.xwtec.androidframe.ui.goodDetail.GoodDetailActivity;
 import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
+import com.xwtec.androidframe.ui.register.RegisterActivity;
 import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
 import com.xwtec.androidframe.ui.splash.SplashActivity;
 
@@ -45,4 +47,12 @@ public abstract class ActivityBindingModule {
     @FragmentScope
     @ContributesAndroidInjector(modules = {MineModule.class})
     abstract MineFragment mineFragment();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract RegisterActivity registerActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract GoodDetailActivity goodDetailActivity();
 }

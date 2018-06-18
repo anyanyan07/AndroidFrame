@@ -3,8 +3,10 @@ package com.xwtec.androidframe.manager.net;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
@@ -97,6 +99,42 @@ public class NetResourceRepoSupport implements NetResourceRepo {
                 .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
                     @Override
                     public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> addShopCart(HashMap<String, Object> map) {
+        return service.addShopCart(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<RegisterResponseBean>> register(HashMap<String, Object> map) {
+        return service.register(map)
+                .compose(new ObservableTransformer<BaseResponse<RegisterResponseBean>, BaseResponse<RegisterResponseBean>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<RegisterResponseBean>> apply(Observable<BaseResponse<RegisterResponseBean>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<GoodDetailResponse>> fetchGoodDetail(long goodId) {
+        return service.fetchGoodDetail(goodId)
+                .compose(new ObservableTransformer<BaseResponse<GoodDetailResponse>, BaseResponse<GoodDetailResponse>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<GoodDetailResponse>> apply(Observable<BaseResponse<GoodDetailResponse>> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

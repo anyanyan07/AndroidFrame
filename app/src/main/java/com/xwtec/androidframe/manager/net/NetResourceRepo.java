@@ -3,8 +3,10 @@ package com.xwtec.androidframe.manager.net;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
@@ -47,4 +49,19 @@ public interface NetResourceRepo {
      * 修改购物车数量
      */
     Observable<BaseResponse> updateShopCart(HashMap<String, Object> map);
+
+    /**
+     * 添加到购物车
+     */
+    Observable<BaseResponse> addShopCart(HashMap<String, Object> map);
+
+    /**
+     * 注册
+     */
+    Observable<BaseResponse<RegisterResponseBean>> register(HashMap<String, Object> map);
+
+    /**
+     * 商品详情
+     */
+    Observable<BaseResponse<GoodDetailResponse>> fetchGoodDetail(long goodId);
 }

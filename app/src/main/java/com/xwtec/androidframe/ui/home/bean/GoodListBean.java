@@ -16,18 +16,18 @@ public class GoodListBean {
      * imgUrl : https://ne-farm.oss-cn-beijing.aliyuncs.com/farm_img/IMG_20140530_081246.jpg
      */
 
-    private int id;
+    private long id;
     private String title;
     private String introduction;
     private String discountPrice;
     private String originalPrice;
     private String imgUrl;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

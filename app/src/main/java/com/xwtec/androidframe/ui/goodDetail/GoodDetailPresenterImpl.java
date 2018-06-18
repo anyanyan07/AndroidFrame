@@ -1,62 +1,37 @@
-package com.xwtec.androidframe.ui.shopCart;
+package com.xwtec.androidframe.ui.goodDetail;
 
 import com.xwtec.androidframe.base.BasePresenter;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
-import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
+import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 
 import java.util.HashMap;
-import java.util.List;
 
 import javax.inject.Inject;
 
 /**
- * Created by ayy on 2018/5/28.
+ * Created by ayy on 2018/6/18.
  * Describe:xxx
  */
 
-public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCartView> implements ShopCartContact.ShopCartPresenter {
-    private NetResourceRepo mNetResourceRepo;
+public class GoodDetailPresenterImpl extends BasePresenter<GoodDetailContact.GoodDetailView> implements GoodDetailContact.GoodDetailPresenter {
+    private NetResourceRepo netResourceRepo;
 
     @Inject
-    public ShopCartPresenterImpl(NetResourceRepo netResourceRepo) {
-        this.mNetResourceRepo = netResourceRepo;
-    }
-
-
-    @Override
-    public void fetchShopCartData(HashMap<String, Object> map) {
-        mNetResourceRepo.fetchShopCartData(map)
-                .subscribe(new ResponseObserver<BaseResponse<List<ShopCartBean>>>(this) {
-                    @Override
-                    public void onNext(BaseResponse<List<ShopCartBean>> baseResponse) {
-                        if (view != null) {
-                            if (baseResponse.getCode() == 0)
-                                view.fetchShopCartSuccess(baseResponse.getContent());
-                        } else {
-                            view.showLoadFail(baseResponse.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (view != null) {
-                            view.showLoadFail(e.getMessage());
-                        }
-                    }
-                });
+    public GoodDetailPresenterImpl(NetResourceRepo netResourceRepo) {
+        this.netResourceRepo = netResourceRepo;
     }
 
     @Override
-    public void updateShopCart(final HashMap<String, Object> map, final ShopCartBean shopCartBean, final int position) {
-        mNetResourceRepo.updateShopCart(map)
-                .subscribe(new ResponseObserver<BaseResponse>(this) {
+    public void fetchGoodDetail(long goodId) {
+        netResourceRepo.fetchGoodDetail(goodId)
+                .subscribe(new ResponseObserver<BaseResponse<GoodDetailResponse>>(this) {
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
+                    public void onNext(BaseResponse<GoodDetailResponse> baseResponse) {
                         if (view != null) {
                             if (baseResponse.getCode() == 0) {
-                                view.updateShopCartSuccess(shopCartBean, (Integer) map.get("goodsNumber"), position);
+                                view.fetchGoodDetailSuccess(baseResponse.getContent());
                             } else {
                                 view.showLoadFail(baseResponse.getMsg());
                             }
@@ -70,11 +45,30 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
                         }
                     }
                 });
-
     }
 
     @Override
-    public void deleteShopCart(HashMap<String, Object> map) {
+    public void addShopCart(HashMap<String, Object> map) {
+        netResourceRepo.addShopCart(map)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.getCode() == 0) {
+                                view.addShopCartSuccess();
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view != null) {
+                            view.showLoadFail(e.getMessage());
+                        }
+                    }
+                });
 
     }
 }

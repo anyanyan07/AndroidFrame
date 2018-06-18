@@ -3,8 +3,10 @@ package com.xwtec.androidframe.manager.net;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
@@ -83,4 +85,20 @@ public interface Service {
     @FormUrlEncoded
     @PUT("shoppingCarts/update")
     Observable<BaseResponse> updateShopCart(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 注册
+     *
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/register")
+    Observable<BaseResponse<RegisterResponseBean>> register(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 商品详情
+     */
+    @GET("goods/getGoodsDetail")
+    Observable<BaseResponse<GoodDetailResponse>> fetchGoodDetail(@Query("goodsId") long goodId);
 }
