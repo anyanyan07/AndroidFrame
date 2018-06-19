@@ -6,6 +6,7 @@ import com.xwtec.androidframe.di.scope.FragmentScope;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.goodDetail.GoodDetailActivity;
 import com.xwtec.androidframe.ui.home.HomeFragment;
+import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
 import com.xwtec.androidframe.ui.register.RegisterActivity;
@@ -55,4 +56,8 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract GoodDetailActivity goodDetailActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract LoginActivity loginActivity();
 }

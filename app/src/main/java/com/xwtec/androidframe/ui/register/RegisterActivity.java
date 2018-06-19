@@ -6,15 +6,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.manager.Constant;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+@Route(path = Constant.REGISTER_ROUTER)
 public class RegisterActivity extends BaseActivity<RegisterPresenterImpl> implements RegisterContact.RegisterView {
 
     @BindView(R.id.iv_left)

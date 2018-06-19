@@ -15,6 +15,7 @@
     <string name="waitReceive">待收货</string>
     <string name="hadCancel">已取消</string>
     <string name="hadFinished">已完成</string>
+    <string name="finish">完成</string>
     <string name="onlineService">在线反馈</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">设置</string>
@@ -26,7 +27,8 @@
     <string name="passwordHint">请输入密码</string>
     <string name="passwordAgain">确认密码</string>
     <string name="passwordAgainHint">请确认密码</string>
-    <string name="register">立即注册</string>
+    <string name="registerNow">立即注册</string>
+    <string name="register">注册</string>
     <string name="getVerifyCode">获取验证码</string>
     <string name="addToShopCart">加入购物车</string>
     <string name="buy">立即购买</string>
@@ -34,4 +36,12 @@
     <string name="sure">确定</string>
     <string name="flavor">口味</string>
     <string name="buyNum">购买数量</string>
+    <string name="login">登录</string>
+    <string name="passwordOrVerifyCodeHint">密码/验证码</string>
+    <string name="forgetPassword">忘记密码</string>
+    <string name="selectAll">全选</string>
+    <string name="totalMoney">合计金额</string>
+    <string name="goToPay">去结算</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
 </resources>

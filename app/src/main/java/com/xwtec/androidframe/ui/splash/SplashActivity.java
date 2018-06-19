@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.manager.Constant;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,12 +21,12 @@ public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
     @Override
     protected void init() {
         final int count = 5;
-        Observable.interval(1,TimeUnit.SECONDS)
+        Observable.interval(1, TimeUnit.SECONDS)
                 .take(5)
                 .map(new Function<Long, Long>() {
                     @Override
                     public Long apply(Long aLong) throws Exception {
-                        return count  - aLong;
+                        return count - aLong;
                     }
                 })
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -55,7 +56,7 @@ public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
                     @Override
                     public void onComplete() {
                         ToastUtils.showShort("倒计时结束");
-                        ARouter.getInstance().build("/activity/main").navigation();
+                        ARouter.getInstance().build(Constant.MAIN_ROUTER).navigation();
                         finish();
                     }
                 });

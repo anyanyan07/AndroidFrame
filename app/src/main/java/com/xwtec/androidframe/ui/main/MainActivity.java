@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.mine.MineFragment;
@@ -18,7 +19,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-@Route(path = "/activity/main")
+@Route(path = Constant.MAIN_ROUTER)
 public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainContact.MainView {
 
     @Inject

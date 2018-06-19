@@ -2,6 +2,8 @@ package com.xwtec.androidframe.ui.home;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
@@ -23,6 +25,8 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    @BindView(R.id.iv_right)
+    ImageView ivRight;
 
     //默认为0;0:推荐商品;1:新品商品;2:热销商品;3:精品礼盒; 4:手工艺品;5:季节商品;6:稀缺商品
     private String[] tabNames = {"推荐", "新品", "热销", "精品", "手工", "季节", "稀缺"};
@@ -37,6 +41,8 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     @Override
     protected void init() {
+        ivRight.setVisibility(View.VISIBLE);
+        ivRight.setImageResource(R.mipmap.xiaoxi);
         initTabData();
         initRv();
         presenter.getHomeBanner();

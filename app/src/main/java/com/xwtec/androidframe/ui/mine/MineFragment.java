@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
+import com.xwtec.androidframe.manager.Constant;
 
 import javax.inject.Inject;
 
@@ -31,7 +33,9 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     @Override
     protected void init() {
         tvTitle.setText("我的");
-
+        if (true) {//未登录
+            ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
+        }
     }
 
     @Override

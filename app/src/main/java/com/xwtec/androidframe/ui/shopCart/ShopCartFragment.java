@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -22,6 +23,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +36,13 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     TextView tvRight;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
+    @BindView(R.id.ll_pay)
+    LinearLayout llPay;
+    @BindView(R.id.ll_delete)
+    LinearLayout llDelete;
+
+    private boolean isEditing;//正在编辑
+
 
     private BaseQuickAdapter<ShopCartBean, BaseViewHolder> adapter;
     private List<ShopCartBean> shopCartBeanList = new ArrayList<>();
@@ -126,5 +135,30 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
     }
 
-
+    @OnClick({R.id.tv_right, R.id.ll_select_all, R.id.btn_pay, R.id.ll_select_all_del, R.id.btn_delete})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_right:
+                if (isEditing) {
+                    tvRight.setText(R.string.edit);
+                    llDelete.setVisibility(View.GONE);
+                    llPay.setVisibility(View.VISIBLE);
+                    isEditing = false;
+                } else {
+                    tvRight.setText(R.string.finish);
+                    isEditing = true;
+                    llDelete.setVisibility(View.VISIBLE);
+                    llPay.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.ll_select_all:
+                break;
+            case R.id.btn_pay:
+                break;
+            case R.id.ll_select_all_del:
+                break;
+            case R.id.btn_delete:
+                break;
+        }
+    }
 }

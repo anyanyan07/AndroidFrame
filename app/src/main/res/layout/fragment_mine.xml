@@ -25,33 +25,32 @@
                 android:id="@+id/iv_user_header"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginRight="10dp" />
+                android:layout_marginEnd="10dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="小明"
+                tools:text="小明"
                 android:textColor="@color/c_333333"
                 android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/jinru" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp">
+            android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
+                android:layout_marginStart="12dp"
                 android:gravity="center_vertical"
                 android:text="@string/myOrders"
                 android:textColor="@color/c_666666"
@@ -60,16 +59,18 @@
             <ImageView
                 android:id="@+id/iv_look_more_order"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="8dp"
-                android:maxHeight="42dp" />
+                android:layout_height="42dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="8dp"
+                android:maxHeight="42dp"
+                android:src="@mipmap/jinru" />
 
             <TextView
                 android:id="@+id/tv_look_more"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
-                android:layout_toLeftOf="@id/iv_look_more_order"
+                android:layout_toStartOf="@id/iv_look_more_order"
                 android:gravity="center_vertical"
                 android:text="@string/lookAllOrders"
                 android:textColor="@color/c_666666"
@@ -100,7 +101,7 @@
                     <ImageView
                         android:layout_width="21dp"
                         android:layout_height="21dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/fukuan" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -122,7 +123,7 @@
                     <ImageView
                         android:layout_width="21dp"
                         android:layout_height="21dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/fahuo" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -144,7 +145,7 @@
                     <ImageView
                         android:layout_width="21dp"
                         android:layout_height="21dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/shouhuo" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -166,7 +167,7 @@
                     <ImageView
                         android:layout_width="21dp"
                         android:layout_height="21dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/quxiao" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -188,7 +189,7 @@
                     <ImageView
                         android:layout_width="21dp"
                         android:layout_height="21dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/wancheng" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -206,100 +207,104 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/ll_online_service"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp">
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/kefu" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:text="@string/onlineService"
                     android:textColor="@color/c_333333"
-                    android:text="@string/onlineService" />
+                    android:textSize="14sp" />
+
                 <ImageView
                     android:layout_width="8dp"
                     android:layout_height="14dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/jinru" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/c_eaeaea"/>
+                android:background="@color/c_eaeaea" />
+
             <LinearLayout
                 android:id="@+id/ll_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp">
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/yijian" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:text="@string/feedback"
                     android:textColor="@color/c_333333"
-                    android:text="@string/feedback" />
+                    android:textSize="14sp" />
+
                 <ImageView
                     android:layout_width="8dp"
                     android:layout_height="14dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/jinru" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/c_eaeaea"/>
+                android:background="@color/c_eaeaea" />
+
             <LinearLayout
                 android:id="@+id/ll_setting"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp">
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/shezhi" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="14sp"
+                    android:text="@string/setting"
                     android:textColor="@color/c_333333"
-                    android:text="@string/setting" />
+                    android:textSize="14sp" />
+
                 <ImageView
                     android:layout_width="8dp"
                     android:layout_height="14dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/jinru" />
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/c_eaeaea"/>
 
         </LinearLayout>
     </LinearLayout>
