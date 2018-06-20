@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
+import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 
@@ -43,7 +44,6 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
     private boolean isEditing;//正在编辑
 
-
     private BaseQuickAdapter<ShopCartBean, BaseViewHolder> adapter;
     private List<ShopCartBean> shopCartBeanList = new ArrayList<>();
     private int pageIndex = 0;
@@ -66,9 +66,11 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         adapter = new BaseQuickAdapter<ShopCartBean, BaseViewHolder>(R.layout.shopcart_item, shopCartBeanList) {
             @Override
             protected void convert(final BaseViewHolder helper, final ShopCartBean shopCartBean) {
+                helper.getView(R.id.iv_check).setSelected(shopCartBean.isSelected());
                 ImageLoadUtil.loadCenterCrop(context, shopCartBean.getImgUrl(), (ImageView) helper.getView(R.id.iv_item));
                 helper.setText(R.id.tv_name, shopCartBean.getTitle() + shopCartBean.getIntroduction());
-                helper.setText(R.id.tv_price, shopCartBean.getDiscountPrice());
+                PriceView priceView = helper.getView(R.id.tv_price);
+                priceView.setPrice(shopCartBean.getDiscountPrice());
                 final int goodsNumber = shopCartBean.getGoodsNumber();
                 TextView tvNum = helper.getView(R.id.tv_num);
                 tvNum.setText(goodsNumber + "");
@@ -84,6 +86,15 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                     @Override
                     public void onClick(View v) {
                         updateShopCart(shopCartBean.getId(), goodsNumber + 1, shopCartBean, helper.getAdapterPosition());
+                    }
+                });
+                final ImageView ivCheck = helper.getView(R.id.iv_check);
+                ivCheck.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean selected = ivCheck.isSelected();
+                        shopCartBean.setSelected(!selected);
+                        adapter.notifyItemChanged(helper.getAdapterPosition());
                     }
                 });
             }
@@ -152,12 +163,22 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                 }
                 break;
             case R.id.ll_select_all:
+            case R.id.ll_select_all_del:
+                for (ShopCartBean shopCartBean : shopCartBeanList) {
+                    shopCartBean.setSelected(true);
+                }
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.btn_pay:
                 break;
-            case R.id.ll_select_all_del:
-                break;
             case R.id.btn_delete:
+                String ids = "";
+                for (ShopCartBean shopCartBean : shopCartBeanList) {
+                    if (shopCartBean.isSelected()) {
+                        ids.concat(shopCartBean.getId() + ",");
+                    }
+                }
+                presenter.deleteShopCart(ids.substring(0, ids.length()));
                 break;
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -37,32 +38,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.xwtec.androidframe.customView.PriceView
             android:id="@+id/tv_cur_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:ellipsize="end"
             android:textColor="@color/c_ff5757"
-            android:textSize="13sp"
             tools:text="99" />
 
-        <TextView
+        <com.xwtec.androidframe.customView.DeleteTextView
             android:id="@+id/tv_old_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_cur_price"
-            android:ellipsize="end"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@id/tv_cur_price"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
             android:textColor="@color/c_999999"
             android:textSize="13sp"
+            app:deleteLineColor="@color/c_999999"
             tools:text="100" />
 
         <ImageView
             android:id="@+id/iv_shop_cart"
             android:layout_width="22dp"
             android:layout_height="19dp"
-            android:layout_alignParentRight="true"
-            tools:src="@mipmap/ic_launcher" />
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            tools:src="@mipmap/gouwuchew" />
     </RelativeLayout>
 
 </LinearLayout>

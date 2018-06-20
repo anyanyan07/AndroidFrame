@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Created by ayy on 2018/6/17.
- * Describe:xxx
+ * Describe:商品定义分类
  */
 @ItemProviderTag(viewType = HomeAdapter.HOME_TITLE_TYPE, layout = R.layout.tab_title)
 public class TabTitleProvider extends BaseItemProvider<HomeMultiEntity<TabBean>, BaseViewHolder> {
@@ -39,16 +39,16 @@ public class TabTitleProvider extends BaseItemProvider<HomeMultiEntity<TabBean>,
         BaseQuickAdapter adapter = new BaseQuickAdapter<TabBean, BaseViewHolder>(R.layout.home_title_layout, tabBeanList) {
             @Override
             protected void convert(BaseViewHolder helper, TabBean tabBean) {
-                helper.setText(R.id.tv_title, tabBean.getTabName());
+                helper.setText(R.id.tv_title, tabBean.getDefineName());
                 helper.getView(R.id.item_title).setSelected(selectedPosition == helper.getAdapterPosition());
             }
         };
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-               selectedPosition = position;
-               homeAdapter.updateTab();
-               homeFragment.fetchGoodsData(tabBeanList.get(position).getTabDefine(),0);
+                selectedPosition = position;
+                homeAdapter.updateTab();
+                homeFragment.fetchGoodsData(tabBeanList.get(position).getId(), 0);
             }
         });
         recyclerView.setAdapter(adapter);

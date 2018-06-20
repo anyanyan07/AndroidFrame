@@ -3,6 +3,7 @@ package com.xwtec.androidframe.ui.home;
 import com.xwtec.androidframe.base.BaseView;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.home.bean.TabBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,10 @@ public interface HomeContact {
         void bannerSuccess(List<BannerBean> bannerBeanList);
 
         void goodListSuccess(List<GoodListBean> goodListBeanList);
+
+        void goodListFail(String msg);
+
+        void fetchGoodDefinesSuccess(List<TabBean> tabBeanList);
     }
 
     interface HomePresenter {
@@ -28,6 +33,11 @@ public interface HomeContact {
         /**
          * 请求商品列表
          */
-        void getGoodList(HashMap<String,Object> map);
+        void getGoodList(HashMap<String, Object> map);
+
+        /**
+         * 请求商品分类
+         */
+        void fetchGoodDefines();
     }
 }

@@ -38,9 +38,9 @@
             android:layout_width="20dp"
             android:layout_height="23dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="35dp"
-            android:layout_toRightOf="@id/iv_shop_cart"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_marginStart="35dp"
+            android:layout_toEndOf="@id/iv_shop_cart"
+            android:src="@mipmap/fenxiang" />
 
         <Button
             android:id="@+id/btn_add_to_shop_cart"

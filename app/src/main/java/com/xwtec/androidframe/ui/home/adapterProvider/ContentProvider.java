@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.annotation.ItemProviderTag;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.xwtec.androidframe.R;
+import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.ui.home.HomeAdapter;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
@@ -36,7 +37,8 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
                 ImageLoadUtil.loadFitCenter(mContext, goodListBean.getImgUrl(), (ImageView) helper.getView(R.id.iv_good));
                 helper.setText(R.id.tv_good_name, goodListBean.getTitle());
                 helper.setText(R.id.tv_good_num, goodListBean.getIntroduction());
-                helper.setText(R.id.tv_cur_price, goodListBean.getDiscountPrice());
+                PriceView priceView = helper.getView(R.id.tv_cur_price);
+                priceView.setPrice(goodListBean.getDiscountPrice());
                 helper.setText(R.id.tv_old_price, goodListBean.getOriginalPrice());
             }
         };

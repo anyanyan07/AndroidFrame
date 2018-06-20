@@ -1,13 +1,17 @@
 package com.xwtec.androidframe.ui.splash;
 
+import android.widget.TextView;
+
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,11 +22,17 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
 
+    @BindView(R.id.tv_count)
+    TextView tvCount;
+    @BindView(R.id.price_view)
+    PriceView priceView;
+
     @Override
     protected void init() {
+        priceView.setPrice("33.99");
         final int count = 5;
         Observable.interval(1, TimeUnit.SECONDS)
-                .take(5)
+                .take(6)
                 .map(new Function<Long, Long>() {
                     @Override
                     public Long apply(Long aLong) throws Exception {
@@ -45,7 +55,7 @@ public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
 
                     @Override
                     public void onNext(Long aLong) {
-
+                        tvCount.setText(aLong + "s");
                     }
 
                     @Override

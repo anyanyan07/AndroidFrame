@@ -13,5 +13,8 @@ public class Constant {
     public static final String LOGIN_ROUTER = "/activity/login";
     public static final String MAIN_ROUTER = "/activity/main";
     //********页面路由路径管理**********
+    public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
+    public static final int PER_PAGE_NUM = 20;//分页加载时每页数量
+
 
 }

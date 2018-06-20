@@ -6,6 +6,7 @@ import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -14,7 +15,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -49,6 +49,14 @@ public interface Service {
     Observable<BaseResponse<List<GoodListBean>>> getGoodList(@QueryMap HashMap<String, Object> map);
 
     /**
+     * 获取首页商品定义分类
+     *
+     * @return
+     */
+    @GET("defines/getDefines")
+    Observable<BaseResponse<List<TabBean>>> fetchGoodDefines();
+
+    /**
      * 获取分类种类列表数据
      */
     @GET("categors/getCategors")
@@ -77,7 +85,7 @@ public interface Service {
      * 从购物车删除
      */
     @DELETE("shoppingCarts/delete")
-    Observable<BaseResponse> deleteFromShopCart(@Field("ids") String ids);
+    Observable<BaseResponse> deleteFromShopCart(@Query("ids") String ids);
 
     /**
      * 修改购物车数量

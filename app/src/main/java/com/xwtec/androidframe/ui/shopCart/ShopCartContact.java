@@ -37,7 +37,7 @@ public interface ShopCartContact {
         /**
          * 删除
          */
-        void deleteShopCart(HashMap<String, Object> map);
+        void deleteShopCart(String ids);
 
 
     }

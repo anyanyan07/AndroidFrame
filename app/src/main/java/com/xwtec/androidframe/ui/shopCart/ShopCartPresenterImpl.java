@@ -74,7 +74,26 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
     }
 
     @Override
-    public void deleteShopCart(HashMap<String, Object> map) {
+    public void deleteShopCart(String ids) {
+        mNetResourceRepo.deleteFromShopCart(ids)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.getCode() == 0) {
+                                view.deleteFromShopCartSuccess();
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view != null) {
+                            view.showLoadFail(e.getMessage());
+                        }
+                    }
+                });
     }
 }

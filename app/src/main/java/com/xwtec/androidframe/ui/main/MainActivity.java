@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.manager.AppManager;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.home.HomeFragment;
@@ -42,11 +44,11 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     TextView tabShopCart;
     @BindView(R.id.tab_mine)
     TextView tabMine;
-
+    private long lastBackTime;
 
     @Override
     protected void init() {
-        setCurFragment(tabHome,homeFragment);
+        setCurFragment(tabHome, homeFragment);
     }
 
     @Override
@@ -59,21 +61,23 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tab_home:
-                setCurFragment(tabHome,homeFragment);
+                setCurFragment(tabHome, homeFragment);
                 break;
             case R.id.tab_classify:
-                setCurFragment(tabClassify,classifyFragment);
+                setCurFragment(tabClassify, classifyFragment);
                 break;
             case R.id.tab_shop_cart:
-                setCurFragment(tabShopCart,shopCartFragment);
+                setCurFragment(tabShopCart, shopCartFragment);
                 break;
             case R.id.tab_mine:
-                setCurFragment(tabMine,mineFragment);
+                setCurFragment(tabMine, mineFragment);
                 break;
         }
     }
 
     private void setCurFragment(TextView tab, Fragment targetFragment) {
+        if (tabHome.isSelected()) fromTab = "home";
+        if (tabClassify.isSelected()) fromTab = "classify";
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         setAllTabsUnselected();
         hideAllFragments(fragmentTransaction);
@@ -108,4 +112,25 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         }
     }
 
+    private String fromTab;
+
+    public void goBackTab() {
+        if ("home".equals(fromTab)) {
+            setCurFragment(tabHome, homeFragment);
+        } else if ("classify".equals(fromTab)) {
+            setCurFragment(tabClassify, classifyFragment);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - lastBackTime <= 2000) {
+            AppManager.get().finishAllActivity();
+            System.exit(0);
+            super.onBackPressed();
+        } else {
+            lastBackTime = System.currentTimeMillis();
+            ToastUtils.showShort("再按一次退出");
+        }
+    }
 }

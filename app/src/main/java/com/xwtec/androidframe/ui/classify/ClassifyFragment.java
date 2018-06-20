@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
@@ -31,6 +32,8 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
     RecyclerView rvCategory;
     @BindView(R.id.rv_content)
     RecyclerView rvContent;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     private List<CategoryBean> categoryList;
     private List<CategoryContentBean> categoryContentList;
@@ -43,6 +46,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
 
     @Override
     protected void init() {
+        tvTitle.setText(R.string.classify);
         initCategory();
         initContent();
         presenter.fetchCategories();
@@ -69,7 +73,7 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
     }
 
     private void initContent() {
-        rvContent.setLayoutManager(new GridLayoutManager(context,2));
+        rvContent.setLayoutManager(new GridLayoutManager(context, 2));
         categoryContentAdapter = new RecycleViewSimpleAdapter<CategoryContentBean>(context, R.layout.category_content_item) {
             @Override
             protected void bindData(BaseHolder holder, CategoryContentBean categoryContentBean) {

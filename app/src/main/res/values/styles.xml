@@ -5,11 +5,19 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    
+
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@mipmap/ic_launcher</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
+    <!--自定义View样式-->
+    <declare-styleable name="PriceView">
+        <attr name="integerPartSize" format="integer" />
+        <attr name="decimalPartSize" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="DeleteTextView">
+        <attr name="deleteLineColor" format="color" />
+    </declare-styleable>
 </resources>

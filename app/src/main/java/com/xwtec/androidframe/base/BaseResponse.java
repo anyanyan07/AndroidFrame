@@ -10,6 +10,11 @@ public class BaseResponse<T> {
     private int code;
     private T content;
     private String status;
+    private boolean success;
+
+    public boolean isSuccess() {
+        return code == 0;
+    }
 
     public String getMsg() {
         return msg;

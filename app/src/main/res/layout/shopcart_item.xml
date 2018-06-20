@@ -8,16 +8,18 @@
     android:paddingLeft="12dp"
     android:paddingRight="12dp">
 
-    <CheckBox
+    <ImageView
+        android:id="@+id/iv_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="12dp" />
+        android:background="@drawable/check_bg"/>
 
     <ImageView
         android:id="@+id/iv_item"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="12dp"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -51,7 +53,7 @@
                 tools:text="原味" />
         </LinearLayout>
 
-        <TextView
+        <com.xwtec.androidframe.customView.PriceView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

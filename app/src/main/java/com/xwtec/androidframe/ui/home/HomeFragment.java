@@ -1,12 +1,18 @@
 package com.xwtec.androidframe.ui.home;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
+import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
@@ -21,19 +27,22 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 
-public class HomeFragment extends BaseFragment<HomePresenterImpl> implements HomeContact.HomeView {
+public class HomeFragment extends BaseFragment<HomePresenterImpl> implements HomeContact.HomeView, OnRefreshLoadMoreListener {
 
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     @BindView(R.id.iv_right)
     ImageView ivRight;
-
-    //默认为0;0:推荐商品;1:新品商品;2:热销商品;3:精品礼盒; 4:手工艺品;5:季节商品;6:稀缺商品
-    private String[] tabNames = {"推荐", "新品", "热销", "精品", "手工", "季节", "稀缺"};
+    @BindView(R.id.smart_refresh_layout)
+    SmartRefreshLayout smartRefreshLayout;
+    //当前页码
+    private int curPageIndex = Constant.FIRST_PAGE_INDEX;
+    private int curDefine;
     private HomeAdapter homeAdapter;
     private HomeMultiEntity<BannerBean> bannerDataEntity = new HomeMultiEntity<>(HomeAdapter.HOME_BANNER_TYPE);
     private HomeMultiEntity<TabBean> tabDataEntity = new HomeMultiEntity<>(HomeAdapter.HOME_TITLE_TYPE);
     private HomeMultiEntity<GoodListBean> goodsDataEntity = new HomeMultiEntity<>(HomeAdapter.HOME_CONTENT_TYPE);
+    private List<GoodListBean> contentData;
 
     @Inject
     public HomeFragment() {
@@ -43,10 +52,10 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     protected void init() {
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.mipmap.xiaoxi);
-        initTabData();
         initRv();
+        smartRefreshLayout.setOnRefreshLoadMoreListener(this);
         presenter.getHomeBanner();
-        fetchGoodsData(0, 0);
+        presenter.fetchGoodDefines();
     }
 
     private void initRv() {
@@ -55,19 +64,8 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         homeMultiEntityList.add(bannerDataEntity);
         homeMultiEntityList.add(tabDataEntity);
         homeMultiEntityList.add(goodsDataEntity);
-        homeAdapter = new HomeAdapter(homeMultiEntityList,this);
+        homeAdapter = new HomeAdapter(homeMultiEntityList, this);
         recyclerView.setAdapter(homeAdapter);
-    }
-
-    private void initTabData() {
-        List<TabBean> tabData = new ArrayList<>();
-        for (int i = 0; i < tabNames.length; i++) {
-            TabBean tabBean = new TabBean();
-            tabBean.setTabDefine(i);
-            tabBean.setTabName(tabNames[i]);
-            tabData.add(tabBean);
-        }
-        tabDataEntity.setData(tabData);
     }
 
     @Override
@@ -76,8 +74,10 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     }
 
     public void fetchGoodsData(int define, int startIndex) {
+        curDefine = define;
+        curPageIndex = startIndex;
         HashMap<String, Object> map = new HashMap<>();
-        map.put("define", define);
+        map.put("defineId", define);
         map.put("startIndex", startIndex);
         map.put("showNumber", 20);
         presenter.getGoodList(map);
@@ -91,7 +91,54 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     @Override
     public void goodListSuccess(List<GoodListBean> goodListBeanList) {
-        goodsDataEntity.setData(goodListBeanList);
+        if (curPageIndex == 0) {
+            this.contentData = goodListBeanList;
+            goodsDataEntity.setData(contentData);
+            smartRefreshLayout.finishRefresh(true);
+        } else {
+            if (goodListBeanList.size() < Constant.PER_PAGE_NUM) {
+                smartRefreshLayout.finishLoadMoreWithNoMoreData();
+            } else {
+                smartRefreshLayout.finishLoadMore(true);
+            }
+            this.contentData.addAll(goodListBeanList);
+        }
         homeAdapter.updateGoodContent();
+    }
+
+    @Override
+    public void goodListFail(String msg) {
+        ToastUtils.showShort(msg);
+        if (curPageIndex == 0) {
+            smartRefreshLayout.finishRefresh(false);
+        } else {
+            smartRefreshLayout.finishLoadMore(false);
+        }
+    }
+
+    @Override
+    public void fetchGoodDefinesSuccess(List<TabBean> tabBeanList) {
+        if (tabBeanList == null || tabBeanList.size() <= 0) {
+            return;
+        }
+        tabDataEntity.setData(tabBeanList);
+        homeAdapter.updateTab();
+        TabBean tabBean = tabBeanList.get(0);
+        if (tabBean != null) {
+            fetchGoodsData(tabBean.getId(), curPageIndex);
+        }
+    }
+
+    //加载更多
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        curPageIndex++;
+        fetchGoodsData(curDefine, curPageIndex);
+    }
+
+    //下拉刷新
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        fetchGoodsData(curDefine, Constant.FIRST_PAGE_INDEX);
     }
 }

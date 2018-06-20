@@ -28,6 +28,15 @@ public class ShopCartBean {
     private String discountPrice;
     private String originalPrice;
     private String imgUrl;
+    private boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public int getId() {
         return id;

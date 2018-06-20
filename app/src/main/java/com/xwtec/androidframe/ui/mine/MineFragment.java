@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
 import com.xwtec.androidframe.manager.Constant;
+import com.xwtec.androidframe.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,38 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     @BindView(R.id.iv_user_header)
     ImageView ivUserHeader;
 
+    private boolean in = true;
+    private boolean first = true;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (true) {
+            if (in && first) {
+                in = false;
+                ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
+                return;
+            }
+            if (!in) {
+                in = true;
+                ((MainActivity) getActivity()).goBackTab();
+            }
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (true) {
+                if (in) {
+                    in = false;
+                    ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
+                }
+            }
+        }
+    }
+
     @Inject
     public MineFragment() {
     }
@@ -33,9 +66,6 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     @Override
     protected void init() {
         tvTitle.setText("我的");
-        if (true) {//未登录
-            ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
-        }
     }
 
     @Override

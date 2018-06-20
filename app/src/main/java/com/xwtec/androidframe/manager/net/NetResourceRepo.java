@@ -6,6 +6,7 @@ import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -31,6 +32,11 @@ public interface NetResourceRepo {
     Observable<BaseResponse<List<GoodListBean>>> getGoodList(HashMap<String, Object> map);
 
     /**
+     * 首页商品定义分类
+     */
+    Observable<BaseResponse<List<TabBean>>> fetchGoodDefines();
+
+    /**
      * 分类-左侧
      */
     Observable<BaseResponse<List<CategoryBean>>> fetchCategories();
@@ -54,6 +60,11 @@ public interface NetResourceRepo {
      * 添加到购物车
      */
     Observable<BaseResponse> addShopCart(HashMap<String, Object> map);
+
+    /**
+     * 从购物车中删除
+     */
+    Observable<BaseResponse> deleteFromShopCart(String ids);
 
     /**
      * 注册

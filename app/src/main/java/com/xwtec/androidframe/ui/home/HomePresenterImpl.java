@@ -6,6 +6,7 @@ import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
+import com.xwtec.androidframe.ui.home.bean.TabBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,14 +47,14 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
                     @Override
                     public void onError(Throwable e) {
                         if (view != null) {
-                            view.showLoadFail("请求banner失败");
+                            view.showLoadFail(e.getMessage());
                         }
                     }
                 });
     }
 
     @Override
-    public void getGoodList(HashMap<String,Object> map) {
+    public void getGoodList(HashMap<String, Object> map) {
         mNetResourceRepo.getGoodList(map)
                 .subscribe(new ResponseObserver<BaseResponse<List<GoodListBean>>>(this) {
                     @Override
@@ -62,7 +63,7 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
                             if (baseResponse.getCode() == 0) {
                                 view.goodListSuccess(baseResponse.getContent());
                             } else {
-                                view.showLoadFail("请求数据失败");
+                                view.goodListFail(baseResponse.getMsg());
                             }
                         }
                     }
@@ -70,7 +71,31 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
                     @Override
                     public void onError(Throwable e) {
                         if (view != null) {
-                            view.showLoadFail("请求数据失败");
+                            view.goodListFail(e.getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void fetchGoodDefines() {
+        mNetResourceRepo.fetchGoodDefines()
+                .subscribe(new ResponseObserver<BaseResponse<List<TabBean>>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<List<TabBean>> baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.fetchGoodDefinesSuccess(baseResponse.getContent());
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view != null) {
+                            view.showLoadFail(e.getMessage());
                         }
                     }
                 });
