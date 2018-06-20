@@ -35,6 +35,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenterImpl> implem
 
     @Override
     protected void init() {
+        super.init();
         ivLeft.setVisibility(View.VISIBLE);
         tvTitle.setText("注册");
     }

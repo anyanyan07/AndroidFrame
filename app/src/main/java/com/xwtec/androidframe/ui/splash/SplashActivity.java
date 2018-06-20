@@ -29,6 +29,7 @@ public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
 
     @Override
     protected void init() {
+        super.init();
         priceView.setPrice("33.99");
         final int count = 5;
         Observable.interval(1, TimeUnit.SECONDS)

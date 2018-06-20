@@ -3,7 +3,6 @@ package com.xwtec.androidframe.manager.intercepter;
 import android.content.Context;
 
 import com.blankj.utilcode.util.CacheUtils;
-import com.xwtec.androidframe.util.DeviceUtil;
 
 import java.io.IOException;
 
@@ -25,9 +24,9 @@ public final class HeaderInterceptor implements Interceptor {
     private String channel;
 
     public HeaderInterceptor(Context context) {
-        this.deviceId = DeviceUtil.getImei(context);
-        this.resolution = DeviceUtil.getScreen(context);
-        this.imsi = DeviceUtil.getImsi(context);
+//        this.deviceId = DeviceUtil.getImei(context);
+//        this.resolution = DeviceUtil.getScreen(context);
+//        this.imsi = DeviceUtil.getImsi(context);
     }
 
     @Override
@@ -39,7 +38,7 @@ public final class HeaderInterceptor implements Interceptor {
                 .header("SDKVersion", "1")
                 .header("AndroidID", "d32ea7c307bfe797")
                 .header("MacAddress", "a4:71:74:c2:65:0c")
-                .header("Manufacturer","HUAWEI")
+                .header("Manufacturer", "HUAWEI")
                 .header("Model", "BTV-W09")
                 .header("AppPackageName", "com.xwtec.flatframe")
                 .header("AppVersionName", "1")

@@ -33,6 +33,8 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     RecyclerView recyclerView;
     @BindView(R.id.iv_right)
     ImageView ivRight;
+    @BindView(R.id.iv_left)
+    ImageView ivLeft;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     //当前页码
@@ -50,6 +52,7 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     @Override
     protected void init() {
+        ivLeft.setVisibility(View.GONE);
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.mipmap.xiaoxi);
         initRv();

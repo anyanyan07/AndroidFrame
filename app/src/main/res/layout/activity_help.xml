@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.xwtec.androidframe.ui.helpAndFeedback.HelpActivity">
+
+    <include layout="@layout/title_layout" />
+
+    <LinearLayout
+        android:id="@+id/ll_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/yijian" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/feedback"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="14dp"
+            android:src="@mipmap/jinru" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/c_eaeaea" />
+
+    <LinearLayout
+        android:id="@+id/ll_contact_service"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/kefu" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/contactService"
+            android:textColor="@color/c_333333"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="14dp"
+            android:src="@mipmap/jinru" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/c_f5f3f3" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:text="帮助资料"
+        android:textColorHint="@color/c_333333"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/c_eaeaea" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:text="帮助资料"
+        android:textColorHint="@color/c_333333"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/c_eaeaea" />
+
+</LinearLayout>

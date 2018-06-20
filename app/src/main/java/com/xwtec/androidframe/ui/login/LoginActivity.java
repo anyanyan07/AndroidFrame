@@ -28,6 +28,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     @Override
     protected void init() {
+        super.init();
         tvTitle.setText(R.string.login);
         ivLeft.setVisibility(View.VISIBLE);
 
@@ -44,6 +45,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
             case R.id.tv_get_verify_code:
                 break;
             case R.id.tv_forget_password:
+                ARouter.getInstance().build(Constant.FORGET_PASSWORD_ROUTER).navigation();
                 break;
             case R.id.tv_register:
                 ARouter.getInstance().build(Constant.REGISTER_ROUTER).navigation();

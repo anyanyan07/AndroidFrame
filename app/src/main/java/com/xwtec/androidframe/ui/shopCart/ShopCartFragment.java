@@ -41,6 +41,8 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     LinearLayout llPay;
     @BindView(R.id.ll_delete)
     LinearLayout llDelete;
+    @BindView(R.id.iv_left)
+    ImageView ivLeft;
 
     private boolean isEditing;//正在编辑
 
@@ -54,6 +56,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
     @Override
     protected void init() {
+        ivLeft.setVisibility(View.GONE);
         tvTitle.setText("购物车");
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("编辑");

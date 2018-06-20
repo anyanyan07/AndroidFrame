@@ -44,4 +44,20 @@
     <string name="goToPay">去结算</string>
     <string name="delete">删除</string>
     <string name="edit">编辑</string>
+    <string name="newPassword">新密码</string>
+    <string name="newPasswordHint">请输入新密码</string>
+    <string name="newPasswordAgainHint">再次确认新密码</string>
+    <string name="newPasswordAgain">确认新密码</string>
+    <string name="submit">提交</string>
+    <string name="contactService">联系客服</string>
+    <string name="helpAndFeedback">帮助与反馈</string>
+    <string name="telephone">电话</string>
+    <string name="northeastFarm">东北农场</string>
+    <string name="wxNum">微信公众号</string>
+    <string name="feedback_">反馈</string>
+    <string name="feedbackPath"><![CDATA[个人中心>帮助与反馈>意见反馈]]></string>
+    <string name="serviceTime">客服时间</string>
+    <string name="serviceTimeValue">9:00-21:00</string>
+    <string name="yourPhoneNum">输入您的手机号</string>
+    <string name="feedbackHint">输入您的宝贵意见或建议</string>
 </resources>

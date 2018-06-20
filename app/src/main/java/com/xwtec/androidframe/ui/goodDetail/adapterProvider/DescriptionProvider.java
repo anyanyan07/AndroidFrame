@@ -4,6 +4,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.annotation.ItemProviderTag;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.xwtec.androidframe.R;
+import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.ui.goodDetail.GoodDetailAdapter;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailMultiEntity;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -19,7 +20,8 @@ public class DescriptionProvider extends BaseItemProvider<GoodDetailMultiEntity<
         GoodDetailResponse goodDetailResponse = data.getData();
         if (goodDetailResponse != null) {
             helper.setText(R.id.tv_name, goodDetailResponse.getTitle() + goodDetailResponse.getIntroduction());
-            helper.setText(R.id.tv_cur_price, goodDetailResponse.getDiscountPrice());
+            PriceView priceView = helper.getView(R.id.tv_cur_price);
+            priceView.setPrice(goodDetailResponse.getDiscountPrice());
             helper.setText(R.id.tv_old_price, goodDetailResponse.getOriginalPrice());
         }
     }

@@ -56,6 +56,7 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
 
     @Override
     protected void init() {
+        super.init();
         tvTitle.setText("产品详情");
         ivLeft.setVisibility(View.VISIBLE);
         btnBuy.setEnabled(false);

@@ -10,7 +10,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
 import com.xwtec.androidframe.manager.Constant;
-import com.xwtec.androidframe.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -26,6 +25,8 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     TextView tvTitle;
     @BindView(R.id.iv_user_header)
     ImageView ivUserHeader;
+    @BindView(R.id.iv_left)
+    ImageView ivLeft;
 
     private boolean in = true;
     private boolean first = true;
@@ -33,31 +34,31 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     @Override
     public void onResume() {
         super.onResume();
-        if (true) {
-            if (in && first) {
-                in = false;
-                ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
-                return;
-            }
-            if (!in) {
-                in = true;
-                ((MainActivity) getActivity()).goBackTab();
-            }
-        }
+//        if (true) {
+//            if (in && first) {
+//                in = false;
+//                ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
+//                return;
+//            }
+//            if (!in) {
+//                in = true;
+//                ((MainActivity) getActivity()).goBackTab();
+//            }
+//        }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            if (true) {
-                if (in) {
-                    in = false;
-                    ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
-                }
-            }
-        }
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden) {
+//            if (true) {
+//                if (in) {
+//                    in = false;
+//                    ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
+//                }
+//            }
+//        }
+//    }
 
     @Inject
     public MineFragment() {
@@ -65,6 +66,7 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
 
     @Override
     protected void init() {
+        ivLeft.setVisibility(View.GONE);
         tvTitle.setText("我的");
     }
 
@@ -96,6 +98,7 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
             case R.id.ll_online_service:
                 break;
             case R.id.ll_feedback:
+                ARouter.getInstance().build(Constant.HELP_ROUTER).navigation();
                 break;
             case R.id.ll_setting:
                 break;

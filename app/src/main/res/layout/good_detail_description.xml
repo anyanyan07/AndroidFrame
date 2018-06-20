@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            app:decimalPartSize="12"
+            app:decimalPartSize="13"
             app:integerPartSize="14"
             tools:text="33.99" />
 
@@ -47,7 +47,7 @@
             android:textColor="@color/c_999999"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:textSize="12sp"
+            android:textSize="13sp"
             tools:text="40" />
     </LinearLayout>
 

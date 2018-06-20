@@ -12,6 +12,10 @@ public class Constant {
     public static final String REGISTER_ROUTER = "/activity/register";
     public static final String LOGIN_ROUTER = "/activity/login";
     public static final String MAIN_ROUTER = "/activity/main";
+    public static final String FORGET_PASSWORD_ROUTER = "/activity/forget";
+    public static final String HELP_ROUTER = "/activity/help";
+    public static final String FEEDBACK_ROUTER = "/activity/feedback";
+    public static final String CONTACT_SERVICE_ROUTER = "/activity/contact";
     //********页面路由路径管理**********
     public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
     public static final int PER_PAGE_NUM = 20;//分页加载时每页数量

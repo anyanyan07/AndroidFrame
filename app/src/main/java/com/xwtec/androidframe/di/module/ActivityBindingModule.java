@@ -4,7 +4,11 @@ package com.xwtec.androidframe.di.module;
 import com.xwtec.androidframe.di.scope.ActivityScope;
 import com.xwtec.androidframe.di.scope.FragmentScope;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
+import com.xwtec.androidframe.ui.forgetPassword.ForgetPasswordActivity;
 import com.xwtec.androidframe.ui.goodDetail.GoodDetailActivity;
+import com.xwtec.androidframe.ui.helpAndFeedback.ContactServiceActivity;
+import com.xwtec.androidframe.ui.helpAndFeedback.FeedbackActivity;
+import com.xwtec.androidframe.ui.helpAndFeedback.HelpActivity;
 import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
@@ -60,4 +64,20 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract LoginActivity loginActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract ForgetPasswordActivity forgetPasswordActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract HelpActivity helpActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract FeedbackActivity feedbackActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract ContactServiceActivity contactServiceActivity();
 }

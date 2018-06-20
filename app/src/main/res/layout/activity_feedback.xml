@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_f5f3f3"
+    android:orientation="vertical"
+    tools:context="com.xwtec.androidframe.ui.helpAndFeedback.FeedbackActivity">
+
+    <include layout="@layout/title_layout" />
+
+    <EditText
+        android:id="@+id/et_phone_num"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:hint="@string/yourPhoneNum"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:textColor="@color/c_333333"
+        android:textColorHint="@color/c_999999"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="5dp">
+
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/feedbackHint"
+            android:textColor="@color/c_333333"
+            android:textColorHint="@color/c_999999"
+            android:textSize="14sp" />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/feedback_btn_bg"
+        android:enabled="false"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+
+</LinearLayout>
