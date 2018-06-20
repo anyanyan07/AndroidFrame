@@ -7,6 +7,7 @@ import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
+import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -75,4 +76,14 @@ public interface NetResourceRepo {
      * 商品详情
      */
     Observable<BaseResponse<GoodDetailResponse>> fetchGoodDetail(long goodId);
+
+    /**
+     * 发送验证码
+     */
+    Observable<BaseResponse> sendVerifyCode(HashMap<String, Object> map);
+
+    /**
+     * 登录
+     */
+    Observable<BaseResponse<UserBean>> login(HashMap<String, Object> map);
 }

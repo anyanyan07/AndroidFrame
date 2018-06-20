@@ -7,6 +7,7 @@ import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
+import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -109,4 +110,22 @@ public interface Service {
      */
     @GET("goods/getGoodsDetail")
     Observable<BaseResponse<GoodDetailResponse>> fetchGoodDetail(@Query("goodsId") long goodId);
+
+    /**
+     * 发送短信验证码
+     */
+    @FormUrlEncoded
+    @POST("codes/sendCode")
+    Observable<BaseResponse> sendVerifyCode(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 登录
+     *
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("user/login")
+    Observable<BaseResponse<UserBean>> login(@FieldMap HashMap<String, Object> map);
+
 }
