@@ -1,5 +1,6 @@
 package com.xwtec.androidframe.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +21,7 @@ import dagger.android.support.AndroidSupportInjection;
  * Describe:所有fragment继承的基类
  */
 
-public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView{
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView {
     private Unbinder unbinder;
     protected Context context;
 
@@ -38,7 +39,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutId(), container, false);
-        unbinder =  ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         presenter.attachView(this);
         init();
         return view;
@@ -55,14 +56,22 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         unbinder.unbind();
     }
 
+
+    private ProgressDialog loadingDialog;
+
     @Override
     public void showLoading() {
-
+        if (loadingDialog == null) {
+            loadingDialog = new ProgressDialog(context);
+        }
+        loadingDialog.show();
     }
 
     @Override
     public void dismissLoading() {
-
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
     }
 
     @Override

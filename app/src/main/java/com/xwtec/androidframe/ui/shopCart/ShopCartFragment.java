@@ -43,12 +43,17 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     LinearLayout llDelete;
     @BindView(R.id.iv_left)
     ImageView ivLeft;
+    @BindView(R.id.ll_select_all_del)
+    LinearLayout llSelectAllDel;
+    @BindView(R.id.ll_select_all)
+    LinearLayout llSelectAll;
 
     private boolean isEditing;//正在编辑
 
     private BaseQuickAdapter<ShopCartBean, BaseViewHolder> adapter;
     private List<ShopCartBean> shopCartBeanList = new ArrayList<>();
     private int pageIndex = 0;
+    private int selectedSize;
 
     @Inject
     public ShopCartFragment() {
@@ -98,6 +103,13 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                         boolean selected = ivCheck.isSelected();
                         shopCartBean.setSelected(!selected);
                         adapter.notifyItemChanged(helper.getAdapterPosition());
+                        if (selected) {
+                            selectedSize--;
+                        } else {
+                            selectedSize++;
+                        }
+                        llSelectAllDel.setSelected(selectedSize == shopCartBeanList.size());
+                        llSelectAll.setSelected(selectedSize == shopCartBeanList.size());
                     }
                 });
             }
@@ -166,11 +178,10 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                 }
                 break;
             case R.id.ll_select_all:
+                selectAll(llSelectAll);
+                break;
             case R.id.ll_select_all_del:
-                for (ShopCartBean shopCartBean : shopCartBeanList) {
-                    shopCartBean.setSelected(true);
-                }
-                adapter.notifyDataSetChanged();
+                selectAll(llSelectAllDel);
                 break;
             case R.id.btn_pay:
                 break;
@@ -184,5 +195,18 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                 presenter.deleteShopCart(ids.substring(0, ids.length()));
                 break;
         }
+    }
+
+    private void selectAll(View view) {
+        showLoading();
+        selectedSize = shopCartBeanList.size();
+        boolean selected = view.isSelected();
+        llSelectAll.setSelected(!selected);
+        llSelectAllDel.setSelected(!selected);
+        for (ShopCartBean shopCartBean : shopCartBeanList) {
+            shopCartBean.setSelected(!selected);
+        }
+        adapter.notifyDataSetChanged();
+        dismissLoading();
     }
 }
