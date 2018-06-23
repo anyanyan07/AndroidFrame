@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
+import com.xwtec.androidframe.ui.address.Address;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -21,6 +22,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
 
 /**
  * Created by ayy on 2018/5/28.
@@ -185,6 +187,114 @@ public class NetResourceRepoSupport implements NetResourceRepo {
                 .compose(new ObservableTransformer<BaseResponse<UserBean>, BaseResponse<UserBean>>() {
                     @Override
                     public ObservableSource<BaseResponse<UserBean>> apply(Observable<BaseResponse<UserBean>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> resetPassword(HashMap<String, Object> map) {
+        return service.resetPassword(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> feedback(HashMap<String, Object> map) {
+        return service.feedback(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> logout(String token) {
+        return service.logout(token)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> updatePassword(HashMap<String, Object> map) {
+        return service.updatePassword(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> updatePersonalInfo(RequestBody body) {
+        return service.updatePersonalInfo(body)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<List<Address>>> queryAddress(String token) {
+        return service.queryAddress(token)
+                .compose(new ObservableTransformer<BaseResponse<List<Address>>, BaseResponse<List<Address>>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<List<Address>>> apply(Observable<BaseResponse<List<Address>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> updateAddress(RequestBody requestBody) {
+        return service.updateAddress(requestBody)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> addAddress(RequestBody requestBody) {
+        return service.addAddress(requestBody)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> deleteAddress(HashMap<String, Object> map) {
+        return service.deleteAddress(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

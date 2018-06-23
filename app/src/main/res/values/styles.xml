@@ -12,6 +12,12 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
+    <style name="roundDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <!--自定义View样式-->
     <declare-styleable name="PriceView">
         <attr name="integerPartSize" format="integer" />

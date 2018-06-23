@@ -38,7 +38,7 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     //当前页码
-    private int curPageIndex = Constant.FIRST_PAGE_INDEX;
+    private int curStartIndex = Constant.FIRST_PAGE_INDEX;
     private int curDefine;
     private HomeAdapter homeAdapter;
     private HomeMultiEntity<BannerBean> bannerDataEntity = new HomeMultiEntity<>(HomeAdapter.HOME_BANNER_TYPE);
@@ -78,7 +78,7 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     public void fetchGoodsData(int define, int startIndex) {
         curDefine = define;
-        curPageIndex = startIndex;
+        curStartIndex = startIndex;
         HashMap<String, Object> map = new HashMap<>();
         map.put("defineId", define);
         map.put("startIndex", startIndex);
@@ -94,25 +94,27 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     @Override
     public void goodListSuccess(List<GoodListBean> goodListBeanList) {
-        if (curPageIndex == 0) {
+        int resultSize = goodListBeanList.size();
+        if (curStartIndex == 0) {
             this.contentData = goodListBeanList;
             goodsDataEntity.setData(contentData);
             smartRefreshLayout.finishRefresh(true);
         } else {
-            if (goodListBeanList.size() < Constant.PER_PAGE_NUM) {
+            if (resultSize < Constant.PER_PAGE_NUM) {
                 smartRefreshLayout.finishLoadMoreWithNoMoreData();
             } else {
                 smartRefreshLayout.finishLoadMore(true);
             }
             this.contentData.addAll(goodListBeanList);
         }
+        curStartIndex = curStartIndex + resultSize;
         homeAdapter.updateGoodContent();
     }
 
     @Override
     public void goodListFail(String msg) {
         ToastUtils.showShort(msg);
-        if (curPageIndex == 0) {
+        if (curStartIndex == 0) {
             smartRefreshLayout.finishRefresh(false);
         } else {
             smartRefreshLayout.finishLoadMore(false);
@@ -128,15 +130,14 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         homeAdapter.updateTab();
         TabBean tabBean = tabBeanList.get(0);
         if (tabBean != null) {
-            fetchGoodsData(tabBean.getId(), curPageIndex);
+            fetchGoodsData(tabBean.getId(), curStartIndex);
         }
     }
 
     //加载更多
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        curPageIndex++;
-        fetchGoodsData(curDefine, curPageIndex);
+        fetchGoodsData(curDefine, curStartIndex);
     }
 
     //下拉刷新

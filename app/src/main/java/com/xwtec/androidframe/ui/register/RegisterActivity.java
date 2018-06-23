@@ -13,9 +13,17 @@ import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.manager.Constant;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 @Route(path = Constant.REGISTER_ROUTER)
 public class RegisterActivity extends BaseActivity<RegisterPresenterImpl> implements RegisterContact.RegisterView {
@@ -32,6 +40,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenterImpl> implem
     EditText etPhoneNum;
     @BindView(R.id.et_verify_code)
     EditText etVerifyCode;
+    @BindView(R.id.tv_get_verify_code)
+    TextView tvSendCode;
 
     @Override
     protected void init() {
@@ -56,6 +66,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenterImpl> implem
                 register();
                 break;
             case R.id.tv_get_verify_code:
+                sendVerifyCode();
                 break;
             default:
                 break;
@@ -89,12 +100,73 @@ public class RegisterActivity extends BaseActivity<RegisterPresenterImpl> implem
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("vp", phoneNum);
-        map.put("vpw", verifyCode);
+        map.put("code", verifyCode);
+        map.put("vpw", passowrd);
+        map.put("rvpw", passwordAgain);
         presenter.register(map);
+    }
+
+    private void sendVerifyCode() {
+        String phoneNum = etPhoneNum.getText().toString().trim();
+        if (TextUtils.isEmpty(phoneNum) || phoneNum.length() != 11) {
+            ToastUtils.showShort("请输入正确的手机号");
+            return;
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("vp", phoneNum);
+        map.put("type", Constant.REGISTER_VERIFY_TYPE);
+        presenter.sendVerifyCode(map);
     }
 
     @Override
     public void registerSuccess(RegisterResponseBean registerResponseBean) {
         ToastUtils.showShort("注册成功");
+        finish();
+    }
+
+    @Override
+    public void sendCodeSuccess() {
+        ToastUtils.showShort(R.string.sendVerifyCodeSuccess);
+        tvSendCode.setClickable(false);
+        final int count = 60;
+        Observable.interval(1, TimeUnit.SECONDS)
+                .take(count + 1)
+                .map(new Function<Long, Long>() {
+                    @Override
+                    public Long apply(Long aLong) throws Exception {
+                        return count - aLong;
+                    }
+                })
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        tvSendCode.setText(aLong + "s");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        tvSendCode.setClickable(true);
+                        tvSendCode.setText(R.string.getVerifyCode);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        tvSendCode.setClickable(true);
+                        tvSendCode.setText(R.string.getVerifyCode);
+                    }
+                });
     }
 }

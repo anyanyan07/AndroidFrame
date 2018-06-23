@@ -1,5 +1,7 @@
 package com.xwtec.androidframe.base;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import javax.inject.Inject;
 
 /**
@@ -34,6 +36,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends SuperBaseAct
 
     @Override
     public void showLoadFail(String msg) {
-
+        ToastUtils.showShort(msg);
     }
 }

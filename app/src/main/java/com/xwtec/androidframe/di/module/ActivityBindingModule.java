@@ -3,6 +3,8 @@ package com.xwtec.androidframe.di.module;
 
 import com.xwtec.androidframe.di.scope.ActivityScope;
 import com.xwtec.androidframe.di.scope.FragmentScope;
+import com.xwtec.androidframe.ui.address.AddressListActivity;
+import com.xwtec.androidframe.ui.address.CreateAddressActivity;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.forgetPassword.ForgetPasswordActivity;
 import com.xwtec.androidframe.ui.goodDetail.GoodDetailActivity;
@@ -13,9 +15,12 @@ import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
+import com.xwtec.androidframe.ui.personalInfo.PersonalInfoActivity;
 import com.xwtec.androidframe.ui.register.RegisterActivity;
+import com.xwtec.androidframe.ui.setting.SettingActivity;
 import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
 import com.xwtec.androidframe.ui.splash.SplashActivity;
+import com.xwtec.androidframe.ui.updatePassword.UpdatePasswordActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -80,4 +85,24 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract ContactServiceActivity contactServiceActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract PersonalInfoActivity personalInfoActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract SettingActivity settingActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract UpdatePasswordActivity updatePasswordActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract AddressListActivity addressListActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract CreateAddressActivity createAddressActivity();
 }

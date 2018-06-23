@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
+import com.xwtec.androidframe.ui.address.Address;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -15,7 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -127,5 +131,64 @@ public interface Service {
     @FormUrlEncoded
     @POST("user/login")
     Observable<BaseResponse<UserBean>> login(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 重置密码
+     */
+    @FormUrlEncoded
+    @POST("user/findPassWord")
+    Observable<BaseResponse> resetPassword(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 意见反馈
+     */
+    @FormUrlEncoded
+    @POST("feedBacks/save")
+    Observable<BaseResponse> feedback(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 退出登录
+     */
+    @FormUrlEncoded
+    @POST("user/exit")
+    Observable<BaseResponse> logout(@Field("token") String token);
+
+    /**
+     * 修改密码
+     */
+    @FormUrlEncoded
+    @POST("user/updatePassWord")
+    Observable<BaseResponse> updatePassword(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 修改个人信息
+     */
+    @PUT("user/update")
+    Observable<BaseResponse> updatePersonalInfo(@Body RequestBody requestBody);
+
+    /**
+     * 查询收货地址
+     */
+    @GET("receiveAddresses/getReceiveAddresses")
+    Observable<BaseResponse<List<Address>>> queryAddress(@Query("token") String token);
+
+    /**
+     * 添加收货地址
+     */
+    @POST("receiveAddresses/save")
+    Observable<BaseResponse> addAddress(@Body RequestBody body);
+
+    /**
+     * 修改收货地址
+     */
+    @PUT("receiveAddresses/update")
+    Observable<BaseResponse> updateAddress(@Body RequestBody body);
+
+    /**
+     * 删除收货地址
+     */
+    @DELETE("receiveAddresses/delete")
+    Observable<BaseResponse> deleteAddress(@QueryMap HashMap<String, Object> map);
+
 
 }

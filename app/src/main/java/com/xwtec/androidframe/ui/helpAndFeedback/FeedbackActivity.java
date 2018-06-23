@@ -8,10 +8,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.interfaces.SimpleTextWatcher;
 import com.xwtec.androidframe.manager.Constant;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -67,9 +70,24 @@ public class FeedbackActivity extends BaseActivity<FeedbackPresenterImpl> implem
                 finish();
                 break;
             case R.id.btn_submit:
+                feedback();
                 break;
             default:
                 break;
         }
+    }
+
+    private void feedback() {
+        String phoneNum = etPhoneNum.getText().toString().trim();
+        String content = etContent.getText().toString().trim();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("phone", phoneNum);
+        map.put("content", content);
+        presenter.feedback(map);
+    }
+
+    @Override
+    public void feedbackSuccess(String msg) {
+        ToastUtils.showShort(msg);
     }
 }

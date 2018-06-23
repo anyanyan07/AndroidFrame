@@ -16,6 +16,7 @@
         <!-- 启动页+引导页 -->
         <activity
             android:name=".ui.splash.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,14 +25,39 @@
             </intent-filter>
         </activity>
         <!-- 主页 -->
-        <activity android:name=".ui.main.MainActivity" />
-        <activity android:name=".ui.register.RegisterActivity" />
-        <activity android:name=".ui.goodDetail.GoodDetailActivity" />
-        <activity android:name=".ui.login.LoginActivity" />
-        <activity android:name=".ui.forgetPassword.ForgetPasswordActivity" />
-        <activity android:name=".ui.helpAndFeedback.HelpActivity" />
-        <activity android:name=".ui.helpAndFeedback.ContactServiceActivity" />
-        <activity android:name=".ui.helpAndFeedback.FeedbackActivity"></activity>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.goodDetail.GoodDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.forgetPassword.ForgetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.helpAndFeedback.HelpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.helpAndFeedback.ContactServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.helpAndFeedback.FeedbackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.personalInfo.PersonalInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.updatePassword.UpdatePasswordActivity" />
+        <activity android:name=".ui.address.AddressListActivity" />
+        <activity android:name=".ui.address.CreateAddressActivity"></activity>
     </application>
 
 </manifest>

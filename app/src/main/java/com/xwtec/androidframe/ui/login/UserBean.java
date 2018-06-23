@@ -1,9 +1,66 @@
 package com.xwtec.androidframe.ui.login;
 
+import java.io.Serializable;
+
 /**
  * Created by ayy on 2018/6/20.
  * Describe:用户基本信息
  */
 
-public class UserBean {
+public class UserBean implements Serializable{
+
+
+    /**
+     * token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzAzNzUzNTMsInVzZXJJZCI6IjQ1IiwiaXNzIjoiU2VydmljZSIsImF1ZCI6IkFQUCIsImlhdCI6MTUyOTUxMTM1M30.UH8K3VqYi1jo49PNrMcM6iTwskErQpIlcpHi-ZVdTeE
+     * imgHead : https://ne-farm.oss-cn-beijing.aliyuncs.com/farm_img/head_img_81d86e273b7d4459b20eb15423f9c7f93page_03.jpg
+     * nickName : null
+     * sex : null
+     * birth : null
+     */
+
+    private String token;
+    private String imgHead;
+    private String nickName;
+    private String sex;
+    private String birth;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getImgHead() {
+        return imgHead;
+    }
+
+    public void setImgHead(String imgHead) {
+        this.imgHead = imgHead;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
 }

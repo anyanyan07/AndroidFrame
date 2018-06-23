@@ -2,8 +2,6 @@ package com.xwtec.androidframe.manager.intercepter;
 
 import android.content.Context;
 
-import com.blankj.utilcode.util.CacheUtils;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -34,15 +32,7 @@ public final class HeaderInterceptor implements Interceptor {
         Request addHeaderRequest = chain.request()
                 .newBuilder()
                 .header("Accept", "application/json")
-                .header("JSESSIONID", CacheUtils.getInstance().getString("JSESSIONID", "0"))
-                .header("SDKVersion", "1")
-                .header("AndroidID", "d32ea7c307bfe797")
-                .header("MacAddress", "a4:71:74:c2:65:0c")
-                .header("Manufacturer", "HUAWEI")
-                .header("Model", "BTV-W09")
-                .header("AppPackageName", "com.xwtec.flatframe")
-                .header("AppVersionName", "1")
-                .header("AppVersionCode", "1")
+                .header("Content-Type", "application/json")
                 .build();
         return chain.proceed(addHeaderRequest);
     }

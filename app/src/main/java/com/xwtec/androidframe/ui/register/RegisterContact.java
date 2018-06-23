@@ -12,9 +12,13 @@ import java.util.HashMap;
 public interface RegisterContact {
     interface RegisterView extends BaseView {
         void registerSuccess(RegisterResponseBean registerResponseBean);
+
+        void sendCodeSuccess();
     }
 
     interface RegisterPresenter {
         void register(HashMap<String, Object> map);
+
+        void sendVerifyCode(HashMap<String, Object> map);
     }
 }

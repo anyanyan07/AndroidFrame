@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
+import com.xwtec.androidframe.ui.address.Address;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * Created by ayy on 2018/5/28.
@@ -86,4 +88,50 @@ public interface NetResourceRepo {
      * 登录
      */
     Observable<BaseResponse<UserBean>> login(HashMap<String, Object> map);
+
+    /**
+     * 重置密码
+     */
+    Observable<BaseResponse> resetPassword(HashMap<String, Object> map);
+
+    /**
+     * 意见反馈
+     */
+    Observable<BaseResponse> feedback(HashMap<String, Object> map);
+
+    /**
+     * 退出登录
+     */
+    Observable<BaseResponse> logout(String token);
+
+    /**
+     * 修改密码
+     */
+    Observable<BaseResponse> updatePassword(HashMap<String, Object> map);
+
+    /**
+     * 修改个人信息
+     */
+    Observable<BaseResponse> updatePersonalInfo(RequestBody requestBody);
+
+    /**
+     * 查询收货地址
+     */
+    Observable<BaseResponse<List<Address>>> queryAddress(String token);
+
+    /**
+     * 修改收货地址
+     */
+    Observable<BaseResponse> updateAddress(RequestBody requestBody);
+
+    /**
+     * 添加收货地址
+     */
+    Observable<BaseResponse> addAddress(RequestBody requestBody);
+
+    /**
+     * 删除收货地址
+     */
+    Observable<BaseResponse> deleteAddress(HashMap<String, Object> map);
+
 }

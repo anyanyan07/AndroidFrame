@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
@@ -178,5 +179,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     @Override
     public void loginSuccess(UserBean userBean) {
         ToastUtils.showShort("登录成功");
+        CacheUtils.getInstance().put(Constant.USER_KEY,userBean);
+        finish();
     }
 }

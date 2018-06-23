@@ -45,4 +45,26 @@ public class RegisterPresenterImpl extends BasePresenter<RegisterContact.Registe
                     }
                 });
     }
+
+    @Override
+    public void sendVerifyCode(HashMap<String, Object> map) {
+        netResourceRepo.sendVerifyCode(map)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()){
+                                view.sendCodeSuccess();
+                            }else{
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
 }

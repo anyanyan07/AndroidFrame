@@ -16,6 +16,10 @@ public class Constant {
     public static final String HELP_ROUTER = "/activity/help";
     public static final String FEEDBACK_ROUTER = "/activity/feedback";
     public static final String CONTACT_SERVICE_ROUTER = "/activity/contact";
+    public static final String PERSONAL_ROUTER = "/activity/personal";
+    public static final String SETTING_ROUTER = "/activity/setting";
+    public static final String UPDATE_PASSWORD_ROUTER = "/activity/updatePwd";
+    public static final String ADDRESS_ROUTER = "/activity/address";
     //********页面路由路径管理**********
     public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
     public static final int PER_PAGE_NUM = 20;//分页加载时每页数量
@@ -24,5 +28,10 @@ public class Constant {
     public static final int FINDBACK_VERIFY_TYPE = 1;
     public static final int UPDATE_PASSWORD_VERIFY_TYPE = 2;
     public static final int LOGIN_VERIFY_TYPE = 3;
+
+    public static final String USER_KEY = "USER_KEY";
+
+    public static final String RX_LOGIN_SUCCESS = "RX_LOGIN_SUCCESS";//登录成功发送RxBux消息
+    public static final String RX_LOGOUT = "RX_LOGOUT";//退出登录发送RxBux消息
 
 }

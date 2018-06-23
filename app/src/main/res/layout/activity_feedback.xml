@@ -36,8 +36,9 @@
         <EditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@null"
+            android:gravity="top"
             android:hint="@string/feedbackHint"
             android:textColor="@color/c_333333"
             android:textColorHint="@color/c_999999"
