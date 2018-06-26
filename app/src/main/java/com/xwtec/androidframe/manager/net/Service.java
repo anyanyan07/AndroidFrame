@@ -9,6 +9,7 @@ import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.myOrders.bean.Order;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -23,8 +25,11 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -90,7 +95,7 @@ public interface Service {
      * 从购物车删除
      */
     @DELETE("shoppingCarts/delete")
-    Observable<BaseResponse> deleteFromShopCart(@Query("ids") String ids);
+    Observable<BaseResponse> deleteFromShopCart(@Query("ids") String ids, @Query("token") String token);
 
     /**
      * 修改购物车数量
@@ -190,5 +195,16 @@ public interface Service {
     @DELETE("receiveAddresses/delete")
     Observable<BaseResponse> deleteAddress(@QueryMap HashMap<String, Object> map);
 
+    /**
+     * 上传头像
+     */
+    @Multipart
+    @POST("user/upHeadImg")
+    Observable<BaseResponse> uploadHeader(@PartMap HashMap<String, Object> map, @Part MultipartBody.Part file);
 
+    /**
+     * 我的订单列表
+     */
+    @GET("orders/getOrder")
+    Observable<BaseResponse<List<Order>>> fetchOrders(@QueryMap HashMap<String, Object> map);
 }

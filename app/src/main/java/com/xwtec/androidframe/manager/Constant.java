@@ -20,6 +20,11 @@ public class Constant {
     public static final String SETTING_ROUTER = "/activity/setting";
     public static final String UPDATE_PASSWORD_ROUTER = "/activity/updatePwd";
     public static final String ADDRESS_ROUTER = "/activity/address";
+    public static final String CREATE_ADDRESS_ROUTER = "/activity/createAddress";
+    public static final String SHOP_CART_FRAG = "/fragment/shopCart";
+    public static final String MINE_FRAG = "/fragment/mine";
+    public static final String GOODS_DETAIL_ROUTER = "/activity/goodDetail";
+    public static final String MY_ORDER_ROUTER = "/activity/myOrder";
     //********页面路由路径管理**********
     public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
     public static final int PER_PAGE_NUM = 20;//分页加载时每页数量
@@ -33,5 +38,25 @@ public class Constant {
 
     public static final String RX_LOGIN_SUCCESS = "RX_LOGIN_SUCCESS";//登录成功发送RxBux消息
     public static final String RX_LOGOUT = "RX_LOGOUT";//退出登录发送RxBux消息
+
+    public static final String ORDER_STATUS = "ORDER_STATUS";
+    /**
+     * 0代表订单完成;1代表已删除;2代表待付款3代表已付款与待发货;4代表已发货与路途中;
+     * 5代表已收货;6用户确认收货;7代表退货中;8代表已退货与退货完成;9代表取消订单中；
+     * 10代表已取消与取消完成；11退款中;12已退款）不传代表查询全部订单
+     */
+    public static final int FINISHED = 0;//已完成
+    public static final int DELETED = 1;//已删除
+    public static final int WAIT_PAY = 2;//待付款
+    public static final int PAIED_WAIT_SEND = 3;//已付款与待发货
+    public static final int SENDED = 4;//已发货与路途中
+    public static final int RECEIVED = 5;//已收货
+    public static final int SURE_RECEIVED = 6;//确认收货
+    public static final int SALE_RETURNING = 7;//退货中
+    public static final int SALE_RETURNED = 8;//已退货与退货完成
+    public static final int CANCELING = 9;//取消订单中
+    public static final int CANCELED = 10;//已取消与取消完成
+    public static final int REFUNDING = 11;//退款中
+    public static final int REFUNDED = 12;//已退款
 
 }

@@ -2,6 +2,7 @@ package com.xwtec.androidframe.ui.mine;
 
 
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +13,6 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
-import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.RxBus.RxBus;
 import com.xwtec.androidframe.util.RxBus.RxBusMSG;
@@ -36,39 +36,15 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     ImageView ivLeft;
     @BindView(R.id.tv_username)
     TextView tvUsername;
-
-    private boolean in = true;
-    private boolean first = true;
     private UserBean userBean;
 
     @Override
     public void onResume() {
         super.onResume();
         userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-        if (userBean == null) {
-            if (in && first) {
-                in = false;
-                ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation(getActivity(), 0);
-                return;
-            }
-            if (!in) {
-                in = true;
-                ((MainActivity) getActivity()).goBackTab();
-            }
-        }
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-            if (userBean == null) {
-                if (in) {
-                    in = false;
-                    ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
-                }
-            }
+        ImageLoadUtil.loadCircleImage(context, userBean.getImgHead(), ivUserHeader);
+        if (TextUtils.isEmpty(userBean.getNickName())) {
+            tvUsername.setText(userBean.getNickName());
         }
     }
 
@@ -117,16 +93,31 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
             case R.id.iv_look_more_order:
             case R.id.tv_look_more:
                 break;
+            //待付款
             case R.id.ll_obligation:
+                ARouter.getInstance().build(Constant.MY_ORDER_ROUTER)
+                        .withInt(Constant.ORDER_STATUS, Constant.WAIT_PAY).navigation();
                 break;
+            //待发货
             case R.id.ll_wait_send:
+                ARouter.getInstance().build(Constant.MY_ORDER_ROUTER)
+                        .withInt(Constant.ORDER_STATUS, Constant.PAIED_WAIT_SEND).navigation();
                 break;
+            //待收货
             case R.id.ll_wait_receive:
+                ARouter.getInstance().build(Constant.MY_ORDER_ROUTER)
+                        .withInt(Constant.ORDER_STATUS, Constant.SENDED).navigation();
                 break;
+            //已取消
             case R.id.ll_had_cancel:
+                ARouter.getInstance().build(Constant.MY_ORDER_ROUTER)
+                        .withInt(Constant.ORDER_STATUS, Constant.CANCELED).navigation();
                 break;
             case R.id.ll_had_finished:
+                ARouter.getInstance().build(Constant.MY_ORDER_ROUTER)
+                        .withInt(Constant.ORDER_STATUS, Constant.FINISHED).navigation();
                 break;
+            //在线客服
             case R.id.ll_online_service:
                 break;
             case R.id.ll_feedback:

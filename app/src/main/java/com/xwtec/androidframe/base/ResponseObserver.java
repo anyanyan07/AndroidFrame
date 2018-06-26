@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class ResponseObserver<T> implements Observer<T> {
 
-   private BasePresenter presenter;
+    private BasePresenter presenter;
 
     protected ResponseObserver(BasePresenter presenter) {
         this.presenter = presenter;
@@ -20,6 +20,7 @@ public abstract class ResponseObserver<T> implements Observer<T> {
     public void onSubscribe(Disposable d) {
         presenter.addSubscribe(d);
     }
+
 
     @Override
     public void onComplete() {

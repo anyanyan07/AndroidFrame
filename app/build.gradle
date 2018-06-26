@@ -17,6 +17,15 @@ android {
                 arguments = [moduleName: project.getName()]
             }
         }
+        multiDexEnabled true
+    }
+    signingConfigs {
+        release {
+            keyAlias "dbnc"
+            keyPassword "888888"
+            storeFile file("F:\\AndroidFrame\\key\\dbnc.jks")
+            storePassword "888888"
+        }
     }
     buildTypes {
         release {
@@ -67,6 +76,12 @@ dependencies {
     implementation depend["adapter"]
     implementation depend["refresh"]
     implementation depend["refersh-header"]
-
+    implementation("com.github.hotchemi:permissionsdispatcher:3.2.0") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+//    implementation depend["permission"]
+    annotationProcessor depend["permission-processor"]
+    compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
 
 }

@@ -12,20 +12,14 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.util.TimerUtil;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 @Route(path = Constant.UPDATE_PASSWORD_ROUTER)
 public class UpdatePasswordActivity extends BaseActivity<UpdatePwdPresenterImpl> implements UpdatePasswordContact.UpdatePasswordView {
@@ -114,49 +108,7 @@ public class UpdatePasswordActivity extends BaseActivity<UpdatePwdPresenterImpl>
     @Override
     public void sendCodeSuccess(String msg) {
         ToastUtils.showShort(R.string.sendVerifyCodeSuccess);
-        tvSendCode.setClickable(false);
-        final int count = 60;
-        timerObservable = Observable.interval(1, TimeUnit.SECONDS)
-                .take(count + 1)
-                .map(new Function<Long, Long>() {
-                    @Override
-                    public Long apply(Long aLong) throws Exception {
-                        return count - aLong;
-                    }
-                })
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        compositeDisposable.add(disposable);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io());
-
-        timerObservable.subscribe(new Observer<Long>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(Long aLong) {
-                tvSendCode.setText(aLong + "s");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                tvSendCode.setClickable(true);
-                tvSendCode.setText(R.string.getVerifyCode);
-            }
-
-            @Override
-            public void onComplete() {
-                tvSendCode.setClickable(true);
-                tvSendCode.setText(R.string.getVerifyCode);
-            }
-        });
-
+        TimerUtil.getInstance().startTimer(tvSendCode);
     }
 
     @Override
@@ -167,12 +119,6 @@ public class UpdatePasswordActivity extends BaseActivity<UpdatePwdPresenterImpl>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (timerObservable != null) {
-            timerObservable.unsubscribeOn(Schedulers.io());
-            timerObservable = null;
-        }
-        if (compositeDisposable != null) {
-            compositeDisposable.clear();
-        }
+        TimerUtil.getInstance().cancelTimer();
     }
 }

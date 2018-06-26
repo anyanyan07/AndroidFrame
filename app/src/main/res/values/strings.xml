@@ -16,7 +16,7 @@
     <string name="hadCancel">已取消</string>
     <string name="hadFinished">已完成</string>
     <string name="finish">完成</string>
-    <string name="onlineService">在线反馈</string>
+    <string name="onlineService">在线客服</string>
     <string name="feedback">意见反馈</string>
     <string name="setting">设置</string>
     <string name="phoneNum">手机号</string>
@@ -83,9 +83,15 @@
     <string name="createAddress">+新建收货地址</string>
     <string name="defaultAddress">默认地址</string>
     <string name="consignee">收货人：</string>
-    <string name="inputConsignee">收入姓名：</string>
+    <string name="inputConsignee">输入姓名</string>
     <string name="inputPhoneNum">手机号码：</string>
     <string name="address">收货地址：</string>
     <string name="detailAddress">详细地址：</string>
     <string name="choseAddress">请选择收货地址</string>
+    <string name="detailAddressHint">请输入详细地址</string>
+    <string name="shop_cart_empty">暂时没有商品</string>
+    <string name="album">从相册中选择</string>
+    <string name="photo">拍照</string>
+    <string name="payNow">立即付款</string>
+    <string name="cancelOrder">取消订单</string>
 </resources>

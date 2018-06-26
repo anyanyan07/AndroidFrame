@@ -5,6 +5,7 @@ import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,6 +33,28 @@ public class AddressPresenterImpl extends BasePresenter<AddressContact.AddressVi
                         if (view != null) {
                             if (baseResponse.isSuccess()) {
                                 view.querySuccess(baseResponse.getContent());
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void delAdd(HashMap<String, Object> map, final int position) {
+        netResourceRepo.deleteAddress(map)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.delSuccess(position);
                             } else {
                                 view.showLoadFail(baseResponse.getMsg());
                             }

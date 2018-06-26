@@ -1,23 +1,26 @@
 package com.xwtec.androidframe.ui.classify;
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
-import com.xwtec.androidframe.base.baseadapter.BaseHolder;
-import com.xwtec.androidframe.base.baseadapter.RecycleViewSimpleAdapter;
-import com.xwtec.androidframe.interfaces.RVItemClickListener;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
-import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.util.GridSpacingItemDecoration;
+import com.xwtec.androidframe.util.ImageLoadUtil;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,21 +30,19 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implements ClassifyContact.ClassifyView {
+public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implements ClassifyContact.ClassifyView, OnRefreshListener {
 
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
-    @BindView(R.id.rv_content)
-    RecyclerView rvContent;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.iv_left)
     ImageView ivLeft;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
 
     private List<CategoryBean> categoryList;
-    private List<CategoryContentBean> categoryContentList;
-    private RecycleViewSimpleAdapter<CategoryContentBean> categoryContentAdapter;
-    private RecycleViewSimpleAdapter<CategoryBean> categoryAdapter;
+    private BaseQuickAdapter<CategoryBean, BaseViewHolder> categoryAdapter;
 
     @Inject
     public ClassifyFragment() {
@@ -51,47 +52,29 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
     protected void init() {
         ivLeft.setVisibility(View.GONE);
         tvTitle.setText(R.string.classify);
-        initCategory();
         initContent();
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshListener(this);
         presenter.fetchCategories();
     }
 
-    private void initCategory() {
-        rvCategory.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        categoryAdapter = new RecycleViewSimpleAdapter<CategoryBean>(context, R.layout.category_item) {
+    private void initContent() {
+        rvCategory.setLayoutManager(new GridLayoutManager(context, 3));
+        rvCategory.addItemDecoration(new GridSpacingItemDecoration(3, ConvertUtils.dp2px(8), true));
+        categoryAdapter = new BaseQuickAdapter<CategoryBean, BaseViewHolder>(R.layout.category_content_item, categoryList) {
             @Override
-            protected void bindData(BaseHolder holder, CategoryBean categoryBean) {
-                holder.setText(R.id.tv_category_name, categoryBean.getName());
+            protected void convert(BaseViewHolder helper, CategoryBean item) {
+                ImageLoadUtil.loadFitCenter(mContext, item.getImgUrl(), (ImageView) helper.getView(R.id.iv_pic));
+                helper.setText(R.id.tv_name, item.getName());
             }
         };
-        categoryAdapter.setRadio(true);
-        categoryAdapter.setOnItemClickListener(new RVItemClickListener() {
+        categoryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                categoryAdapter.setSelectItem(position);
-                CategoryBean categoryBean = categoryList.get(position);
-                fetchContent(categoryBean.getId(), 0, 20);
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //跳转到分类列表页
             }
         });
         rvCategory.setAdapter(categoryAdapter);
-    }
-
-    private void initContent() {
-        rvContent.setLayoutManager(new GridLayoutManager(context, 2));
-        categoryContentAdapter = new RecycleViewSimpleAdapter<CategoryContentBean>(context, R.layout.category_content_item) {
-            @Override
-            protected void bindData(BaseHolder holder, CategoryContentBean categoryContentBean) {
-                holder.setImageURIFitCenter(R.id.iv_pic, categoryContentBean.getImgUrl());
-                holder.setText(R.id.tv_name, categoryContentBean.getTitle());
-            }
-        };
-        categoryContentAdapter.setOnItemClickListener(new RVItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion) {
-
-            }
-        });
-        rvContent.setAdapter(categoryContentAdapter);
     }
 
     @Override
@@ -99,27 +82,29 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
         return R.layout.fragment_classify;
     }
 
-    protected void fetchContent(int categoryId, int startIndex, int showNum) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("categorId", categoryId);
-        map.put("startIndex", startIndex);
-        map.put("showNumber", showNum);
-        presenter.fetchCategoryContent(map);
-    }
+//    protected void fetchContent(int categoryId, int startIndex, int showNum) {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("categorId", categoryId);
+//        map.put("startIndex", startIndex);
+//        map.put("showNumber", showNum);
+//        presenter.fetchCategoryContent(map);
+//    }
 
     @Override
     public void fetchCategoriesSuccess(List<CategoryBean> data) {
+        refreshLayout.finishRefresh(true);
         categoryList = data;
-        categoryAdapter.setData(categoryList);
-        if (categoryList != null && categoryList.size() > 0) {
-            categoryAdapter.setSelectItem(0);
-            fetchContent(categoryList.get(0).getId(), 0, 20);
-        }
+        categoryAdapter.setNewData(categoryList);
     }
 
     @Override
-    public void fetchContentSuccess(List<CategoryContentBean> data) {
-        categoryContentList = data;
-        categoryContentAdapter.setData(categoryContentList);
+    public void showLoadFail(String msg) {
+        super.showLoadFail(msg);
+        refreshLayout.finishRefresh(false);
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        presenter.fetchCategories();
     }
 }

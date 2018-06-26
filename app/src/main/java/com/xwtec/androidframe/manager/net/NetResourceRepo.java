@@ -9,6 +9,7 @@ import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.myOrders.bean.Order;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -67,7 +69,7 @@ public interface NetResourceRepo {
     /**
      * 从购物车中删除
      */
-    Observable<BaseResponse> deleteFromShopCart(String ids);
+    Observable<BaseResponse> deleteFromShopCart(String ids, String token);
 
     /**
      * 注册
@@ -134,4 +136,13 @@ public interface NetResourceRepo {
      */
     Observable<BaseResponse> deleteAddress(HashMap<String, Object> map);
 
+    /**
+     * 上传头像
+     */
+    Observable<BaseResponse> uploadHeader(HashMap<String, Object> map, MultipartBody.Part file);
+
+    /**
+     * 我的订单列表
+     */
+    Observable<BaseResponse<List<Order>>> fetchOrders(HashMap<String, Object> map);
 }

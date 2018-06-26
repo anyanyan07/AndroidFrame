@@ -143,6 +143,12 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     //下拉刷新
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        if (tabDataEntity.getData() == null || tabDataEntity.getData().isEmpty()) {
+            presenter.fetchGoodDefines();
+        }
+        if (bannerDataEntity.getData() == null || bannerDataEntity.getData().isEmpty()) {
+            presenter.getHomeBanner();
+        }
         fetchGoodsData(curDefine, Constant.FIRST_PAGE_INDEX);
     }
 }

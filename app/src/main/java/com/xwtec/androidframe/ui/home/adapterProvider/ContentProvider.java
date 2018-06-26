@@ -6,15 +6,18 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.annotation.ItemProviderTag;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.customView.PriceView;
+import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.home.HomeAdapter;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
+import com.xwtec.androidframe.util.GridSpacingItemDecoration;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 
 import java.util.List;
@@ -30,7 +33,9 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
     public void convert(BaseViewHolder helper, HomeMultiEntity<GoodListBean> data, int position) {
         final List<GoodListBean> goodBeanList = data.getData();
         RecyclerView recyclerView = helper.getView(R.id.rv);
-        recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ConvertUtils.dp2px(10),false));
         BaseQuickAdapter adapter = new BaseQuickAdapter<GoodListBean, BaseViewHolder>(R.layout.home_content_layout, goodBeanList) {
             @Override
             protected void convert(BaseViewHolder helper, GoodListBean goodListBean) {
@@ -45,7 +50,7 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ARouter.getInstance().build("/activity/goodDetail")
+                ARouter.getInstance().build(Constant.GOODS_DETAIL_ROUTER)
                         .withLong("goodId", goodBeanList.get(position).getId())
                         .navigation();
             }

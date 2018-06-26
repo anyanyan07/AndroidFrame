@@ -15,12 +15,16 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.interfaces.SimpleTextWatcher;
+import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailMultiEntity;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
+import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 
 import java.util.ArrayList;
@@ -177,9 +181,15 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
     }
 
     private void addSure() {
+        UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+        if (userBean == null) {
+            ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
+            return;
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("goodsId", goodDetailResponse.getId());
         map.put("goodsNumber", tvNum.getText().toString().trim());
+        map.put("token", userBean.getToken());
         presenter.addShopCart(map);
     }
 

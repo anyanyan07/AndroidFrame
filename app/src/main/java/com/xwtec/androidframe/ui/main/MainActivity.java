@@ -11,15 +11,19 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.manager.AppManager;
 import com.xwtec.androidframe.manager.Constant;
+import com.xwtec.androidframe.manager.intercepter.LoginIntercepter;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.mine.MineFragment;
 import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 @Route(path = Constant.MAIN_ROUTER)
 public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainContact.MainView {
@@ -49,6 +53,25 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     @Override
     protected void init() {
         setCurFragment(tabHome, homeFragment);
+        initRxBus();
+    }
+
+    private void initRxBus() {
+        RxBus.getInstance().register(RxBusMSG.class, new Consumer<RxBusMSG>() {
+            @Override
+            public void accept(RxBusMSG rxBusMSG) throws Exception {
+                switch (rxBusMSG.getCode()) {
+                    case Constant.SHOP_CART_FRAG:
+                        setCurFragment(tabShopCart, shopCartFragment);
+                        break;
+                    case Constant.MINE_FRAG:
+                        setCurFragment(tabMine, mineFragment);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -67,10 +90,14 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                 setCurFragment(tabClassify, classifyFragment);
                 break;
             case R.id.tab_shop_cart:
-                setCurFragment(tabShopCart, shopCartFragment);
+                if (!LoginIntercepter.intercepter(Constant.SHOP_CART_FRAG)) {
+                    setCurFragment(tabShopCart, shopCartFragment);
+                }
                 break;
             case R.id.tab_mine:
-                setCurFragment(tabMine, mineFragment);
+                if (!LoginIntercepter.intercepter(Constant.MINE_FRAG)) {
+                    setCurFragment(tabMine, mineFragment);
+                }
                 break;
         }
     }

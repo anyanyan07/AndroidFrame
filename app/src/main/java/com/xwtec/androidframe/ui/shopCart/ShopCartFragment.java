@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.ui.shopCart;
 
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +10,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CacheUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
 import com.xwtec.androidframe.customView.PriceView;
+import com.xwtec.androidframe.manager.Constant;
+import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 
@@ -29,7 +37,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implements ShopCartContact.ShopCartView {
+public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implements ShopCartContact.ShopCartView, OnRefreshListener {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -47,13 +55,19 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     LinearLayout llSelectAllDel;
     @BindView(R.id.ll_select_all)
     LinearLayout llSelectAll;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
 
     private boolean isEditing;//正在编辑
 
     private BaseQuickAdapter<ShopCartBean, BaseViewHolder> adapter;
     private List<ShopCartBean> shopCartBeanList = new ArrayList<>();
-    private int pageIndex = 0;
+    private List<ShopCartBean> selectedList = new ArrayList<>();
+    private int startIndex = 0;
     private int selectedSize;
+    private UserBean userBean;
 
     @Inject
     public ShopCartFragment() {
@@ -66,7 +80,10 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("编辑");
         initRecyclerView();
-        fetchShopCartData(pageIndex);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setEnableLoadMore(false);
+        userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+        fetchShopCartData(startIndex);
     }
 
     private void initRecyclerView() {
@@ -118,6 +135,9 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //跳转到商品详情页
+                ARouter.getInstance().build("/activity/goodDetail")
+                        .withLong("goodId", shopCartBeanList.get(position).getId())
+                        .navigation();
             }
         });
         recyclerView.setAdapter(adapter);
@@ -128,24 +148,35 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         return R.layout.fragment_shop_cart;
     }
 
-    private void fetchShopCartData(int startIndex) {
+    public void fetchShopCartData(int startIndex) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("startIndex", startIndex);
         map.put("showNumber", 20);
+        map.put("token", userBean.getToken());
         presenter.fetchShopCartData(map);
     }
 
     @Override
     public void fetchShopCartSuccess(List<ShopCartBean> shopCartBeanList) {
+        this.shopCartBeanList.clear();
+        selectedList.clear();
+        refreshLayout.finishRefresh(true);
         this.shopCartBeanList.addAll(shopCartBeanList);
-        pageIndex++;
         adapter.notifyDataSetChanged();
+        dataNotify();
+    }
+
+    @Override
+    public void showLoadFail(String msg) {
+        super.showLoadFail(msg);
+        refreshLayout.finishRefresh(false);
     }
 
     private void updateShopCart(long id, int goodsNum, ShopCartBean shopCartBean, int position) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("goodsNumber", goodsNum);
+        map.put("token", userBean.getToken());
         presenter.updateShopCart(map, shopCartBean, position);
     }
 
@@ -158,7 +189,8 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
     @Override
     public void deleteFromShopCartSuccess() {
-
+        shopCartBeanList.removeAll(selectedList);
+        adapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.tv_right, R.id.ll_select_all, R.id.btn_pay, R.id.ll_select_all_del, R.id.btn_delete})
@@ -186,13 +218,16 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
             case R.id.btn_pay:
                 break;
             case R.id.btn_delete:
-                String ids = "";
+                selectedList.clear();
+                StringBuffer ids = new StringBuffer();
                 for (ShopCartBean shopCartBean : shopCartBeanList) {
                     if (shopCartBean.isSelected()) {
-                        ids.concat(shopCartBean.getId() + ",");
+                        ids.append(shopCartBean.getId() + ",");
+                        selectedList.add(shopCartBean);
                     }
                 }
-                presenter.deleteShopCart(ids.substring(0, ids.length()));
+                String id = ids.substring(0, ids.length());
+                presenter.deleteShopCart(id,userBean.getToken());
                 break;
         }
     }
@@ -208,5 +243,30 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         }
         adapter.notifyDataSetChanged();
         dismissLoading();
+    }
+
+    private void dataNotify() {
+        if (shopCartBeanList != null && !shopCartBeanList.isEmpty()) {
+            recyclerView.setVisibility(View.VISIBLE);
+            llEmpty.setVisibility(View.GONE);
+            if (isEditing) {
+                llPay.setVisibility(View.GONE);
+                llDelete.setVisibility(View.VISIBLE);
+            } else {
+                llPay.setVisibility(View.VISIBLE);
+                llDelete.setVisibility(View.GONE);
+            }
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            llEmpty.setVisibility(View.VISIBLE);
+            llPay.setVisibility(View.GONE);
+            llDelete.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        startIndex = 0;
+        fetchShopCartData(startIndex);
     }
 }

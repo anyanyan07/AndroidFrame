@@ -16,19 +16,14 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.interfaces.SimpleTextWatcher;
 import com.xwtec.androidframe.manager.Constant;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
+import com.xwtec.androidframe.util.TimerUtil;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 @Route(path = Constant.LOGIN_ROUTER)
 public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements LoginContact.LoginView {
@@ -126,48 +121,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     @Override
     public void sendCodeSuccess() {
-        //开始倒计时
-        tvSendCode.setClickable(false);
-        final int count = 60;
-        Observable.interval(1, TimeUnit.SECONDS)
-                .take(count + 1)
-                .map(new Function<Long, Long>() {
-                    @Override
-                    public Long apply(Long aLong) throws Exception {
-                        return count - aLong;
-                    }
-                })
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        tvSendCode.setText(aLong + "s");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        tvSendCode.setClickable(true);
-                        tvSendCode.setText(R.string.getVerifyCode);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        tvSendCode.setClickable(true);
-                        tvSendCode.setText(R.string.getVerifyCode);
-                    }
-                });
+        TimerUtil.getInstance().startTimer(tvSendCode);
     }
 
     @Override
@@ -179,7 +133,28 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     @Override
     public void loginSuccess(UserBean userBean) {
         ToastUtils.showShort("登录成功");
-        CacheUtils.getInstance().put(Constant.USER_KEY,userBean);
+        CacheUtils.getInstance().put(Constant.USER_KEY, userBean);
+        finishToTarget();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TimerUtil.getInstance().cancelTimer();
+    }
+
+    private void finishToTarget() {
+        String target = getIntent().getStringExtra("target");
+        switch (target) {
+            case Constant.SHOP_CART_FRAG:
+                RxBus.getInstance().post(new RxBusMSG(Constant.SHOP_CART_FRAG, null));
+                break;
+            case Constant.MINE_FRAG:
+                RxBus.getInstance().post(new RxBusMSG(Constant.MINE_FRAG, null));
+                break;
+            default:
+                break;
+        }
         finish();
     }
 }

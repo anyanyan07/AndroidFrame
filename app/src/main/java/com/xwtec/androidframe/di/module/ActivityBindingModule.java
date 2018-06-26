@@ -15,6 +15,7 @@ import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
+import com.xwtec.androidframe.ui.myOrders.MyOrderActivity;
 import com.xwtec.androidframe.ui.personalInfo.PersonalInfoActivity;
 import com.xwtec.androidframe.ui.register.RegisterActivity;
 import com.xwtec.androidframe.ui.setting.SettingActivity;
@@ -105,4 +106,8 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract CreateAddressActivity createAddressActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract MyOrderActivity myOrderActivity();
 }

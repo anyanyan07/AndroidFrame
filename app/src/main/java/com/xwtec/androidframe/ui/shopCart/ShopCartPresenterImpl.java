@@ -74,8 +74,8 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
     }
 
     @Override
-    public void deleteShopCart(String ids) {
-        mNetResourceRepo.deleteFromShopCart(ids)
+    public void deleteShopCart(String ids,String token) {
+        mNetResourceRepo.deleteFromShopCart(ids,token)
                 .subscribe(new ResponseObserver<BaseResponse>(this) {
                     @Override
                     public void onNext(BaseResponse baseResponse) {

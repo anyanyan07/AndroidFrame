@@ -3,6 +3,9 @@
     package="com.xwtec.androidframe">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".manager.App"
@@ -12,6 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.anyan.headerdemo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <!-- 启动页+引导页 -->
         <activity
@@ -57,7 +69,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.updatePassword.UpdatePasswordActivity" />
         <activity android:name=".ui.address.AddressListActivity" />
-        <activity android:name=".ui.address.CreateAddressActivity"></activity>
+        <activity android:name=".ui.address.CreateAddressActivity" />
+        <activity android:name=".ui.myOrders.MyOrderActivity"></activity>
     </application>
 
 </manifest>

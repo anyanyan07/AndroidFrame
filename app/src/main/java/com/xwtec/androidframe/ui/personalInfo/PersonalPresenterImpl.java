@@ -5,8 +5,11 @@ import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -30,6 +33,28 @@ public class PersonalPresenterImpl extends BasePresenter<PersonalContact.Persona
                     public void onNext(BaseResponse baseResponse) {
                         if (view != null) {
                             view.updateSuccess(baseResponse.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void uploadHeader(HashMap<String, Object> map, MultipartBody.Part file) {
+        netResourceRepo.uploadHeader(map,file)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()){
+                                view.uploadHeaderSuccess();
+                            }else{
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
                         }
                     }
 

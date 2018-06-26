@@ -37,7 +37,7 @@ public interface ShopCartContact {
         /**
          * 删除
          */
-        void deleteShopCart(String ids);
+        void deleteShopCart(String ids,String token);
 
 
     }
