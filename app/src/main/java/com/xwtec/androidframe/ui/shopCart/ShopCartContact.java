@@ -15,7 +15,7 @@ public interface ShopCartContact {
     interface ShopCartView extends BaseView {
         void fetchShopCartSuccess(List<ShopCartBean> shopCartBeanList);
 
-        void updateShopCartSuccess(ShopCartBean shopCartBean,int goodsNum,int position);
+        void updateShopCartSuccess(ShopCartBean shopCartBean, int goodsNum, int position, boolean isAdd);
 
         void deleteFromShopCartSuccess();
     }
@@ -32,12 +32,12 @@ public interface ShopCartContact {
         /**
          * 修改数量
          */
-        void updateShopCart(HashMap<String, Object> map,ShopCartBean shopCartBean,int position);
+        void updateShopCart(HashMap<String, Object> map, ShopCartBean shopCartBean, int position, boolean isAdd);
 
         /**
          * 删除
          */
-        void deleteShopCart(String ids,String token);
+        void deleteShopCart(String ids, String token);
 
 
     }

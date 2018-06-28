@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -17,6 +18,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
+import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.util.GridSpacingItemDecoration;
 import com.xwtec.androidframe.util.ImageLoadUtil;
@@ -72,6 +74,10 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //跳转到分类列表页
+                ARouter.getInstance().build(Constant.CLASSIFY_LIST_ROUTER)
+                        .withInt("id", categoryList.get(position).getId())
+                        .withString("name", categoryList.get(position).getName())
+                        .navigation();
             }
         });
         rvCategory.setAdapter(categoryAdapter);
@@ -81,14 +87,6 @@ public class ClassifyFragment extends BaseFragment<ClassifyPresenterImpl> implem
     protected int getLayoutId() {
         return R.layout.fragment_classify;
     }
-
-//    protected void fetchContent(int categoryId, int startIndex, int showNum) {
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("categorId", categoryId);
-//        map.put("startIndex", startIndex);
-//        map.put("showNumber", showNum);
-//        presenter.fetchCategoryContent(map);
-//    }
 
     @Override
     public void fetchCategoriesSuccess(List<CategoryBean> data) {

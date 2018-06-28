@@ -2,6 +2,8 @@ package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.ui.address.Address;
+import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
+import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -207,4 +209,16 @@ public interface Service {
      */
     @GET("orders/getOrder")
     Observable<BaseResponse<List<Order>>> fetchOrders(@QueryMap HashMap<String, Object> map);
+
+    /**
+     * 确认订单
+     */
+    @POST("orders/settlement")
+    Observable<BaseResponse<AffirmResponse>> affirmOrder(@Body RequestBody body);
+
+    /**
+     * 提交订单
+     */
+    @POST("orders/saveOrder")
+    Observable<BaseResponse<SubmitOrderBean>> submitOrder(@Body RequestBody body);
 }

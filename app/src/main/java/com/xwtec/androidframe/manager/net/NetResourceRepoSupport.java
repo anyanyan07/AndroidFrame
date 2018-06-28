@@ -2,6 +2,8 @@ package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.ui.address.Address;
+import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
+import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -321,6 +323,30 @@ public class NetResourceRepoSupport implements NetResourceRepo {
                 .compose(new ObservableTransformer<BaseResponse<List<Order>>, BaseResponse<List<Order>>>() {
                     @Override
                     public ObservableSource<BaseResponse<List<Order>>> apply(Observable<BaseResponse<List<Order>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<AffirmResponse>> affirmOrder(RequestBody body) {
+        return service.affirmOrder(body)
+                .compose(new ObservableTransformer<BaseResponse<AffirmResponse>, BaseResponse<AffirmResponse>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<AffirmResponse>> apply(Observable<BaseResponse<AffirmResponse>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<SubmitOrderBean>> submitOrder(RequestBody body) {
+        return service.submitOrder(body)
+                .compose(new ObservableTransformer<BaseResponse<SubmitOrderBean>, BaseResponse<SubmitOrderBean>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<SubmitOrderBean>> apply(Observable<BaseResponse<SubmitOrderBean>> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

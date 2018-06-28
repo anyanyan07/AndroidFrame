@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -25,6 +26,11 @@ import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +65,8 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     LinearLayout llEmpty;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.total_price)
+    PriceView totalPrice;
 
     private boolean isEditing;//正在编辑
 
@@ -68,6 +76,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     private int startIndex = 0;
     private int selectedSize;
     private UserBean userBean;
+    private BigDecimal totalMoney = new BigDecimal(0);
 
     @Inject
     public ShopCartFragment() {
@@ -79,6 +88,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         tvTitle.setText("购物车");
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("编辑");
+        totalPrice.setPrice("0");
         initRecyclerView();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setEnableLoadMore(false);
@@ -104,13 +114,13 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                 tvReduce.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        updateShopCart(shopCartBean.getId(), goodsNumber - 1, shopCartBean, helper.getAdapterPosition());
+                        updateShopCart(shopCartBean.getId(), goodsNumber - 1, shopCartBean, helper.getAdapterPosition(), false);
                     }
                 });
                 helper.getView(R.id.tv_add).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        updateShopCart(shopCartBean.getId(), goodsNumber + 1, shopCartBean, helper.getAdapterPosition());
+                        updateShopCart(shopCartBean.getId(), goodsNumber + 1, shopCartBean, helper.getAdapterPosition(), true);
                     }
                 });
                 final ImageView ivCheck = helper.getView(R.id.iv_check);
@@ -119,12 +129,18 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                     public void onClick(View v) {
                         boolean selected = ivCheck.isSelected();
                         shopCartBean.setSelected(!selected);
+                        BigDecimal unitPrice = BigDecimal.valueOf(Double.parseDouble(shopCartBean.getDiscountPrice()));
+                        BigDecimal num = BigDecimal.valueOf(shopCartBean.getGoodsNumber());
+                        BigDecimal money = unitPrice.multiply(num);
                         adapter.notifyItemChanged(helper.getAdapterPosition());
                         if (selected) {
                             selectedSize--;
+                            totalMoney = totalMoney.subtract(money);
                         } else {
                             selectedSize++;
+                            totalMoney = totalMoney.add(money);
                         }
+                        totalPrice.setPrice(totalMoney.toString());
                         llSelectAllDel.setSelected(selectedSize == shopCartBeanList.size());
                         llSelectAll.setSelected(selectedSize == shopCartBeanList.size());
                     }
@@ -163,6 +179,10 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         refreshLayout.finishRefresh(true);
         this.shopCartBeanList.addAll(shopCartBeanList);
         adapter.notifyDataSetChanged();
+        llSelectAllDel.setSelected(false);
+        llSelectAll.setSelected(false);
+        selectedList.clear();
+        selectedSize = 0;
         dataNotify();
     }
 
@@ -172,18 +192,27 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         refreshLayout.finishRefresh(false);
     }
 
-    private void updateShopCart(long id, int goodsNum, ShopCartBean shopCartBean, int position) {
+    private void updateShopCart(long id, int goodsNum, ShopCartBean shopCartBean, int position, boolean isAdd) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("goodsNumber", goodsNum);
         map.put("token", userBean.getToken());
-        presenter.updateShopCart(map, shopCartBean, position);
+        presenter.updateShopCart(map, shopCartBean, position, isAdd);
     }
 
     @Override
-    public void updateShopCartSuccess(ShopCartBean shopCartBean, int goodsNum, int position) {
+    public void updateShopCartSuccess(ShopCartBean shopCartBean, int goodsNum, int position, boolean isAdd) {
         shopCartBean.setGoodsNumber(goodsNum);
         adapter.notifyItemChanged(position);
+        boolean selected = shopCartBean.isSelected();
+        if (selected) {
+            if (isAdd) {
+                totalMoney = totalMoney.add(BigDecimal.valueOf(Double.parseDouble(shopCartBean.getDiscountPrice())));
+            } else {
+                totalMoney = totalMoney.subtract(BigDecimal.valueOf(Double.parseDouble(shopCartBean.getDiscountPrice())));
+            }
+            totalPrice.setPrice(totalMoney.toString());
+        }
     }
 
 
@@ -216,6 +245,30 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                 selectAll(llSelectAllDel);
                 break;
             case R.id.btn_pay:
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    for (ShopCartBean shopCartBean : shopCartBeanList) {
+                        if (shopCartBean.isSelected()) {
+                            JSONObject params = new JSONObject();
+                            params.put("shopCarId", shopCartBean.getId());
+                            params.put("goodsId", shopCartBean.getGoodsId());
+                            params.put("goodsNumber", shopCartBean.getGoodsNumber());
+                            jsonArray.put(params);
+                        }
+                    }
+                    if (jsonArray.length() <= 0) {
+                        ToastUtils.showShort("请选择商品");
+                        return;
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("token", userBean.getToken());
+                    jsonObject.put("parameter", jsonArray);
+                    ARouter.getInstance().build(Constant.AFFIRM_ORDER_ROUTER)
+                            .withString("json", jsonObject.toString()).navigation();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case R.id.btn_delete:
                 selectedList.clear();
@@ -227,7 +280,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
                     }
                 }
                 String id = ids.substring(0, ids.length());
-                presenter.deleteShopCart(id,userBean.getToken());
+                presenter.deleteShopCart(id, userBean.getToken());
                 break;
         }
     }

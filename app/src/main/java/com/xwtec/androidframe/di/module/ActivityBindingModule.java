@@ -5,7 +5,9 @@ import com.xwtec.androidframe.di.scope.ActivityScope;
 import com.xwtec.androidframe.di.scope.FragmentScope;
 import com.xwtec.androidframe.ui.address.AddressListActivity;
 import com.xwtec.androidframe.ui.address.CreateAddressActivity;
+import com.xwtec.androidframe.ui.affirmOrder.AffirmOrderActivity;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
+import com.xwtec.androidframe.ui.classify.ClassifyListActivity;
 import com.xwtec.androidframe.ui.forgetPassword.ForgetPasswordActivity;
 import com.xwtec.androidframe.ui.goodDetail.GoodDetailActivity;
 import com.xwtec.androidframe.ui.helpAndFeedback.ContactServiceActivity;
@@ -16,6 +18,7 @@ import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
 import com.xwtec.androidframe.ui.myOrders.MyOrderActivity;
+import com.xwtec.androidframe.ui.pay.PayActivity;
 import com.xwtec.androidframe.ui.personalInfo.PersonalInfoActivity;
 import com.xwtec.androidframe.ui.register.RegisterActivity;
 import com.xwtec.androidframe.ui.setting.SettingActivity;
@@ -36,27 +39,27 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivityBindingModule {
     @ActivityScope
-    @ContributesAndroidInjector(modules = {MainModule.class})
+    @ContributesAndroidInjector
     abstract MainActivity mainActivity();
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = {SplashModule.class})
+    @ContributesAndroidInjector
     abstract SplashActivity splashActivity();
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = {HomeModule.class})
+    @ContributesAndroidInjector
     abstract HomeFragment homeFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = {ClassifyModule.class})
+    @ContributesAndroidInjector
     abstract ClassifyFragment classifyFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = {ShopCartModule.class})
+    @ContributesAndroidInjector
     abstract ShopCartFragment shopCartFragment();
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = {MineModule.class})
+    @ContributesAndroidInjector
     abstract MineFragment mineFragment();
 
     @ActivityScope
@@ -110,4 +113,16 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract MyOrderActivity myOrderActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract ClassifyListActivity classifyListActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract AffirmOrderActivity affirmOrderActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract PayActivity payActivity();
 }

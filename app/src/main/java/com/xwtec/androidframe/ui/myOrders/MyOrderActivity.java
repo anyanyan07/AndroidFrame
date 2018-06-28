@@ -3,6 +3,7 @@ package com.xwtec.androidframe.ui.myOrders;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CacheUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.xwtec.androidframe.R;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+@Route(path = Constant.MY_ORDER_ROUTER)
 public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implements MyOrderContact.MyOrderView {
 
     @BindView(R.id.refresh_layout)

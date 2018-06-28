@@ -42,9 +42,11 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     public void onResume() {
         super.onResume();
         userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-        ImageLoadUtil.loadCircleImage(context, userBean.getImgHead(), ivUserHeader);
-        if (TextUtils.isEmpty(userBean.getNickName())) {
-            tvUsername.setText(userBean.getNickName());
+        if (userBean != null) {
+            ImageLoadUtil.loadCircleImage(context, userBean.getImgHead(), ivUserHeader);
+            if (TextUtils.isEmpty(userBean.getNickName())) {
+                tvUsername.setText(userBean.getNickName());
+            }
         }
     }
 

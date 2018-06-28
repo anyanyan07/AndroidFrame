@@ -1,5 +1,6 @@
 package com.xwtec.androidframe.ui.address;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -62,10 +63,29 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
     private String cityName;
     private String districtName;
 
+    //类型：新增，修改
+    private String type;
+    private static final String ADD_TYPE = "ADD";
+    private static final String EDIT_TYPE = "EDIT";
+    private int id;
+
+
     @Override
     protected void init() {
         super.init();
-        tvTitle.setText("新增收货地址");
+        Intent intent = getIntent();
+        Address address = (Address) intent.getSerializableExtra("address");
+        if (address == null) {
+            type = ADD_TYPE;
+            tvTitle.setText("新增收货地址");
+        } else {
+            type = EDIT_TYPE;
+            etConsignee.setText(address.getReceiver());
+            etPhoneNum.setText(address.getPhone());
+            tvAddress.setText(address.getReceiveArea());
+            etDetailAdd.setText(address.getDetailsAddress());
+            id = address.getId();
+        }
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText(R.string.finish);
     }
@@ -134,7 +154,12 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
             jsonObject.put("phone", phoneNum);
             jsonObject.put("isDefault", rlSetDefault.isSelected() ? 1 : 0);
             jsonObject.put("token", ((UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY)).getToken());
-            presenter.createAdd(RequestBody.create(MediaType.parse("application/json"), jsonObject.toString()));
+            if (ADD_TYPE.equals(type)) {
+                presenter.createAdd(RequestBody.create(MediaType.parse("application/json"), jsonObject.toString()));
+            } else {
+                jsonObject.put("id", id);
+                presenter.updateAddress(RequestBody.create(MediaType.parse("application/json"), jsonObject.toString()));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -142,6 +167,12 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
 
     @Override
     public void createSuccess(String msg) {
+        ToastUtils.showShort(msg);
+        finish();
+    }
+
+    @Override
+    public void updateSuccess(String msg) {
         ToastUtils.showShort(msg);
         finish();
     }
@@ -208,13 +239,13 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
                 @Override
                 public void onClick(View v) {
                     tvAddress.setText(procinceName + cityName + districtName);
-                    PopUtil.popDismiss(CreateAddressActivity.this,cityPop);
+                    PopUtil.popDismiss(CreateAddressActivity.this, cityPop);
                 }
             });
             buttonCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PopUtil.popDismiss(CreateAddressActivity.this,cityPop);
+                    PopUtil.popDismiss(CreateAddressActivity.this, cityPop);
                 }
             });
             provincePicker.setData(mProvinceData);

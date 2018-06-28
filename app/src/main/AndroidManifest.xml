@@ -70,7 +70,10 @@
         <activity android:name=".ui.updatePassword.UpdatePasswordActivity" />
         <activity android:name=".ui.address.AddressListActivity" />
         <activity android:name=".ui.address.CreateAddressActivity" />
-        <activity android:name=".ui.myOrders.MyOrderActivity"></activity>
+        <activity android:name=".ui.myOrders.MyOrderActivity" />
+        <activity android:name=".ui.classify.ClassifyListActivity" />
+        <activity android:name=".ui.affirmOrder.AffirmOrderActivity" />
+        <activity android:name=".ui.pay.PayActivity"></activity>
     </application>
 
 </manifest>

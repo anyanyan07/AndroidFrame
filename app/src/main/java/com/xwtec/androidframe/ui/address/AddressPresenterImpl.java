@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.RequestBody;
+
 
 /**
  * Created by ayy on 2018/6/23.
@@ -67,4 +69,23 @@ public class AddressPresenterImpl extends BasePresenter<AddressContact.AddressVi
                     }
                 });
     }
+
+    @Override
+    public void updateAddress(RequestBody body) {
+        netResourceRepo.updateAddress(body)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            view.updateSuccess(baseResponse.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
 }

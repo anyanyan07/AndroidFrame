@@ -12,9 +12,13 @@ import okhttp3.RequestBody;
 public interface CreateAddContact {
     interface CreateAddView extends BaseView {
         void createSuccess(String msg);
+
+        void updateSuccess(String msg);
     }
 
     interface CreateAddPresenter {
         void createAdd(RequestBody body);
+
+        void updateAddress(RequestBody body);
     }
 }

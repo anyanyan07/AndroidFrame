@@ -49,14 +49,14 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
     }
 
     @Override
-    public void updateShopCart(final HashMap<String, Object> map, final ShopCartBean shopCartBean, final int position) {
+    public void updateShopCart(final HashMap<String, Object> map, final ShopCartBean shopCartBean, final int position, final boolean isAdd) {
         mNetResourceRepo.updateShopCart(map)
                 .subscribe(new ResponseObserver<BaseResponse>(this) {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         if (view != null) {
                             if (baseResponse.getCode() == 0) {
-                                view.updateShopCartSuccess(shopCartBean, (Integer) map.get("goodsNumber"), position);
+                                view.updateShopCartSuccess(shopCartBean, (Integer) map.get("goodsNumber"), position,isAdd);
                             } else {
                                 view.showLoadFail(baseResponse.getMsg());
                             }

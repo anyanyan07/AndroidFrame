@@ -2,6 +2,8 @@ package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.ui.address.Address;
+import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
+import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
@@ -145,4 +147,14 @@ public interface NetResourceRepo {
      * 我的订单列表
      */
     Observable<BaseResponse<List<Order>>> fetchOrders(HashMap<String, Object> map);
+
+    /**
+     * 确认订单
+     */
+    Observable<BaseResponse<AffirmResponse>> affirmOrder(RequestBody body);
+
+    /**
+     * 提交订单
+     */
+    Observable<BaseResponse<SubmitOrderBean>> submitOrder(RequestBody body);
 }

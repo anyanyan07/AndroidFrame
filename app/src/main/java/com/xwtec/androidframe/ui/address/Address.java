@@ -1,11 +1,13 @@
 package com.xwtec.androidframe.ui.address;
 
+import java.io.Serializable;
+
 /**
  * Created by ayy on 2018/6/23.
  * Describe:xxx
  */
 
-public class Address {
+public class Address implements Serializable{
 
 
     /**

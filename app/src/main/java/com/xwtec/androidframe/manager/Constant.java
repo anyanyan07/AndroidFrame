@@ -25,6 +25,9 @@ public class Constant {
     public static final String MINE_FRAG = "/fragment/mine";
     public static final String GOODS_DETAIL_ROUTER = "/activity/goodDetail";
     public static final String MY_ORDER_ROUTER = "/activity/myOrder";
+    public static final String CLASSIFY_LIST_ROUTER = "/activity/classifyList";
+    public static final String AFFIRM_ORDER_ROUTER = "/activity/affirmOrder";
+    public static final String PAY_ROUTER = "/activity/pay";
     //********页面路由路径管理**********
     public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
     public static final int PER_PAGE_NUM = 20;//分页加载时每页数量

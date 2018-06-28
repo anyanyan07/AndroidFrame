@@ -39,4 +39,22 @@ public class CreateAddPresenterImpl extends BasePresenter<CreateAddContact.Creat
                     }
                 });
     }
+
+    @Override
+    public void updateAddress(RequestBody body) {
+        netResourceRepo.updateAddress(body)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            view.updateSuccess(baseResponse.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
 }

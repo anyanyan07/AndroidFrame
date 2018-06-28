@@ -40,7 +40,7 @@
     <string name="passwordOrVerifyCodeHint">密码/验证码</string>
     <string name="forgetPassword">忘记密码</string>
     <string name="selectAll">全选</string>
-    <string name="totalMoney">合计金额</string>
+    <string name="totalMoney">合计金额：</string>
     <string name="goToPay">去结算</string>
     <string name="delete">删除</string>
     <string name="edit">编辑</string>
@@ -94,4 +94,13 @@
     <string name="photo">拍照</string>
     <string name="payNow">立即付款</string>
     <string name="cancelOrder">取消订单</string>
+    <string name="submitOrder">提交订单</string>
+    <string name="receiverInfo">收货人信息</string>
+    <string name="addReceiver">添加收货人信息</string>
+    <string name="subtotal">小计：</string>
+    <string name="affirmOrder">确认订单</string>
+    <string name="payMoney">支付金额</string>
+    <string name="zhifubao">支付宝</string>
+    <string name="weixin">微信</string>
+    <string name="pay">支付</string>
 </resources>
