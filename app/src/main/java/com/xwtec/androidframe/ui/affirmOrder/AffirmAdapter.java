@@ -21,7 +21,7 @@ public class AffirmAdapter extends MultipleItemRvAdapter<MultiEntity, BaseViewHo
 
     private AddressProvider addressProvider;
 
-    public AffirmAdapter(@Nullable List<MultiEntity> data, AffirmOrderActivity affirmOrderActivity) {
+    AffirmAdapter(@Nullable List<MultiEntity> data, AffirmOrderActivity affirmOrderActivity) {
         super(data);
         addressProvider = new AddressProvider(affirmOrderActivity);
         finishInitialize();

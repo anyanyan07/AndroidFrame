@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.ui.mine;
 
 
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.RxBus.RxBus;
 import com.xwtec.androidframe.util.RxBus.RxBusMSG;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -38,6 +41,8 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     TextView tvUsername;
     private UserBean userBean;
 
+    private String filePath = "";
+
     @Override
     public void onResume() {
         super.onResume();
@@ -58,6 +63,12 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     protected void init() {
         ivLeft.setVisibility(View.GONE);
         tvTitle.setText("我的");
+        if (TextUtils.isEmpty(filePath)) {
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            }
+        }
+        refreshUserInfo();
         initRxBus();
     }
 
@@ -67,13 +78,25 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
             public void accept(RxBusMSG rxBusMSG) throws Exception {
                 switch (rxBusMSG.getCode()) {
                     case Constant.RX_LOGIN_SUCCESS:
-                        userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-                        ImageLoadUtil.loadCenterCrop(context, userBean.getImgHead(), ivUserHeader);
-                        tvUsername.setText(userBean.getNickName());
+                    case Constant.RX_USER_INFO:
+                        refreshUserInfo();
                         break;
                 }
             }
         });
+    }
+
+    private void refreshUserInfo() {
+        userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+        if (!TextUtils.isEmpty(userBean.getImgHead())) {
+            ImageLoadUtil.loadCenterCrop(context, userBean.getImgHead(), ivUserHeader);
+        } else {
+            File file = new File(filePath + "/crop/" + userBean.getUserId() + ".jpg");
+            if (file.exists()) {
+                ImageLoadUtil.loadCircleImageFromFile(context, file, ivUserHeader);
+            }
+        }
+        tvUsername.setText(userBean.getNickName());
     }
 
     @Override
@@ -92,8 +115,11 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
             case R.id.tv_username:
                 ARouter.getInstance().build(Constant.PERSONAL_ROUTER).navigation();
                 break;
+            //全部订单
             case R.id.iv_look_more_order:
             case R.id.tv_look_more:
+                ARouter.getInstance().build(Constant.MY_ORDER_ROUTER)
+                        .withInt(Constant.ORDER_STATUS, -1).navigation();
                 break;
             //待付款
             case R.id.ll_obligation:

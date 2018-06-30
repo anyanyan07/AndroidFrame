@@ -16,6 +16,8 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 import com.xwtec.androidframe.util.SpacesItemDecoration;
 
 import org.json.JSONException;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -57,9 +60,24 @@ public class AddressListActivity extends BaseActivity<AddressPresenterImpl> impl
         } else {
             tvTitle.setText(R.string.managerAddress);
         }
+        initRxBus();
         initRv();
         UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
         presenter.queryAddress(userBean.getToken());
+    }
+
+    private void initRxBus() {
+        RxBus.getInstance().register(RxBusMSG.class, new Consumer<RxBusMSG>() {
+            @Override
+            public void accept(RxBusMSG rxBusMSG) throws Exception {
+                switch (rxBusMSG.getCode()) {
+                    case Constant.RX_ADDRESS_REFRESH:
+                        UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+                        presenter.queryAddress(userBean.getToken());
+                        break;
+                }
+            }
+        });
     }
 
     private void initRv() {
@@ -125,6 +143,7 @@ public class AddressListActivity extends BaseActivity<AddressPresenterImpl> impl
     private void updateAddress(Address address) {
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("id", address.getId());
             jsonObject.put("receiver", address.getReceiver());
             jsonObject.put("receiveArea", address.getReceiveArea());
             jsonObject.put("detailsAddress", address.getDetailsAddress());

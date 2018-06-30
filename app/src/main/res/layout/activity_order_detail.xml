@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_f5f3f3"
+    android:orientation="vertical"
+    tools:context="com.xwtec.androidframe.ui.orderDetail.OrderDetailActivity">
+
+    <include layout="@layout/title_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp">
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="@string/waitPay"
+                    android:textColor="@color/c_333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="1"
+                    android:textColor="@color/c_999999"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:text="48小时后关闭" />
+
+            </LinearLayout>
+
+            <include layout="@layout/order_detail_common" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical|end"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp">
+
+        <TextView
+            android:id="@+id/tv_sure_receive"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/login_btn_bg"
+            android:gravity="center"
+            android:text="@string/sureReceive"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/red_btn_bg"
+            android:gravity="center"
+            android:text="@string/deleteOrder"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/red_btn_bg"
+            android:gravity="center"
+            android:text="@string/cancelOrder"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_pay"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
+            android:background="@drawable/register_btn_bg"
+            android:gravity="center"
+            android:text="@string/pay"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</LinearLayout>

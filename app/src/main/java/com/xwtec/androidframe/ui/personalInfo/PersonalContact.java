@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.ui.personalInfo;
 
 import com.xwtec.androidframe.base.BaseView;
+import com.xwtec.androidframe.ui.login.UserBean;
 
 import java.util.HashMap;
 
@@ -17,11 +18,15 @@ public interface PersonalContact {
         void updateSuccess(String msg);
 
         void uploadHeaderSuccess();
+
+        void fetchUserInfoSuccess(UserBean userBean);
     }
 
     interface PersonalPresenter {
         void updatePersonalInfo(RequestBody requestBody);
 
         void uploadHeader(HashMap<String, Object> map, MultipartBody.Part file);
+
+        void fetchUserInfo(String token);
     }
 }

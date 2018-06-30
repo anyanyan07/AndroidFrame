@@ -17,33 +17,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/c_f5f3f3" />
-
         <LinearLayout
-            android:id="@+id/ll_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/gouwuc_empty" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/c_f5f3f3" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/shop_cart_empty"
-                android:textColor="@color/c_666666"
-                android:textSize="12sp" />
+            <LinearLayout
+                android:id="@+id/ll_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/gouwuc_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/shop_cart_empty"
+                    android:textColor="@color/c_666666"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 

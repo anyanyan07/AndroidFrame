@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c_f5f3f3"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@mipmap/dizhi" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_receiver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/c_333333"
+                    android:textSize="14sp"
+                    tools:text="xxx" />
+
+                <TextView
+                    android:id="@+id/tv_phone_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_999999"
+                    android:textSize="14sp"
+                    tools:text="784274873" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="8dp"
+                android:text="sfjsfhdjfhd"
+                android:textColor="@color/c_666666"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_detail_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sfjsfhdjfhd"
+                android:textColor="@color/c_999999"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp">
+
+        <ImageView
+            android:id="@+id/iv_good"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            tools:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_good_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/c_333333"
+                    android:textSize="14sp"
+                    tools:text="后视镜多喝水就" />
+            </LinearLayout>
+
+
+            <com.xwtec.androidframe.customView.PriceView
+                android:id="@+id/good_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tv_good_unit_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/c_2eb167"
+                android:textSize="13sp"
+                tools:text="x1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/c_eaeaea" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/freight"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_freight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_333333"
+            android:textSize="13sp"
+            tools:text="￥10.00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="16dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/shouldPay"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp" />
+
+        <com.xwtec.androidframe.customView.PriceView
+            android:id="@+id/tv_total_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_333333"
+            android:textSize="13sp"
+            tools:text="￥10.00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/orderNum"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_order_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_333333"
+            android:textSize="13sp"
+            tools:text="72843775457486758765878968796" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="16dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/createTime"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/c_999999"
+            android:textSize="12sp"
+            tools:text="8273874834378473847" />
+    </LinearLayout>
+</LinearLayout>

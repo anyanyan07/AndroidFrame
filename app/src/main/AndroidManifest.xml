@@ -73,7 +73,9 @@
         <activity android:name=".ui.myOrders.MyOrderActivity" />
         <activity android:name=".ui.classify.ClassifyListActivity" />
         <activity android:name=".ui.affirmOrder.AffirmOrderActivity" />
-        <activity android:name=".ui.pay.PayActivity"></activity>
+        <activity android:name=".ui.pay.PayActivity" />
+        <activity android:name=".ui.orderDetail.OrderDetailActivity" />
+        <activity android:name=".ui.refundDetail.RefundActivity"></activity>
     </application>
 
 </manifest>

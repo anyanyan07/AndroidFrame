@@ -9,15 +9,16 @@ public class Order {
 
     /**
      * goodsId : 1
-     * orderId : 8
-     * status : 3
+     * orderId : 30
+     * status : 2
      * title : 正宗地道  东北坚果
      * introduction : 185gx2袋
-     * orderNumber : 62568964512808960
+     * orderNumber : 64688249817268224
      * unitPrice : 36.90
-     * goodsNumber : 2
-     * totalPrice : 73.80
-     * expressPrice : 0.00
+     * goodsNumber : 1
+     * totalPrice : 48.90
+     * expressPrice : 12.00
+     * imgUrl : https://ne-farm.oss-cn-beijing.aliyuncs.com/farm_img/IMG_20140530_081246.jpg
      */
 
     private int goodsId;
@@ -30,6 +31,7 @@ public class Order {
     private int goodsNumber;
     private String totalPrice;
     private String expressPrice;
+    private String imgUrl;
 
     public int getGoodsId() {
         return goodsId;
@@ -109,5 +111,13 @@ public class Order {
 
     public void setExpressPrice(String expressPrice) {
         this.expressPrice = expressPrice;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

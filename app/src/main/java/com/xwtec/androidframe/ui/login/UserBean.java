@@ -7,10 +7,11 @@ import java.io.Serializable;
  * Describe:用户基本信息
  */
 
-public class UserBean implements Serializable{
+public class UserBean implements Serializable {
 
 
     /**
+     * userId:45
      * token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MzAzNzUzNTMsInVzZXJJZCI6IjQ1IiwiaXNzIjoiU2VydmljZSIsImF1ZCI6IkFQUCIsImlhdCI6MTUyOTUxMTM1M30.UH8K3VqYi1jo49PNrMcM6iTwskErQpIlcpHi-ZVdTeE
      * imgHead : https://ne-farm.oss-cn-beijing.aliyuncs.com/farm_img/head_img_81d86e273b7d4459b20eb15423f9c7f93page_03.jpg
      * nickName : null
@@ -18,11 +19,20 @@ public class UserBean implements Serializable{
      * birth : null
      */
 
+    private int userId;
     private String token;
     private String imgHead;
     private String nickName;
     private String sex;
     private String birth;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public String getToken() {
         return token;

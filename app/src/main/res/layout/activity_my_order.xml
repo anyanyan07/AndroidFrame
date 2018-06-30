@@ -2,12 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c_f5f3f3"
     android:orientation="vertical"
     tools:context="com.xwtec.androidframe.ui.myOrders.MyOrderActivity">
 
     <include layout="@layout/title_layout" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tab_rv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
@@ -19,4 +26,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 </LinearLayout>

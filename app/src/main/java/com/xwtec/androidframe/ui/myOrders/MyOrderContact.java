@@ -14,9 +14,21 @@ import java.util.List;
 public interface MyOrderContact {
     interface MyOrderView extends BaseView {
         void fetchOrdersSuccess(List<Order> orders);
+
+        void deleteSuccess(int position);
+
+        void cancelSuccess(int position);
+
+        void sureReceiveSuccess(int position);
     }
 
     interface MyOrderPresenter {
         void fetchOrders(HashMap<String, Object> map);
+
+        void deleteOrder(String orderIds, String token, int position);
+
+        void cancelOrder(long orderId, String token, int position);
+
+        void sureReceive(String orderId, String token,int position);
     }
 }

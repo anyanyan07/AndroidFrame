@@ -9,6 +9,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.xwtec.androidframe.util.glide.GlideCircleTransform;
 
+import java.io.File;
+
 /**
  * Created by ayy on 2018/6/13.
  * Describe:加载图片工具类
@@ -42,5 +44,15 @@ public class ImageLoadUtil {
         GlideCircleTransform glideCircleTransform = new GlideCircleTransform(context);
         requestOptions = requestOptions.transform(glideCircleTransform);
         Glide.with(context).load(url).apply(requestOptions).into(imageView);
+    }
+
+    public static void loadCircleImageFromFile(Context context, File file, ImageView imageView) {
+        if (!file.exists()) {
+            return;
+        }
+        RequestOptions requestOptions = new RequestOptions();
+        GlideCircleTransform glideCircleTransform = new GlideCircleTransform(context);
+        requestOptions = requestOptions.transform(glideCircleTransform);
+        Glide.with(context).load(file).apply(requestOptions).into(imageView);
     }
 }

@@ -220,6 +220,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     public void deleteFromShopCartSuccess() {
         shopCartBeanList.removeAll(selectedList);
         adapter.notifyDataSetChanged();
+        dataNotify();
     }
 
     @OnClick({R.id.tv_right, R.id.ll_select_all, R.id.btn_pay, R.id.ll_select_all_del, R.id.btn_delete})
@@ -321,5 +322,13 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         startIndex = 0;
         fetchShopCartData(startIndex);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            fetchShopCartData(0);
+        }
     }
 }

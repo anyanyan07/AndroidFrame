@@ -20,6 +20,8 @@ import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.PopUtil;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,12 +170,14 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
     @Override
     public void createSuccess(String msg) {
         ToastUtils.showShort(msg);
+        RxBus.getInstance().post(new RxBusMSG(Constant.RX_ADDRESS_REFRESH,null));
         finish();
     }
 
     @Override
     public void updateSuccess(String msg) {
         ToastUtils.showShort(msg);
+        RxBus.getInstance().post(new RxBusMSG(Constant.RX_ADDRESS_REFRESH,null));
         finish();
     }
 

@@ -18,8 +18,10 @@ import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
 import com.xwtec.androidframe.ui.myOrders.MyOrderActivity;
+import com.xwtec.androidframe.ui.orderDetail.OrderDetailActivity;
 import com.xwtec.androidframe.ui.pay.PayActivity;
 import com.xwtec.androidframe.ui.personalInfo.PersonalInfoActivity;
+import com.xwtec.androidframe.ui.refundDetail.RefundActivity;
 import com.xwtec.androidframe.ui.register.RegisterActivity;
 import com.xwtec.androidframe.ui.setting.SettingActivity;
 import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
@@ -125,4 +127,12 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract PayActivity payActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract OrderDetailActivity orderDetailActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract RefundActivity refundActivity();
 }

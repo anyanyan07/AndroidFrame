@@ -4,6 +4,7 @@ import com.xwtec.androidframe.base.BasePresenter;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
+import com.xwtec.androidframe.ui.login.UserBean;
 
 import java.util.HashMap;
 
@@ -45,14 +46,36 @@ public class PersonalPresenterImpl extends BasePresenter<PersonalContact.Persona
 
     @Override
     public void uploadHeader(HashMap<String, Object> map, MultipartBody.Part file) {
-        netResourceRepo.uploadHeader(map,file)
+        netResourceRepo.uploadHeader(map, file)
                 .subscribe(new ResponseObserver<BaseResponse>(this) {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         if (view != null) {
-                            if (baseResponse.isSuccess()){
+                            if (baseResponse.isSuccess()) {
                                 view.uploadHeaderSuccess();
-                            }else{
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void fetchUserInfo(String token) {
+        netResourceRepo.fetchUserInfo(token)
+                .subscribe(new ResponseObserver<BaseResponse<UserBean>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<UserBean> baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.fetchUserInfoSuccess(baseResponse.getContent());
+                            } else {
                                 view.showLoadFail(baseResponse.getMsg());
                             }
                         }

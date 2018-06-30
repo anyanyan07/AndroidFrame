@@ -12,6 +12,11 @@ import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.myOrders.bean.Order;
+import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -347,6 +352,127 @@ public class NetResourceRepoSupport implements NetResourceRepo {
                 .compose(new ObservableTransformer<BaseResponse<SubmitOrderBean>, BaseResponse<SubmitOrderBean>>() {
                     @Override
                     public ObservableSource<BaseResponse<SubmitOrderBean>> apply(Observable<BaseResponse<SubmitOrderBean>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<WaitPayInfo>> fetchWaitPayInfo(long orderId, String token) {
+        return service.fetchWaitPayInfo(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse<WaitPayInfo>, BaseResponse<WaitPayInfo>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<WaitPayInfo>> apply(Observable<BaseResponse<WaitPayInfo>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> cancelOrder(long orderId, String token) {
+        return service.cancelOrder(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<FinishedInfo>> fetchFinishedInfo(long orderId, String token) {
+        return service.fetchFinishedInfo(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse<FinishedInfo>, BaseResponse<FinishedInfo>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<FinishedInfo>> apply(Observable<BaseResponse<FinishedInfo>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+
+    @Override
+    public Observable<BaseResponse> deleteOrder(String orderIds, String token) {
+        return service.deleteOrder(orderIds, token)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<CanceledInfo>> fetchCanceledInfo(long orderId, String token) {
+        return service.fetchCanceledInfo(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse<CanceledInfo>, BaseResponse<CanceledInfo>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<CanceledInfo>> apply(Observable<BaseResponse<CanceledInfo>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<SendedInfo>> fetchSendedInfo(long orderId, String token) {
+        return service.fetchSendedInfo(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse<SendedInfo>, BaseResponse<SendedInfo>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<SendedInfo>> apply(Observable<BaseResponse<SendedInfo>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> sureReceive(String orderId, String token) {
+        return service.sureReceive(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<RefundingInfo>> fetchRefundingInfo(long orderId, String token) {
+        return service.fetchRefundingInfo(orderId, token)
+                .compose(new ObservableTransformer<BaseResponse<RefundingInfo>, BaseResponse<RefundingInfo>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<RefundingInfo>> apply(Observable<BaseResponse<RefundingInfo>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<UserBean>> fetchUserInfo(String token) {
+        return service.fetchUserInfo(token)
+                .compose(new ObservableTransformer<BaseResponse<UserBean>, BaseResponse<UserBean>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<UserBean>> apply(Observable<BaseResponse<UserBean>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> salesReturn(HashMap<String, Object> map) {
+        return service.salesReturn(map)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

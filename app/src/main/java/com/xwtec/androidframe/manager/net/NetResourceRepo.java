@@ -12,6 +12,11 @@ import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.myOrders.bean.Order;
+import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -157,4 +162,54 @@ public interface NetResourceRepo {
      * 提交订单
      */
     Observable<BaseResponse<SubmitOrderBean>> submitOrder(RequestBody body);
+
+    /**
+     * 待支付订单详情
+     */
+    Observable<BaseResponse<WaitPayInfo>> fetchWaitPayInfo(long orderId, String token);
+
+    /**
+     * 取消订单
+     */
+    Observable<BaseResponse> cancelOrder(long orderId, String token);
+
+    /**
+     * 删除订单
+     */
+    Observable<BaseResponse> deleteOrder(String orderIds, String token);
+
+    /**
+     * 确认收货
+     */
+    Observable<BaseResponse> sureReceive(String orderId, String token);
+
+    /**
+     * 已完成订单详情
+     */
+    Observable<BaseResponse<FinishedInfo>> fetchFinishedInfo(long orderId, String token);
+
+    /**
+     * 已取消订单详情
+     */
+    Observable<BaseResponse<CanceledInfo>> fetchCanceledInfo(long orderId, String token);
+
+    /**
+     * 已发货订单详情
+     */
+    Observable<BaseResponse<SendedInfo>> fetchSendedInfo(long orderId, String token);
+
+    /**
+     * 退款中详情
+     */
+    Observable<BaseResponse<RefundingInfo>> fetchRefundingInfo(long orderId, String token);
+
+    /**
+     * 获取个人信息
+     */
+    Observable<BaseResponse<UserBean>> fetchUserInfo(String token);
+
+    /**
+     * 退货
+     */
+    Observable<BaseResponse> salesReturn(HashMap<String, Object> map);
 }

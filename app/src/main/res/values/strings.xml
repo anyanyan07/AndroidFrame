@@ -103,4 +103,26 @@
     <string name="zhifubao">支付宝</string>
     <string name="weixin">微信</string>
     <string name="pay">支付</string>
+    <string name="dataEmpty">空空如也</string>
+    <string name="deleteOrder">删除订单</string>
+    <string name="sureOrder">确认订单</string>
+    <string name="salesReturn">退货</string>
+    <string name="moneyReturn">退款</string>
+    <string name="sureReceive">确认收货</string>
+    <string name="waitPay">等待付款</string>
+    <string name="freight">运费</string>
+    <string name="shouldPay">应付金额(含运费)</string>
+    <string name="orderNum">订单编号：</string>
+    <string name="createTime">创建时间：</string>
+    <string name="orderDetail">订单详情</string>
+    <string name="refundClosed">退款关闭</string>
+    <string name="refundHint">您已成功发起退款申请，请耐心等待处理</string>
+    <string name="repealRefund">撤销申请</string>
+    <string name="updateApply">修改申请</string>
+    <string name="refunfHintSub">审核成功后将会退款给您</string>
+    <string name="hadRepealHint">您已撤销此退款申请</string>
+    <string name="refundInfo">退款信息</string>
+    <string name="refundMoney">退款金额：</string>
+    <string name="refundTime">退款时间：</string>
+    <string name="refundDetail">退款详情</string>
 </resources>

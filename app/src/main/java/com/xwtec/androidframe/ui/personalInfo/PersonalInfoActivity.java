@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.PopUtil;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +68,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     ImageView ivHeader;
 
     private UserBean userBean;
-    private String userId = "app";
+    private int userId = -1;
     private String filePath;
     private static final int CAMERA_REQUEST_CODE = 0;//调用系统相机请求码
     private static final int ALBUM_REQUEST_CODE = 1;//调用相册请求码
@@ -80,11 +83,17 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     protected void init() {
         super.init();
         tvTitle.setText(R.string.personalInfo);
+        refreshUserInfo();
+        presenter.fetchUserInfo(userBean.getToken());
+    }
+
+    private void refreshUserInfo() {
         userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
         if (userBean == null) {
-            ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
+            ToastUtils.showShort("出错了");
             return;
         }
+        userId = userBean.getUserId();
         String nickName = userBean.getNickName();
         String sex = userBean.getSex();
         String birthday = userBean.getBirth();
@@ -96,12 +105,21 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
             tvSex.setText("0".equals(sex) ? "女" : "男");
         }
         if (!TextUtils.isEmpty(birthday)) {
-            tvBirthday.setText(birthday);
+            tvBirthday.setText(DateFormat.format("yyyy-MM-dd", Long.parseLong(birthday)));
         }
         if (!TextUtils.isEmpty(imgHead)) {
             ImageLoadUtil.loadCenterCrop(this, imgHead, ivHeader);
+        } else {
+            if (TextUtils.isEmpty(filePath)) {
+                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                }
+            }
+            File file = new File(filePath + "/crop/" + userBean.getUserId() + ".jpg");
+            if (file.exists()) {
+                ImageLoadUtil.loadCircleImageFromFile(this, file, ivHeader);
+            }
         }
-
     }
 
     @OnClick({R.id.iv_left, R.id.ll_header, R.id.ll_nick_name, R.id.ll_sex, R.id.ll_birthday, R.id.ll_update_password, R.id.ll_address})
@@ -298,6 +316,16 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     @Override
     public void uploadHeaderSuccess() {
         ToastUtils.showShort("上传成功");
+        //头像上传成功后，显示头像
+        File file = new File(filePath + "/crop/" + userId + ".jpg");
+        ImageLoadUtil.loadCircleImageFromFile(this, file, ivHeader);
+        RxBus.getInstance().post(new RxBusMSG(Constant.RX_USER_INFO, ""));
+    }
+
+    @Override
+    public void fetchUserInfoSuccess(UserBean userBean) {
+        CacheUtils.getInstance().put(Constant.USER_KEY, userBean);
+        refreshUserInfo();
     }
 
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})

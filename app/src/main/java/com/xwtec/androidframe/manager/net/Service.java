@@ -12,6 +12,11 @@ import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.myOrders.bean.Order;
+import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -205,6 +210,12 @@ public interface Service {
     Observable<BaseResponse> uploadHeader(@PartMap HashMap<String, Object> map, @Part MultipartBody.Part file);
 
     /**
+     * 获取个人信息
+     */
+    @GET("user/getUser")
+    Observable<BaseResponse<UserBean>> fetchUserInfo(@Query("token") String token);
+
+    /**
      * 我的订单列表
      */
     @GET("orders/getOrder")
@@ -221,4 +232,63 @@ public interface Service {
      */
     @POST("orders/saveOrder")
     Observable<BaseResponse<SubmitOrderBean>> submitOrder(@Body RequestBody body);
+
+    /**
+     * 待付款订单详情
+     */
+    @GET("orders/getPendingPaymentOrderDetail")
+    Observable<BaseResponse<WaitPayInfo>> fetchWaitPayInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 取消订单
+     */
+    @FormUrlEncoded
+    @PUT("orders/cancelOrder")
+    Observable<BaseResponse> cancelOrder(@Field("orderId") long orderId, @Field("token") String token);
+
+    /**
+     * 删除订单
+     */
+    @DELETE("orders/deleteOrder")
+    Observable<BaseResponse> deleteOrder(@Query("orderIds") String orderIds, @Query("token") String token);
+
+    /**
+     * 确认收货
+     */
+    @PUT("orders/confirmCollectGoods")
+    Observable<BaseResponse> sureReceive(@Field("orderId") String orderId, @Field("token") String token);
+
+    /**
+     * 获得已完成订单详情
+     */
+    @GET("orders/getCompletedOrderDetail")
+    Observable<BaseResponse<FinishedInfo>> fetchFinishedInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 已取消订单详情
+     */
+    @GET("orders/getCancelledOrderDetail")
+    Observable<BaseResponse<CanceledInfo>> fetchCanceledInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 已发货订单详情
+     *
+     * @param orderId
+     * @param token
+     * @return
+     */
+    @GET("orders/getAlreadyShippedOrderDetail")
+    Observable<BaseResponse<SendedInfo>> fetchSendedInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 退款中
+     */
+    @GET("orders/getRefundingOrderDetail")
+    Observable<BaseResponse<RefundingInfo>> fetchRefundingInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 退货
+     */
+    @PUT("orders/returnGoods")
+    Observable<BaseResponse> salesReturn(@FieldMap HashMap<String, Object> map);
 }

@@ -28,6 +28,8 @@ public class Constant {
     public static final String CLASSIFY_LIST_ROUTER = "/activity/classifyList";
     public static final String AFFIRM_ORDER_ROUTER = "/activity/affirmOrder";
     public static final String PAY_ROUTER = "/activity/pay";
+    public static final String ORDER_DETAIL_ROUTER = "/activity/orderDetail";
+    public static final String REFUND_DETAIL_ROUTER = "/activity/refundDetail";
     //********页面路由路径管理**********
     public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
     public static final int PER_PAGE_NUM = 20;//分页加载时每页数量
@@ -41,6 +43,8 @@ public class Constant {
 
     public static final String RX_LOGIN_SUCCESS = "RX_LOGIN_SUCCESS";//登录成功发送RxBux消息
     public static final String RX_LOGOUT = "RX_LOGOUT";//退出登录发送RxBux消息
+    public static final String RX_USER_INFO = "RX_USER_INFO";//个人信息修改发送RxBux消息
+    public static final String RX_ADDRESS_REFRESH = "RX_ADDRESS_REFRESH";//收货地址改变
 
     public static final String ORDER_STATUS = "ORDER_STATUS";
     /**

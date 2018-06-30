@@ -47,4 +47,70 @@ public class MyOrderPresenterImpl extends BasePresenter<MyOrderContact.MyOrderVi
                     }
                 });
     }
+
+    @Override
+    public void deleteOrder(String orderIds, String token, final int position) {
+        netResourceRepo.deleteOrder(orderIds, token)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.deleteSuccess(position);
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void cancelOrder(long orderId, String token, final int position) {
+        netResourceRepo.cancelOrder(orderId, token)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.cancelSuccess(position);
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void sureReceive(String orderId, String token, final int position) {
+        netResourceRepo.sureReceive(orderId, token)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.sureReceiveSuccess(position);
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
 }
