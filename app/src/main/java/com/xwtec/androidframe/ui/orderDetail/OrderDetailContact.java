@@ -3,8 +3,11 @@ package com.xwtec.androidframe.ui.orderDetail;
 import com.xwtec.androidframe.base.BaseView;
 import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.ReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
 
 /**
  * Created by ayy on 2018/6/29.
@@ -21,6 +24,12 @@ public interface OrderDetailContact {
 
         void fetchSendedSuccess(SendedInfo sendedInfo);
 
+        void fetchReceivedSuccess(ReceivedInfo receivedInfo);
+
+        void fetchWaitSendSuccess(WaitSendInfo waitSendInfo);
+
+        void fetchSureReceivedSuccess(SureReceivedInfo sureReceivedInfo);
+
         void cancelSuccess();
 
         void deleteSuccess();
@@ -36,6 +45,12 @@ public interface OrderDetailContact {
         void fetchCanceledInfo(long orderId, String token);
 
         void fetchSendedInfo(long orderId, String token);
+
+        void fetchReceivedInfo(long orderId, String token);
+
+        void fetchWaitSendInfo(long orderId, String token);
+
+        void fetchSureReceivedInfo(long orderId, String token);
 
         void cancelOrder(long orderId, String token);
 

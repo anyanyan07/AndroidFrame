@@ -67,6 +67,29 @@
         android:paddingStart="12dp">
 
         <TextView
+            android:id="@+id/tv_sale_return"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/red_btn_bg"
+            android:gravity="center"
+            android:text="@string/salesReturn"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_money_return"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/red_btn_bg"
+            android:gravity="center"
+            android:text="@string/moneyReturn"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+        <TextView
             android:id="@+id/tv_sure_receive"
             android:layout_width="85dp"
             android:layout_height="35dp"

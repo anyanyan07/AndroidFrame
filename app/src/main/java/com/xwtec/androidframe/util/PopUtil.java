@@ -6,6 +6,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import com.blankj.utilcode.util.KeyboardUtils;
+
 /**
  * Created by ayy on 2018/6/23.
  * Describe:xxx
@@ -13,6 +15,8 @@ import android.widget.PopupWindow;
 
 public class PopUtil {
     public static void popShowFromBottom(Activity activity, PopupWindow popupWindow) {
+        popupWindow.setOutsideTouchable(false);
+        KeyboardUtils.hideSoftInput(activity);
         Window window = activity.getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         layoutParams.alpha = 0.5f;

@@ -1,4 +1,4 @@
-package com.xwtec.androidframe.ui.address;
+package com.xwtec.androidframe.ui.address.bean;
 
 import java.io.Serializable;
 

@@ -6,7 +6,9 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.util.glide.GlideCircleTransform;
 
 import java.io.File;
@@ -52,7 +54,9 @@ public class ImageLoadUtil {
         }
         RequestOptions requestOptions = new RequestOptions();
         GlideCircleTransform glideCircleTransform = new GlideCircleTransform(context);
-        requestOptions = requestOptions.transform(glideCircleTransform);
+        requestOptions = requestOptions.transform(glideCircleTransform).error(R.mipmap.header_default)
+                .placeholder(R.mipmap.header_default)
+                .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
         Glide.with(context).load(file).apply(requestOptions).into(imageView);
     }
 }

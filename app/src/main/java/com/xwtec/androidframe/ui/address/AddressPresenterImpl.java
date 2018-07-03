@@ -4,6 +4,7 @@ import com.xwtec.androidframe.base.BasePresenter;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
+import com.xwtec.androidframe.ui.address.bean.Address;
 
 import java.util.HashMap;
 import java.util.List;

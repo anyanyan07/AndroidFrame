@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
                 android:layout_marginTop="8dp"
-                android:text="sfjsfhdjfhd"
+                tools:text="sfjsfhdjfhd"
                 android:textColor="@color/c_666666"
                 android:textSize="13sp" />
 
@@ -65,7 +65,7 @@
                 android:id="@+id/tv_detail_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="sfjsfhdjfhd"
+                tools:text="sfjsfhdjfhd"
                 android:textColor="@color/c_999999"
                 android:textSize="12sp" />
 

@@ -14,6 +14,7 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseFragment;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.RxBus.RxBus;
 import com.xwtec.androidframe.util.RxBus.RxBusMSG;
@@ -43,18 +44,6 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
 
     private String filePath = "";
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-        if (userBean != null) {
-            ImageLoadUtil.loadCircleImage(context, userBean.getImgHead(), ivUserHeader);
-            if (TextUtils.isEmpty(userBean.getNickName())) {
-                tvUsername.setText(userBean.getNickName());
-            }
-        }
-    }
-
     @Inject
     public MineFragment() {
     }
@@ -81,6 +70,9 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
                     case Constant.RX_USER_INFO:
                         refreshUserInfo();
                         break;
+                    case Constant.RX_LOGOUT:
+                        ((MainActivity) getActivity()).goBackTab();
+                        break;
                 }
             }
         });
@@ -91,7 +83,7 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
         if (!TextUtils.isEmpty(userBean.getImgHead())) {
             ImageLoadUtil.loadCenterCrop(context, userBean.getImgHead(), ivUserHeader);
         } else {
-            File file = new File(filePath + "/crop/" + userBean.getUserId() + ".jpg");
+            File file = new File(filePath + "/header/" + userBean.getUserId() + ".jpg");
             if (file.exists()) {
                 ImageLoadUtil.loadCircleImageFromFile(context, file, ivUserHeader);
             }

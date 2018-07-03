@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -11,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +23,15 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.CustomListener;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.CacheUtils;
-import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
-import com.xwtec.androidframe.customView.WheelDatePicker;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
@@ -40,7 +43,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -73,6 +77,8 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     private static final int CAMERA_REQUEST_CODE = 0;//调用系统相机请求码
     private static final int ALBUM_REQUEST_CODE = 1;//调用相册请求码
     private static final int CROP_REQUEST_CODE = 2;//裁剪图片的请求码
+    private TimePickerView birthPickerView;
+    private PopupWindow headerPop;
 
     @Override
     protected int getLayoutId() {
@@ -115,7 +121,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
                     filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 }
             }
-            File file = new File(filePath + "/crop/" + userBean.getUserId() + ".jpg");
+            File file = new File(filePath + "/header/" + userBean.getUserId() + ".jpg");
             if (file.exists()) {
                 ImageLoadUtil.loadCircleImageFromFile(this, file, ivHeader);
             }
@@ -168,16 +174,6 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
                 curNickName = nickName;
                 updatePersonalInfo(nickName, null, null);
                 dismissDialog(nickNameDialog);
-                break;
-            case R.id.tv_cancel_birth:
-                PopUtil.popDismiss(this, birthPop);
-                break;
-            case R.id.tv_finish_birth:
-                Date currentDate = datePicker.getCurrentDate();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                curBirthday = simpleDateFormat.format(currentDate);
-                updatePersonalInfo(null, null, curBirthday);
-                PopUtil.popDismiss(this, birthPop);
                 break;
             case R.id.tv_cancel_header:
                 PopUtil.popDismiss(this, headerPop);
@@ -250,26 +246,50 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         nickNameDialog.show();
     }
 
-    private PopupWindow birthPop;
-    private WheelDatePicker datePicker;
-
     private void showBirthPop() {
-        if (birthPop == null) {
-            View contentView = LayoutInflater.from(this).inflate(R.layout.pop_birthday, null);
-            birthPop = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            datePicker = contentView.findViewById(R.id.date_picker);
-            datePicker.setAtmospheric(true);
-            datePicker.setCyclic(true);
-            datePicker.setItemSpace(ConvertUtils.dp2px(30));
-            datePicker.setIndicatorColor(R.color.c_eaeaea);
-            datePicker.setIndicatorSize(2);
-            contentView.findViewById(R.id.tv_cancel_birth).setOnClickListener(this);
-            contentView.findViewById(R.id.tv_finish_birth).setOnClickListener(this);
-        }
-        birthPop.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-    }
+        if (birthPickerView == null) {
+            Calendar selectedDate = Calendar.getInstance();//系统当前时间
+            Calendar startDate = Calendar.getInstance();
+            startDate.set(1900, 0, 01);
+            Calendar endDate = Calendar.getInstance();
+            endDate.set(2200, 11, 31);
+            //时间选择器 ，自定义布局
+            birthPickerView = new TimePickerBuilder(this, new OnTimeSelectListener() {
+                @Override
+                public void onTimeSelect(Date date, View v) {//选中事件回调
+                    curBirthday = DateFormat.format("yyyy-MM-dd", date).toString();
+                    updatePersonalInfo(null, null, curBirthday);
+                }
+            }).setDate(selectedDate)
+                    .setRangDate(startDate, endDate)
+                    .setLayoutRes(R.layout.pickerview_custom_lunar, new CustomListener() {
 
-    private PopupWindow headerPop;
+                        @Override
+                        public void customLayout(final View v) {
+                            final TextView tvSubmit = v.findViewById(R.id.tv_finish);
+                            TextView tvCancel = v.findViewById(R.id.tv_cancel);
+                            tvSubmit.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    birthPickerView.returnData();
+                                    birthPickerView.dismiss();
+                                }
+                            });
+                            tvCancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    birthPickerView.dismiss();
+                                }
+                            });
+                        }
+                    })
+                    .setType(new boolean[]{true, true, true, false, false, false})
+                    .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                    .setDividerColor(Color.RED)
+                    .build();
+        }
+        birthPickerView.show();
+    }
 
     private void showHeaderPop() {
         if (headerPop == null) {
@@ -308,7 +328,13 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         }
         if (!TextUtils.isEmpty(curBirthday)) {
             tvBirthday.setText(curBirthday);
-            userBean.setBirth(curBirthday);
+            Date date = null;
+            try {
+                date = DateFormat.getDateFormat(this).parse(curBirthday);
+                userBean.setBirth(date.getTime() + "");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         CacheUtils.getInstance().put(Constant.USER_KEY, userBean);
     }
@@ -318,7 +344,9 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         ToastUtils.showShort("上传成功");
         //头像上传成功后，显示头像
         File file = new File(filePath + "/crop/" + userId + ".jpg");
-        ImageLoadUtil.loadCircleImageFromFile(this, file, ivHeader);
+        File headerFile = new File(filePath + "/header/" + userId + ".jpg");
+        FileUtils.copyFile(file, headerFile, null);
+        ImageLoadUtil.loadCircleImageFromFile(this, headerFile, ivHeader);
         RxBus.getInstance().post(new RxBusMSG(Constant.RX_USER_INFO, ""));
     }
 

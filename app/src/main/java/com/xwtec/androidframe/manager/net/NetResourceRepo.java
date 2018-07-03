@@ -1,11 +1,12 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
-import com.xwtec.androidframe.ui.address.Address;
+import com.xwtec.androidframe.ui.address.bean.Address;
 import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
 import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.express.Express;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
@@ -14,9 +15,15 @@ import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.myOrders.bean.Order;
 import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.ReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.RefundedInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturnedInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturningInfo;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -211,5 +218,45 @@ public interface NetResourceRepo {
     /**
      * 退货
      */
-    Observable<BaseResponse> salesReturn(HashMap<String, Object> map);
+    Observable<BaseResponse> salesReturn(RequestBody requestBody);
+
+    /**
+     * 已收货详情
+     */
+    Observable<BaseResponse<ReceivedInfo>> fetchReceivedInfo(long orderId, String token);
+
+    /**
+     * 待发货详情
+     */
+    Observable<BaseResponse<WaitSendInfo>> fetchWaitSendInfo(long orderId, String token);
+
+    /**
+     * 物流公司列表
+     */
+    Observable<BaseResponse<List<Express>>> fetchExpressList();
+
+    /**
+     * 退款
+     */
+    Observable<BaseResponse> moneyReturn(HashMap<String, Object> map);
+
+    /**
+     * 已退款详情
+     */
+    Observable<BaseResponse<RefundedInfo>> fetchRefundedInfo(long orderId, String token);
+
+    /**
+     * 已退货详情
+     */
+    Observable<BaseResponse<SalesReturnedInfo>> fetchSaleReturnedInfo(long orderId, String token);
+
+    /**
+     * 退货中详情
+     */
+    Observable<BaseResponse<SalesReturningInfo>> fetchSaleReturningInfo(long orderId, String token);
+
+    /**
+     * 已确认收货详情
+     */
+    Observable<BaseResponse<SureReceivedInfo>> fetchSureReceivedInfo(long orderId, String token);
 }

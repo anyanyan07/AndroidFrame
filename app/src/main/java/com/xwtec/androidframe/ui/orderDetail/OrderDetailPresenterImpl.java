@@ -6,8 +6,11 @@ import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
 import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.ReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
 
 import javax.inject.Inject;
 
@@ -167,6 +170,72 @@ public class OrderDetailPresenterImpl extends BasePresenter<OrderDetailContact.O
                         if (view != null) {
                             if (baseResponse.isSuccess()) {
                                 view.fetchSendedSuccess(baseResponse.getContent());
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void fetchReceivedInfo(long orderId, String token) {
+        netResourceRepo.fetchReceivedInfo(orderId, token)
+                .subscribe(new ResponseObserver<BaseResponse<ReceivedInfo>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<ReceivedInfo> baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.fetchReceivedSuccess(baseResponse.getContent());
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void fetchWaitSendInfo(long orderId, String token) {
+        netResourceRepo.fetchWaitSendInfo(orderId, token)
+                .subscribe(new ResponseObserver<BaseResponse<WaitSendInfo>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<WaitSendInfo> baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.fetchWaitSendSuccess(baseResponse.getContent());
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void fetchSureReceivedInfo(long orderId, String token) {
+        netResourceRepo.fetchSureReceivedInfo(orderId, token)
+                .subscribe(new ResponseObserver<BaseResponse<SureReceivedInfo>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<SureReceivedInfo> baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.fetchSureReceivedSuccess(baseResponse.getContent());
                             } else {
                                 view.showLoadFail(baseResponse.getMsg());
                             }

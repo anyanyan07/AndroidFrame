@@ -1,10 +1,10 @@
 package com.xwtec.androidframe.ui.setting;
 
-import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
@@ -32,7 +32,7 @@ public class SettingActivity extends BaseActivity<SettingPresenterImpl> implemen
         super.init();
         tvTitle.setText(R.string.setting);
         tvCacheSize.setText(CacheUtils.getInstance().getCacheSize() / 1000 / 1024 + "");
-        tvVersion.setText(Build.VERSION.CODENAME);
+        tvVersion.setText(AppUtils.getAppVersionName());
     }
 
     @Override

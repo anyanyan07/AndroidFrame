@@ -1,11 +1,13 @@
 package com.xwtec.androidframe.ui.myOrders.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by ayy on 2018/6/25.
  * Describe:xxx
  */
 
-public class Order {
+public class Order implements Serializable{
 
     /**
      * goodsId : 1

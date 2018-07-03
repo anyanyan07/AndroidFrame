@@ -14,7 +14,7 @@ import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.MultiEntity;
-import com.xwtec.androidframe.ui.address.Address;
+import com.xwtec.androidframe.ui.address.bean.Address;
 import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
 import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 
@@ -142,5 +142,6 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
     public void submitSuccess(SubmitOrderBean submitOrderBean) {
         ARouter.getInstance().build(Constant.PAY_ROUTER)
                 .withString("totalMoney", submitOrderBean.getTotalPrice()).navigation();
+        finish();
     }
 }

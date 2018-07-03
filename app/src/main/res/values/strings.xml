@@ -125,4 +125,10 @@
     <string name="refundMoney">退款金额：</string>
     <string name="refundTime">退款时间：</string>
     <string name="refundDetail">退款详情</string>
+    <string name="expressCompany">物流公司</string>
+    <string name="choseExpress">请选择物流公司</string>
+    <string name="expressNum">物流单号：</string>
+    <string name="expressHint">请输入物流单号</string>
+    <string name="saleReturnCaseHint">请填写退货原因</string>
+    <string name="moneyReturnCase">退款原因</string>
 </resources>

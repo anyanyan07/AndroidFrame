@@ -1,11 +1,12 @@
 package com.xwtec.androidframe.manager.net;
 
 import com.xwtec.androidframe.base.BaseResponse;
-import com.xwtec.androidframe.ui.address.Address;
+import com.xwtec.androidframe.ui.address.bean.Address;
 import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
 import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.express.Express;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
@@ -14,9 +15,15 @@ import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.myOrders.bean.Order;
 import com.xwtec.androidframe.ui.orderDetail.bean.CanceledInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.FinishedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.ReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
+import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.RefundedInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturnedInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturningInfo;
 import com.xwtec.androidframe.ui.register.RegisterResponseBean;
 import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
@@ -255,6 +262,7 @@ public interface Service {
     /**
      * 确认收货
      */
+    @FormUrlEncoded
     @PUT("orders/confirmCollectGoods")
     Observable<BaseResponse> sureReceive(@Field("orderId") String orderId, @Field("token") String token);
 
@@ -281,14 +289,60 @@ public interface Service {
     Observable<BaseResponse<SendedInfo>> fetchSendedInfo(@Query("orderId") long orderId, @Query("token") String token);
 
     /**
-     * 退款中
+     * 已收货订单详情
+     */
+    @GET("orders/getReceivedGoodsOrderDetail")
+    Observable<BaseResponse<ReceivedInfo>> fetchReceivedInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 待发货订单详情
+     */
+    @GET("orders/getPendingDeliveryOrderDetail")
+    Observable<BaseResponse<WaitSendInfo>> fetchWaitSendInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 退款中详情
      */
     @GET("orders/getRefundingOrderDetail")
     Observable<BaseResponse<RefundingInfo>> fetchRefundingInfo(@Query("orderId") long orderId, @Query("token") String token);
 
     /**
+     * 已退款详情
+     */
+    @GET("orders/getRefundedOrderDetail")
+    Observable<BaseResponse<RefundedInfo>> fetchRefundedInfo(@Query("orderId") long orderId, @Query("token") String token);
+
+    /**
+     * 已退货详情
+     */
+    @GET("orders/getReturnedGoodsOrderDetail")
+    Observable<BaseResponse<SalesReturnedInfo>> fetchSaleRefundedInfo(@Query("orderId") long orderId, @Query("token") String token);
+    /**
+     * 退货中详情
+     */
+    @GET("orders/getReturningGoodsOrderDetail")
+    Observable<BaseResponse<SalesReturningInfo>> fetchSaleReturningInfo(@Query("orderId") long orderId, @Query("token") String token);
+    /**
+     * 已确认收货详情
+     */
+    @GET("orders/getConfirmationOrderDetail")
+    Observable<BaseResponse<SureReceivedInfo>> fetchSureReceivedInfo(@Query("orderId") long orderId, @Query("token") String token);
+    /**
      * 退货
      */
-    @PUT("orders/returnGoods")
-    Observable<BaseResponse> salesReturn(@FieldMap HashMap<String, Object> map);
+    @POST("orders/returnGoods")
+    Observable<BaseResponse> salesReturn(@Body RequestBody body);
+
+    /**
+     * 退款
+     */
+    @FormUrlEncoded
+    @PUT("orders/refund")
+    Observable<BaseResponse> moneyReturn(@FieldMap HashMap<String, Object> map);
+
+    /**
+     * 物流公司列表
+     */
+    @GET("expressCompanys/getExpressCompanys")
+    Observable<BaseResponse<List<Express>>> fetchExpressList();
 }

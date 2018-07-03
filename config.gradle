@@ -67,6 +67,7 @@ ext {
             "refresh"                  : 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-7',
             "refersh-header"           : 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-7',
             //权限
-            "permission-processor"     : "com.github.hotchemi:permissionsdispatcher-processor:3.2.0"
+            "permission-processor"     : "com.github.hotchemi:permissionsdispatcher-processor:3.2.0",
+            "pickerView"               : 'com.contrarywind:Android-PickerView:4.1.4'
     ]
 }

@@ -1,6 +1,7 @@
 package com.xwtec.androidframe.ui.address;
 
 import com.xwtec.androidframe.base.BaseView;
+import com.xwtec.androidframe.ui.address.bean.Address;
 
 import java.util.HashMap;
 import java.util.List;

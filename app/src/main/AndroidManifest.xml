@@ -75,7 +75,10 @@
         <activity android:name=".ui.affirmOrder.AffirmOrderActivity" />
         <activity android:name=".ui.pay.PayActivity" />
         <activity android:name=".ui.orderDetail.OrderDetailActivity" />
-        <activity android:name=".ui.refundDetail.RefundActivity"></activity>
+        <activity android:name=".ui.refundDetail.RefundActivity" />
+        <activity android:name=".ui.saleReturn.SaleReturnActivity" />
+        <activity android:name=".ui.express.ExpressActivity" />
+        <activity android:name=".ui.moneyReturn.MoneyReturnActivity"></activity>
     </application>
 
 </manifest>

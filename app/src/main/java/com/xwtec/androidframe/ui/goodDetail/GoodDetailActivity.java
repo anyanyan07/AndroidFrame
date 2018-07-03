@@ -26,6 +26,13 @@ import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailMultiEntity;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.ImageLoadUtil;
+import com.xwtec.androidframe.util.PopUtil;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,13 +96,36 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
                 finish();
                 break;
             case R.id.iv_shop_cart:
+                RxBus.getInstance().post(new RxBusMSG(Constant.RX_GO_SHOP_CART, null));
+                finish();
                 break;
             case R.id.iv_share:
+                ToastUtils.showShort("分享,待开发");
                 break;
             case R.id.btn_add_to_shop_cart:
                 showPop();
                 break;
+            //立即购买跳到确认订单页面
             case R.id.btn_buy:
+                UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+                if (userBean == null) {
+                    ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
+                    return;
+                }
+                try {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject params = new JSONObject();
+                    params.put("goodsId", goodDetailResponse.getId());
+                    params.put("goodsNumber", 1);
+                    jsonArray.put(params);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("token", userBean.getToken());
+                    jsonObject.put("parameter", jsonArray);
+                    ARouter.getInstance().build(Constant.AFFIRM_ORDER_ROUTER)
+                            .withString("json", jsonObject.toString()).navigation();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             default:
@@ -204,7 +234,7 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
         switch (v.getId()) {
             case R.id.btn_sure:
                 addSure();
-                dismissPop();
+                PopUtil.popDismiss(this, popupWindow);
                 break;
             case R.id.tv_add:
                 int num = Integer.parseInt(tvNum.getText().toString().trim()) + 1;
@@ -216,14 +246,6 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
                 break;
             default:
                 break;
-        }
-    }
-
-    private void dismissPop() {
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-            getWindow().getAttributes().alpha = 1f;
-            getWindow().setAttributes(getWindow().getAttributes());
         }
     }
 }

@@ -14,8 +14,13 @@ import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.refundDetail.bean.RefundedInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturnedInfo;
+import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturningInfo;
 import com.xwtec.androidframe.util.ImageLoadUtil;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +50,18 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
     PriceView refundPrice;
     @BindView(R.id.tv_refund_time)
     TextView tvRefundTime;
+    @BindView(R.id.ll_btn_bottom)
+    LinearLayout llBtnBottom;
+    @BindView(R.id.tv_case_name)
+    TextView tvCaseName;
+    @BindView(R.id.tv_case_content)
+    TextView tvCaseContent;
+    @BindView(R.id.ll_return_money)
+    LinearLayout llReturnMoney;
+    @BindView(R.id.ll_return_time)
+    LinearLayout llReturnTime;
+    @BindView(R.id.tv_return_type)
+    TextView tvReturnType;
 
     private long orderId;
     private int status;
@@ -54,7 +71,7 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
     @Override
     protected void init() {
         super.init();
-        tvTitle.setText(R.string.refundDetail);
+        tvTitle.setText(R.string.orderDetail);
         Intent intent = getIntent();
         UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
         if (intent != null) {
@@ -75,11 +92,34 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         switch (status) {
             //已退款
             case Constant.REFUNDED:
+                llReturnMoney.setVisibility(View.VISIBLE);
+                llReturnTime.setVisibility(View.VISIBLE);
+                tvStatus.setText("退款成功");
+                tvCaseName.setText("退款原因");
+                tvReturnType.setText("退款信息");
+                llBtnBottom.setVisibility(View.VISIBLE);
+                presenter.fetchRefundedInfo(orderId, token);
                 break;
             //退款中
             case Constant.REFUNDING:
+                llBtns.setVisibility(View.VISIBLE);
+                tvCaseName.setText("退款原因");
                 tvStatus.setText("请等待处理");
+                tvReturnType.setText("退款信息");
                 presenter.fetchRefundingInfo(orderId, token);
+                break;
+            case Constant.SALE_RETURNED:
+                tvStatus.setText("退货成功");
+                tvCaseName.setText("退货原因");
+                tvReturnType.setText("退货信息");
+                llBtnBottom.setVisibility(View.VISIBLE);
+                presenter.fetchSaleReturnedInfo(orderId, token);
+                break;
+            case Constant.SALE_RETURNING:
+                tvStatus.setText("退货中");
+                tvCaseName.setText("退货原因");
+                tvReturnType.setText("退货信息");
+                presenter.fetchSaleReturningInfo(orderId, token);
                 break;
         }
     }
@@ -93,7 +133,49 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         RefundingInfo.RefundRecordBean refundRecord = info.getRefundRecord();
         if (refundRecord != null) {
             refundPrice.setPrice(refundRecord.getPrice());
+            tvCaseContent.setText(refundRecord.getCause());
         }
+    }
+
+    @Override
+    public void fetchRefundedSuccess(RefundedInfo info) {
+        ImageLoadUtil.loadFitCenter(this, info.getImgUrl(), ivGood);
+        tvGoodName.setText(info.getTitle() + info.getIntroduction());
+        goodPrice.setPrice(info.getUnitPrice());
+        tvGoodUnitNum.setText("x" + info.getGoodsNumber());
+        RefundedInfo.RefundRecordBean refundRecord = info.getRefundRecord();
+        if (refundRecord != null) {
+            refundPrice.setPrice(refundRecord.getPrice());
+            tvCaseContent.setText(refundRecord.getCause());
+        }
+    }
+
+    @Override
+    public void fetchSaleReturnedSuccess(SalesReturnedInfo info) {
+        ImageLoadUtil.loadFitCenter(this, info.getImgUrl(), ivGood);
+        tvGoodName.setText(info.getTitle() + info.getIntroduction());
+        goodPrice.setPrice(info.getUnitPrice());
+        tvGoodUnitNum.setText("x" + info.getGoodsNumber());
+        SalesReturnedInfo.ReturnGoodsRecordBean returnRecord = info.getReturnGoodsRecord();
+        tvCaseContent.setText(returnRecord.getCause());
+    }
+
+    @Override
+    public void fetchSaleReturningSuccess(SalesReturningInfo info) {
+        ImageLoadUtil.loadFitCenter(this, info.getImgUrl(), ivGood);
+        tvGoodName.setText(info.getTitle() + info.getIntroduction());
+        goodPrice.setPrice(info.getUnitPrice());
+        tvGoodUnitNum.setText("x" + info.getGoodsNumber());
+        SalesReturningInfo.ReturnGoodsRecordBean returnRecord = info.getReturnGoodsRecord();
+        tvCaseContent.setText(returnRecord.getCause());
+    }
+
+    @Override
+    public void deleteSuccess() {
+        ToastUtils.showShort("订单删除成功");
+        int[] data = {position, Constant.DELETED};
+        RxBus.getInstance().post(new RxBusMSG(Constant.RX_ORDER_CHANGE, data));
+        finish();
     }
 
     @Override
@@ -101,7 +183,7 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         return R.layout.activity_refund;
     }
 
-    @OnClick({R.id.iv_left, R.id.tv_repeal, R.id.tv_update})
+    @OnClick({R.id.iv_left, R.id.tv_repeal, R.id.tv_update, R.id.tv_delete})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_left:
@@ -110,6 +192,9 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
             case R.id.tv_repeal:
                 break;
             case R.id.tv_update:
+                break;
+            case R.id.tv_delete:
+                presenter.deleteOrder(orderId + "", token);
                 break;
             default:
                 break;

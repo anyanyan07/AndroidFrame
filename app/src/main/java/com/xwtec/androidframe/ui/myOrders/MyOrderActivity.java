@@ -25,6 +25,8 @@ import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.ui.myOrders.bean.Order;
 import com.xwtec.androidframe.ui.myOrders.bean.OrderTab;
 import com.xwtec.androidframe.util.ImageLoadUtil;
+import com.xwtec.androidframe.util.RxBus.RxBus;
+import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 import com.xwtec.androidframe.util.SpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 @Route(path = Constant.MY_ORDER_ROUTER)
 public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implements MyOrderContact.MyOrderView, OnRefreshLoadMoreListener {
@@ -65,11 +69,34 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         initTabData();
         initRvTab();
         initRv();
+        initRxBus();
         UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
         token = userBean.getToken();
         refreshLayout.setOnRefreshLoadMoreListener(this);
         //请求订单列表
         fetchOrderList(curStatus, curIndex);
+    }
+
+    private void initRxBus() {
+        RxBus.getInstance().register(RxBusMSG.class, new Consumer<RxBusMSG>() {
+            @Override
+            public void accept(RxBusMSG rxBusMSG) throws Exception {
+                switch (rxBusMSG.getCode()) {
+                    case Constant.RX_ORDER_CHANGE:
+                        int[] data = (int[]) rxBusMSG.getData();
+                        int position = data[0];
+                        int status = data[1];
+                        if (curStatus == -1 && status != Constant.DELETED) {
+                            orderList.get(position).setStatus(status);
+                            contentAdapter.notifyItemChanged(position);
+                        } else {
+                            orderList.remove(position);
+                            contentAdapter.remove(position);
+                        }
+                        break;
+                }
+            }
+        });
     }
 
     private void initRvTab() {
@@ -116,7 +143,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                 TextView tvSureReceive = helper.getView(R.id.tv_sure_receive);
                 TextView tvSalesReturn = helper.getView(R.id.tv_sales_return);
                 TextView tvMoneyReturn = helper.getView(R.id.tv_money_return);
-                allGone(llManager, tvCancel, tvDelete, tvPay, tvSalesReturn, tvMoneyReturn, tvSalesReturn, tvSure);
+                allGone(llManager, tvCancel, tvDelete, tvPay, tvSalesReturn, tvMoneyReturn, tvSalesReturn, tvSure, tvSureReceive);
                 final int status = item.getStatus();
                 switch (status) {
                     case 0://订单完成
@@ -141,11 +168,11 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                         tvVisible(llManager, tvSureReceive, tvSalesReturn);
                         break;
                     case 6://用户确认收货
+                        helper.setText(R.id.tv_status, "已确认收货");
                         tvVisible(llManager, tvDelete);
                         break;
                     case 7://退货中
                         helper.setText(R.id.tv_status, "退货中");
-                        tvVisible(llManager, tvDelete);
                         break;
                     case 8://已退货与退货完成
                         helper.setText(R.id.tv_status, "已退货");
@@ -167,7 +194,6 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                         break;
                     default:
                         break;
-
                 }
                 helper.getView(R.id.ll_go_detail).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -188,14 +214,38 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                     @Override
                     public void onClick(View v) {
                         ARouter.getInstance().build(Constant.PAY_ROUTER)
-                                .withSerializable("totalMoney", item.getTotalPrice());
+                                .withString("totalMoney", item.getTotalPrice());
                     }
                 });
                 //取消订单
                 tvCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        presenter.cancelOrder(item.getOrderId(), token, helper.getAdapterPosition());
+                    }
+                });
+                //确认收货
+                tvSureReceive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        presenter.sureReceive(item.getOrderId() + "", token, helper.getAdapterPosition());
+                    }
+                });
+                //退货
+                tvSalesReturn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build(Constant.SALE_RETURN_ROUTER)
+                                .withLong("orderId", item.getOrderId())
+                                .withInt("position", helper.getAdapterPosition()).navigation();
+                    }
+                });
+                tvMoneyReturn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build(Constant.MONEY_RETURN_ROUTER)
+                                .withLong("orderId", item.getOrderId())
+                                .withInt("position", helper.getAdapterPosition()).navigation();
                     }
                 });
             }
@@ -208,40 +258,29 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         switch (status) {
             case 1://已删除
                 break;
-            case 0://订单完成
+            case 0://已完成
             case 2://待付款
             case 10://已取消与取消完成
             case 4://已发货与路途中:待收货
+            case 5://已收货
+            case 3://已付款与待发货
+            case 9://取消订单中
+            case 6://用户已确认收货
                 ARouter.getInstance().build(Constant.ORDER_DETAIL_ROUTER)
                         .withLong("orderId", orderId)
                         .withInt("status", status)
                         .withInt("position", position)
                         .navigation();
                 break;
-            case 3://已付款与待发货
-
-                break;
-
-            case 5://已收货
-
-                break;
-            case 6://用户确认收货
-
-                break;
             case 7://退货中
-
-                break;
             case 8://已退货与退货完成
-
-                break;
-            case 9://取消订单中
-
-                break;
             case 11://退款中
-
-                break;
             case 12://已退款
-
+                ARouter.getInstance().build(Constant.REFUND_DETAIL_ROUTER)
+                        .withLong("orderId", orderId)
+                        .withInt("status", status)
+                        .withInt("position", position)
+                        .navigation();
                 break;
             default:
                 break;
@@ -347,13 +386,25 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
 
     @Override
     public void sureReceiveSuccess(int position) {
-        if (curStatus == Constant.SENDED) {
+        if (curStatus == Constant.RECEIVED) {
             orderList.remove(position);
             contentAdapter.remove(position);
         } else {
             //改变订单状态
-            orderList.get(position).setStatus(Constant.RECEIVED);
+            orderList.get(position).setStatus(Constant.SURE_RECEIVED);
             contentAdapter.notifyItemChanged(position);
         }
     }
+
+    @OnClick({R.id.iv_left})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_left:
+                finish();
+                break;
+        }
+
+    }
+
+
 }

@@ -61,6 +61,11 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
             @Override
             public void accept(RxBusMSG rxBusMSG) throws Exception {
                 switch (rxBusMSG.getCode()) {
+                    case Constant.RX_GO_SHOP_CART:
+                        if (!LoginIntercepter.intercepter(Constant.SHOP_CART_FRAG)) {
+                            setCurFragment(tabShopCart, shopCartFragment);
+                        }
+                        break;
                     case Constant.SHOP_CART_FRAG:
                         setCurFragment(tabShopCart, shopCartFragment);
                         break;

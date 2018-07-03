@@ -8,6 +8,7 @@ import com.xwtec.androidframe.ui.address.CreateAddressActivity;
 import com.xwtec.androidframe.ui.affirmOrder.AffirmOrderActivity;
 import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.classify.ClassifyListActivity;
+import com.xwtec.androidframe.ui.express.ExpressActivity;
 import com.xwtec.androidframe.ui.forgetPassword.ForgetPasswordActivity;
 import com.xwtec.androidframe.ui.goodDetail.GoodDetailActivity;
 import com.xwtec.androidframe.ui.helpAndFeedback.ContactServiceActivity;
@@ -17,12 +18,14 @@ import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.login.LoginActivity;
 import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.ui.mine.MineFragment;
+import com.xwtec.androidframe.ui.moneyReturn.MoneyReturnActivity;
 import com.xwtec.androidframe.ui.myOrders.MyOrderActivity;
 import com.xwtec.androidframe.ui.orderDetail.OrderDetailActivity;
 import com.xwtec.androidframe.ui.pay.PayActivity;
 import com.xwtec.androidframe.ui.personalInfo.PersonalInfoActivity;
 import com.xwtec.androidframe.ui.refundDetail.RefundActivity;
 import com.xwtec.androidframe.ui.register.RegisterActivity;
+import com.xwtec.androidframe.ui.saleReturn.SaleReturnActivity;
 import com.xwtec.androidframe.ui.setting.SettingActivity;
 import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
 import com.xwtec.androidframe.ui.splash.SplashActivity;
@@ -135,4 +138,16 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector
     abstract RefundActivity refundActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract SaleReturnActivity saleReturnActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract ExpressActivity expressActivity();
+
+    @ActivityScope
+    @ContributesAndroidInjector
+    abstract MoneyReturnActivity moneyReturnActivity();
 }
