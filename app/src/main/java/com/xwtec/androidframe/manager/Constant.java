@@ -42,7 +42,9 @@ public class Constant {
     public static final int UPDATE_PASSWORD_VERIFY_TYPE = 2;
     public static final int LOGIN_VERIFY_TYPE = 3;
 
+    //cache key
     public static final String USER_KEY = "USER_KEY";
+    public static final String FIRST_USE = "FIRST_USE";
 
     public static final String RX_LOGIN_SUCCESS = "RX_LOGIN_SUCCESS";//登录成功发送RxBux消息
     public static final String RX_LOGOUT = "RX_LOGOUT";//退出登录发送RxBux消息

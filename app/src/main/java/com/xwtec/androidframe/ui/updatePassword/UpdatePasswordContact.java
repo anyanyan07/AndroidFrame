@@ -10,13 +10,17 @@ import java.util.HashMap;
  */
 
 public interface UpdatePasswordContact {
-    interface UpdatePasswordView extends BaseView{
+    interface UpdatePasswordView extends BaseView {
         void sendCodeSuccess(String msg);
+
+        void sendCodeFail(String msg);
+
         void updateSuccess(String msg);
     }
 
     interface UpdatePasswordPresenter {
-        void sendVerifyCode(HashMap<String,Object> map);
-        void updatePassword(HashMap<String,Object> map);
+        void sendVerifyCode(HashMap<String, Object> map);
+
+        void updatePassword(HashMap<String, Object> map);
     }
 }

@@ -40,6 +40,7 @@ public class GoodDetailPresenterImpl extends BasePresenter<GoodDetailContact.Goo
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -64,6 +65,7 @@ public class GoodDetailPresenterImpl extends BasePresenter<GoodDetailContact.Goo
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }

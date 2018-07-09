@@ -6,11 +6,11 @@ import android.content.Context;
 import com.xwtec.androidframe.di.qualifier.CommonApiQualifier;
 import com.xwtec.androidframe.manager.App;
 import com.xwtec.androidframe.manager.Constant;
+import com.xwtec.androidframe.manager.intercepter.HeaderInterceptor;
 import com.xwtec.androidframe.manager.intercepter.ResponseInterceptor;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
 import com.xwtec.androidframe.manager.net.NetResourceRepoSupport;
 import com.xwtec.androidframe.manager.net.Service;
-import com.xwtec.androidframe.manager.intercepter.HeaderInterceptor;
 
 import java.util.concurrent.TimeUnit;
 

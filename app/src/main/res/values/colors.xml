@@ -22,6 +22,7 @@
     <color name="c_ff6a6b">#ff6a6b</color>
     <color name="c_71dda0">#71dda0</color>
     <color name="c_2871df">#2871df</color>
+    <color name="translucent">#80000000</color>
 
 
 </resources>

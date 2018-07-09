@@ -22,10 +22,12 @@ public class HomeAdapter extends MultipleItemRvAdapter<HomeMultiEntity, BaseView
     public static final int HOME_CONTENT_TYPE = 0x003;
 
     private TabTitleProvider tabTitleProvider;
+    private ContentProvider contentProvider;
 
     HomeAdapter(@Nullable List<HomeMultiEntity> data, HomeFragment homeFragment) {
         super(data);
         tabTitleProvider = new TabTitleProvider(homeFragment, this);
+        contentProvider = new ContentProvider(homeFragment);
         finishInitialize();
     }
 
@@ -38,7 +40,7 @@ public class HomeAdapter extends MultipleItemRvAdapter<HomeMultiEntity, BaseView
     public void registerItemProvider() {
         mProviderDelegate.registerProvider(new BannerProvider());
         mProviderDelegate.registerProvider(tabTitleProvider);
-        mProviderDelegate.registerProvider(new ContentProvider());
+        mProviderDelegate.registerProvider(contentProvider);
     }
 
     void updateBanner() {

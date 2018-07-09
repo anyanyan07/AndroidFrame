@@ -1,5 +1,6 @@
 package com.xwtec.androidframe.ui.login;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -111,6 +112,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     }
 
     private void login() {
+        showLoading();
         String phoneNum = etPhoneNum.getText().toString().trim();
         String verifyCode = etVerifyCode.getText().toString().trim();
         HashMap<String, Object> map = new HashMap<>();
@@ -132,7 +134,7 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
 
     @Override
     public void loginSuccess(UserBean userBean) {
-        ToastUtils.showShort("登录成功");
+        dismissLoading();
         CacheUtils.getInstance().put(Constant.USER_KEY, userBean);
         finishToTarget();
     }
@@ -144,16 +146,19 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
     }
 
     private void finishToTarget() {
-        String target = getIntent().getStringExtra("target");
-        switch (target) {
-            case Constant.SHOP_CART_FRAG:
-                RxBus.getInstance().post(new RxBusMSG(Constant.SHOP_CART_FRAG, null));
-                break;
-            case Constant.MINE_FRAG:
-                RxBus.getInstance().post(new RxBusMSG(Constant.MINE_FRAG, null));
-                break;
-            default:
-                break;
+        Intent intent = getIntent();
+        if (intent != null) {
+            String target = intent.getStringExtra("target");
+            switch (target) {
+                case Constant.SHOP_CART_FRAG:
+                    RxBus.getInstance().post(new RxBusMSG(Constant.SHOP_CART_FRAG, null));
+                    break;
+                case Constant.MINE_FRAG:
+                    RxBus.getInstance().post(new RxBusMSG(Constant.MINE_FRAG, null));
+                    break;
+                default:
+                    break;
+            }
         }
         finish();
     }

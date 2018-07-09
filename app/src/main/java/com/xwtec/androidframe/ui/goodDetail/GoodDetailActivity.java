@@ -160,6 +160,14 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
             btnSure.setOnClickListener(this);
             tvAdd.setOnClickListener(this);
             tvReduce.setOnClickListener(this);
+            contentView.findViewById(R.id.iv_dismiss).setOnClickListener(this);
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    getWindow().getAttributes().alpha = 1.0f;
+                    getWindow().setAttributes(getWindow().getAttributes());
+                }
+            });
             tvNum.addTextChangedListener(new SimpleTextWatcher() {
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -179,6 +187,7 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
         if (detailImgList != null && detailImgList.size() > 0) {
             ImageLoadUtil.loadCenterCrop(this, detailImgList.get(0).getImgUrl(), ivGood);
         }
+        tvNum.setText("1");
         tvName.setText(goodDetailResponse.getTitle() + goodDetailResponse.getIntroduction());
         tvPrice.setText(goodDetailResponse.getDiscountPrice());
         tvFlavor.setText("原味");
@@ -243,6 +252,9 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
             case R.id.tv_reduce:
                 int curNum = Integer.parseInt(tvNum.getText().toString().trim()) - 1;
                 tvNum.setText(curNum + "");
+                break;
+            case R.id.iv_dismiss:
+                popupWindow.dismiss();
                 break;
             default:
                 break;

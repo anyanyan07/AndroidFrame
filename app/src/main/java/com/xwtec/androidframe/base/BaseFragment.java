@@ -1,11 +1,11 @@
 package com.xwtec.androidframe.base;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,7 @@ import dagger.android.support.AndroidSupportInjection;
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView {
     private Unbinder unbinder;
     protected Context context;
+    private BaseActivity baseActivity;
 
     @Inject
     protected T presenter;
@@ -56,26 +57,27 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         unbinder.unbind();
     }
 
-
-    private ProgressDialog loadingDialog;
-
     @Override
     public void showLoading() {
-        if (loadingDialog == null) {
-            loadingDialog = new ProgressDialog(context);
+        FragmentActivity activity = getActivity();
+        if (activity != null && activity instanceof BaseActivity) {
+            ((BaseActivity) activity).showLoading();
         }
-        loadingDialog.show();
     }
 
     @Override
     public void dismissLoading() {
-        if (loadingDialog != null && loadingDialog.isShowing()) {
-            loadingDialog.dismiss();
+        FragmentActivity activity = getActivity();
+        if (activity != null && activity instanceof BaseActivity) {
+            ((BaseActivity) activity).dismissLoading();
         }
     }
 
     @Override
     public void showLoadFail(String msg) {
-
+        FragmentActivity activity = getActivity();
+        if (activity != null && activity instanceof BaseActivity) {
+            ((BaseActivity) activity).showLoadFail(msg);
+        }
     }
 }

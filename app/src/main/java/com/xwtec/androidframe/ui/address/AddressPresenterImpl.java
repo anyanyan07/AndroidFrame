@@ -44,6 +44,7 @@ public class AddressPresenterImpl extends BasePresenter<AddressContact.AddressVi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });
@@ -66,6 +67,7 @@ public class AddressPresenterImpl extends BasePresenter<AddressContact.AddressVi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });
@@ -84,6 +86,7 @@ public class AddressPresenterImpl extends BasePresenter<AddressContact.AddressVi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });

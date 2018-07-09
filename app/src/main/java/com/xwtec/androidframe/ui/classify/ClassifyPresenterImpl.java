@@ -41,6 +41,7 @@ public class ClassifyPresenterImpl extends BasePresenter<ClassifyContact.Classif
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }

@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -17,6 +19,9 @@ import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
 import com.xwtec.androidframe.ui.home.bean.TabBean;
+import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.main.MainActivity;
+import com.xwtec.androidframe.util.ShopCarAnimUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,6 +137,28 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         if (tabBean != null) {
             fetchGoodsData(tabBean.getId(), curStartIndex);
         }
+    }
+
+    //加入购物车
+    public void addShopCart(long goodId, ImageView startView) {
+        UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+        if (userBean == null) {
+            ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
+            return;
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("goodsId", goodId);
+        map.put("goodsNumber", 1);
+        map.put("token", userBean.getToken());
+        presenter.addShopCart(map, startView);
+    }
+
+    @Override
+    public void addShopSuccess(ImageView startView) {
+        //加入购物车成功，开始动画
+        MainActivity mainActivity = (MainActivity) getActivity();
+        ShopCarAnimUtil shopCarAnimUtil = new ShopCarAnimUtil(context, mainActivity.getRootView(), mainActivity.getShopCartTabView(), startView);
+        shopCarAnimUtil.startAnim();
     }
 
     //加载更多

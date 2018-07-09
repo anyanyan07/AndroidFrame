@@ -39,6 +39,7 @@ public class LoginPresenterImpl extends BasePresenter<LoginContact.LoginView> im
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.sendCodeFail(e.getMessage());
                         }
@@ -63,6 +64,7 @@ public class LoginPresenterImpl extends BasePresenter<LoginContact.LoginView> im
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }

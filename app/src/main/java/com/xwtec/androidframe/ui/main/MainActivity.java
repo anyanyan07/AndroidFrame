@@ -3,6 +3,8 @@ package com.xwtec.androidframe.ui.main;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -48,6 +50,8 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
     TextView tabShopCart;
     @BindView(R.id.tab_mine)
     TextView tabMine;
+    @BindView(R.id.rl_main)
+    RelativeLayout rlMain;
     private long lastBackTime;
 
     @Override
@@ -152,6 +156,14 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         } else if ("classify".equals(fromTab)) {
             setCurFragment(tabClassify, classifyFragment);
         }
+    }
+
+    public ViewGroup getRootView() {
+        return rlMain;
+    }
+
+    public View getShopCartTabView(){
+        return tabShopCart;
     }
 
     @Override

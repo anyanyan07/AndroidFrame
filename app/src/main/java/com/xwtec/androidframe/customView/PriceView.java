@@ -68,6 +68,8 @@ public class PriceView extends LinearLayout {
         }
         if (split.length >= 2) {
             tvDecimalPart.setText("." + split[1]);
+        } else {
+            tvDecimalPart.setText(".0");
         }
     }
 

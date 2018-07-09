@@ -41,6 +41,7 @@ public class MyOrderPresenterImpl extends BasePresenter<MyOrderContact.MyOrderVi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -65,7 +66,7 @@ public class MyOrderPresenterImpl extends BasePresenter<MyOrderContact.MyOrderVi
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -87,7 +88,7 @@ public class MyOrderPresenterImpl extends BasePresenter<MyOrderContact.MyOrderVi
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -109,7 +110,7 @@ public class MyOrderPresenterImpl extends BasePresenter<MyOrderContact.MyOrderVi
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }

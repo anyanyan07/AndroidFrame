@@ -41,6 +41,7 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -65,6 +66,7 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -90,6 +92,7 @@ public class ShopCartPresenterImpl extends BasePresenter<ShopCartContact.ShopCar
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }

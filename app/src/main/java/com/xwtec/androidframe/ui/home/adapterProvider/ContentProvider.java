@@ -15,6 +15,7 @@ import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.home.HomeAdapter;
+import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
 import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
 import com.xwtec.androidframe.util.GridSpacingItemDecoration;
@@ -29,22 +30,35 @@ import java.util.List;
 @ItemProviderTag(viewType = HomeAdapter.HOME_CONTENT_TYPE, layout = R.layout.home_good_content)
 public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBean>, BaseViewHolder> {
 
+    private HomeFragment homeFragment;
+
+    public ContentProvider(HomeFragment homeFragment) {
+        this.homeFragment = homeFragment;
+    }
+
     @Override
     public void convert(BaseViewHolder helper, HomeMultiEntity<GoodListBean> data, int position) {
         final List<GoodListBean> goodBeanList = data.getData();
         RecyclerView recyclerView = helper.getView(R.id.rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ConvertUtils.dp2px(10),false));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ConvertUtils.dp2px(10), false));
         BaseQuickAdapter adapter = new BaseQuickAdapter<GoodListBean, BaseViewHolder>(R.layout.home_content_layout, goodBeanList) {
             @Override
-            protected void convert(BaseViewHolder helper, GoodListBean goodListBean) {
+            protected void convert(BaseViewHolder helper, final GoodListBean goodListBean) {
                 ImageLoadUtil.loadFitCenter(mContext, goodListBean.getImgUrl(), (ImageView) helper.getView(R.id.iv_good));
                 helper.setText(R.id.tv_good_name, goodListBean.getTitle());
                 helper.setText(R.id.tv_good_num, goodListBean.getIntroduction());
                 PriceView priceView = helper.getView(R.id.tv_cur_price);
                 priceView.setPrice(goodListBean.getDiscountPrice());
                 helper.setText(R.id.tv_old_price, goodListBean.getOriginalPrice());
+                final ImageView ivShopCart = helper.getView(R.id.iv_shop_cart);
+                ivShopCart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        homeFragment.addShopCart(goodListBean.getId(), ivShopCart);
+                    }
+                });
             }
         };
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

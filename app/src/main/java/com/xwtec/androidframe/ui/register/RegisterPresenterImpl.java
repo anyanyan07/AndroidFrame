@@ -39,6 +39,7 @@ public class RegisterPresenterImpl extends BasePresenter<RegisterContact.Registe
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -63,6 +64,7 @@ public class RegisterPresenterImpl extends BasePresenter<RegisterContact.Registe
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });

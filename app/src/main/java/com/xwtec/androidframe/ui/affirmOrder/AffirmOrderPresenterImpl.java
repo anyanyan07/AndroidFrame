@@ -41,6 +41,7 @@ public class AffirmOrderPresenterImpl extends BasePresenter<AffirmOrderContact.A
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -65,6 +66,7 @@ public class AffirmOrderPresenterImpl extends BasePresenter<AffirmOrderContact.A
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }

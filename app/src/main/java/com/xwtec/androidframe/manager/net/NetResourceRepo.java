@@ -153,7 +153,7 @@ public interface NetResourceRepo {
     /**
      * 上传头像
      */
-    Observable<BaseResponse> uploadHeader(HashMap<String, Object> map, MultipartBody.Part file);
+    Observable<BaseResponse> uploadHeader(RequestBody token, MultipartBody.Part file);
 
     /**
      * 我的订单列表

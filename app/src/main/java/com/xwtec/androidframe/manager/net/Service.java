@@ -43,7 +43,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -214,7 +213,7 @@ public interface Service {
      */
     @Multipart
     @POST("user/upHeadImg")
-    Observable<BaseResponse> uploadHeader(@PartMap HashMap<String, Object> map, @Part MultipartBody.Part file);
+    Observable<BaseResponse> uploadHeader(@Part("token") RequestBody token, @Part MultipartBody.Part file);
 
     /**
      * 获取个人信息

@@ -79,6 +79,7 @@ public class ClassifyListActivity extends BaseActivity<ClassifyListPresenterImpl
                         .navigation();
             }
         });
+        adapter.setEmptyView(R.layout.empty_layout, refreshLayout);
         rv.setAdapter(adapter);
     }
 

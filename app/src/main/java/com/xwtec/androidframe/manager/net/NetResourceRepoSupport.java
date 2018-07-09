@@ -318,8 +318,8 @@ public class NetResourceRepoSupport implements NetResourceRepo {
     }
 
     @Override
-    public Observable<BaseResponse> uploadHeader(HashMap<String, Object> map, MultipartBody.Part file) {
-        return service.uploadHeader(map, file)
+    public Observable<BaseResponse> uploadHeader(RequestBody token, MultipartBody.Part file) {
+        return service.uploadHeader(token, file)
                 .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
                     @Override
                     public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {

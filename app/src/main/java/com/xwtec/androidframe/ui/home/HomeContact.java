@@ -1,5 +1,7 @@
 package com.xwtec.androidframe.ui.home;
 
+import android.widget.ImageView;
+
 import com.xwtec.androidframe.base.BaseView;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
@@ -22,6 +24,8 @@ public interface HomeContact {
         void goodListFail(String msg);
 
         void fetchGoodDefinesSuccess(List<TabBean> tabBeanList);
+
+        void addShopSuccess(ImageView startView);
     }
 
     interface HomePresenter {
@@ -39,5 +43,10 @@ public interface HomeContact {
          * 请求商品分类
          */
         void fetchGoodDefines();
+
+        /**
+         * 加入购物车
+         */
+        void addShopCart(HashMap<String, Object> map, ImageView startView);
     }
 }

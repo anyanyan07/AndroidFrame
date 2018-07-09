@@ -35,6 +35,7 @@ public class CreateAddPresenterImpl extends BasePresenter<CreateAddContact.Creat
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });
@@ -53,6 +54,7 @@ public class CreateAddPresenterImpl extends BasePresenter<CreateAddContact.Creat
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });

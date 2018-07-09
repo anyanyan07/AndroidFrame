@@ -1,5 +1,7 @@
 package com.xwtec.androidframe.ui.home;
 
+import android.widget.ImageView;
+
 import com.xwtec.androidframe.base.BasePresenter;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
@@ -46,6 +48,7 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }
@@ -70,6 +73,7 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.goodListFail(e.getMessage());
                         }
@@ -94,6 +98,32 @@ public class HomePresenterImpl extends BasePresenter<HomeContact.HomeView> imple
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
+                        if (view != null) {
+                            view.showLoadFail(e.getMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void addShopCart(HashMap<String, Object> map, final ImageView startView) {
+        mNetResourceRepo.addShopCart(map)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()) {
+                                view.addShopSuccess(startView);
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
                         if (view != null) {
                             view.showLoadFail(e.getMessage());
                         }

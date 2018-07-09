@@ -33,14 +33,17 @@ public class UpdatePwdPresenterImpl extends BasePresenter<UpdatePasswordContact.
                             if (baseResponse.isSuccess()) {
                                 view.sendCodeSuccess(baseResponse.getMsg());
                             } else {
-                                view.showLoadFail(baseResponse.getMsg());
+                                view.sendCodeFail(baseResponse.getMsg());
                             }
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
+                        if (view != null) {
+                            view.sendCodeFail(e.getMessage());
+                        }
                     }
                 });
     }
@@ -52,13 +55,20 @@ public class UpdatePwdPresenterImpl extends BasePresenter<UpdatePasswordContact.
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         if (view != null) {
-                            view.updateSuccess(baseResponse.getMsg());
+                            if (baseResponse.isSuccess()) {
+                                view.updateSuccess(baseResponse.getMsg());
+                            } else {
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
+                        if (view != null) {
+                            view.showLoadFail(e.getMessage());
+                        }
                     }
                 });
     }

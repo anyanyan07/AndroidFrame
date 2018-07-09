@@ -165,15 +165,17 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     }
 
     public void fetchShopCartData(int startIndex) {
+        showLoading();
         HashMap<String, Object> map = new HashMap<>();
         map.put("startIndex", startIndex);
-        map.put("showNumber", 20);
+        map.put("showNumber", 100);
         map.put("token", userBean.getToken());
         presenter.fetchShopCartData(map);
     }
 
     @Override
     public void fetchShopCartSuccess(List<ShopCartBean> shopCartBeanList) {
+        dismissLoading();
         this.shopCartBeanList.clear();
         selectedList.clear();
         refreshLayout.finishRefresh(true);
@@ -193,6 +195,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
     }
 
     private void updateShopCart(long id, int goodsNum, ShopCartBean shopCartBean, int position, boolean isAdd) {
+        showLoading();
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("goodsNumber", goodsNum);
@@ -202,6 +205,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
     @Override
     public void updateShopCartSuccess(ShopCartBean shopCartBean, int goodsNum, int position, boolean isAdd) {
+        dismissLoading();
         shopCartBean.setGoodsNumber(goodsNum);
         adapter.notifyItemChanged(position);
         boolean selected = shopCartBean.isSelected();
@@ -218,6 +222,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
     @Override
     public void deleteFromShopCartSuccess() {
+        dismissLoading();
         shopCartBeanList.removeAll(selectedList);
         adapter.notifyDataSetChanged();
         dataNotify();
@@ -272,6 +277,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
 
                 break;
             case R.id.btn_delete:
+                showLoading();
                 selectedList.clear();
                 StringBuffer ids = new StringBuffer();
                 for (ShopCartBean shopCartBean : shopCartBeanList) {
@@ -290,11 +296,18 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
         showLoading();
         selectedSize = shopCartBeanList.size();
         boolean selected = view.isSelected();
+        totalMoney = BigDecimal.ZERO;
         llSelectAll.setSelected(!selected);
         llSelectAllDel.setSelected(!selected);
         for (ShopCartBean shopCartBean : shopCartBeanList) {
             shopCartBean.setSelected(!selected);
+            if (!selected) {
+                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(shopCartBean.getDiscountPrice()));
+                BigDecimal num = BigDecimal.valueOf(shopCartBean.getGoodsNumber());
+                totalMoney = totalMoney.add(price.multiply(num));
+            }
         }
+        totalPrice.setPrice(totalMoney.toString());
         adapter.notifyDataSetChanged();
         dismissLoading();
     }

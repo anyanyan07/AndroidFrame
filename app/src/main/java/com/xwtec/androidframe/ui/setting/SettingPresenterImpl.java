@@ -33,6 +33,7 @@ public class SettingPresenterImpl extends BasePresenter<SettingContact.SettingVi
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
 
                     }
                 });

@@ -41,7 +41,7 @@ public class RefundPresenterImpl extends BasePresenter<RefundContact.RefundView>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -63,7 +63,7 @@ public class RefundPresenterImpl extends BasePresenter<RefundContact.RefundView>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -85,7 +85,7 @@ public class RefundPresenterImpl extends BasePresenter<RefundContact.RefundView>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -105,7 +105,7 @@ public class RefundPresenterImpl extends BasePresenter<RefundContact.RefundView>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -127,7 +127,7 @@ public class RefundPresenterImpl extends BasePresenter<RefundContact.RefundView>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }

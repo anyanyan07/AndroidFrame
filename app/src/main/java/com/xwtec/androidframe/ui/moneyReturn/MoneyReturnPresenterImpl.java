@@ -39,7 +39,7 @@ public class MoneyReturnPresenterImpl extends BasePresenter<MoneyReturnContact.M
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }

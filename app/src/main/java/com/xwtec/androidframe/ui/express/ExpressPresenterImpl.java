@@ -39,7 +39,7 @@ public class ExpressPresenterImpl extends BasePresenter<ExpressContact.ExpressVi
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }

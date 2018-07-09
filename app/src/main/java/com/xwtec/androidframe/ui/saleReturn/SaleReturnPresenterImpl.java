@@ -39,7 +39,7 @@ public class SaleReturnPresenterImpl extends BasePresenter<SaleReturnContact.Sal
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }

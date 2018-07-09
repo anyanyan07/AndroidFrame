@@ -46,7 +46,6 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -425,11 +424,10 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
 
     private void updateHeader() {
         final File file = new File(filePath + "/crop/" + userId + ".jpg");
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("token", userBean.getToken());
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-        presenter.uploadHeader(map, body);
+        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), userBean.getToken());
+        presenter.uploadHeader(token, body);
     }
 
     @Override

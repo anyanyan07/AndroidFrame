@@ -36,7 +36,7 @@ public class FeedbackPresenterImpl extends BasePresenter<FeedbackContact.Feedbac
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }

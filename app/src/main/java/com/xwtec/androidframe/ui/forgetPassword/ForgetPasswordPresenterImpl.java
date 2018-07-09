@@ -39,7 +39,7 @@ public class ForgetPasswordPresenterImpl extends BasePresenter<ForgetPasswordCon
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
@@ -61,7 +61,7 @@ public class ForgetPasswordPresenterImpl extends BasePresenter<ForgetPasswordCon
 
                     @Override
                     public void onError(Throwable e) {
-
+                        super.onError(e);
                     }
                 });
     }
