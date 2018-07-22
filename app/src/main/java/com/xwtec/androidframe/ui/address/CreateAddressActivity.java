@@ -18,6 +18,7 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.blankj.utilcode.util.CacheUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.xwtec.androidframe.R;
@@ -143,11 +144,14 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
                 rlSetDefault.setSelected(!selected);
                 break;
             case R.id.ll_chose_address:
+                KeyboardUtils.hideSoftInput(this);
                 if (options1Items.size() <= 0) {
                     mHandler.sendEmptyMessage(MSG_LOAD_DATA);
                 } else {
                     showCityPop();
                 }
+                break;
+            default:
                 break;
         }
     }

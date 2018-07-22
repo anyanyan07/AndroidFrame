@@ -13,7 +13,6 @@
         android:id="@+id/iv_good"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@drawable/img_stroker"
         tools:src="@mipmap/ic_launcher" />
 
     <TextView

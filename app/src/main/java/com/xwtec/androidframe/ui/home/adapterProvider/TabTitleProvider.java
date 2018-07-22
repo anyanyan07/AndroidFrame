@@ -46,8 +46,8 @@ public class TabTitleProvider extends BaseItemProvider<HomeMultiEntity<TabBean>,
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                selectedPosition = position;
-                homeAdapter.updateTab();
+                homeAdapter.updateTab(position);
+                homeFragment.updateTab(position);
                 homeFragment.fetchGoodsData(tabBeanList.get(position).getId(), 0);
             }
         });
@@ -62,5 +62,9 @@ public class TabTitleProvider extends BaseItemProvider<HomeMultiEntity<TabBean>,
     @Override
     public boolean onLongClick(BaseViewHolder helper, HomeMultiEntity<TabBean> data, int position) {
         return false;
+    }
+    public void update(int selectedPosition){
+        this.selectedPosition = selectedPosition;
+        homeAdapter.notifyItemChanged(1);
     }
 }

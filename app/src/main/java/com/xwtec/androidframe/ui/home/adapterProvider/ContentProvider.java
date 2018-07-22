@@ -31,9 +31,11 @@ import java.util.List;
 public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBean>, BaseViewHolder> {
 
     private HomeFragment homeFragment;
+    private GridSpacingItemDecoration gridSpacingItemDecoration;
 
     public ContentProvider(HomeFragment homeFragment) {
         this.homeFragment = homeFragment;
+        gridSpacingItemDecoration = new GridSpacingItemDecoration(2, ConvertUtils.dp2px(10), false);
     }
 
     @Override
@@ -42,7 +44,8 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
         RecyclerView recyclerView = helper.getView(R.id.rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, ConvertUtils.dp2px(10), false));
+        recyclerView.removeItemDecoration(gridSpacingItemDecoration);
+        recyclerView.addItemDecoration(gridSpacingItemDecoration);
         BaseQuickAdapter adapter = new BaseQuickAdapter<GoodListBean, BaseViewHolder>(R.layout.home_content_layout, goodBeanList) {
             @Override
             protected void convert(BaseViewHolder helper, final GoodListBean goodListBean) {

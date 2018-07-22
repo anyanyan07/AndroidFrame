@@ -47,8 +47,8 @@ public class HomeAdapter extends MultipleItemRvAdapter<HomeMultiEntity, BaseView
         notifyItemChanged(0);
     }
 
-    public void updateTab() {
-        notifyItemChanged(1);
+    public void updateTab(int selectedPosition) {
+        tabTitleProvider.update(selectedPosition);
     }
 
     void updateGoodContent() {
