@@ -25,12 +25,18 @@ android {
             keyPassword "888888"
             storeFile file("F:\\AndroidFrame\\key\\dbnc.jks")
             storePassword "888888"
+            v2SigningEnabled true
+            v1SigningEnabled true
         }
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -76,13 +82,12 @@ dependencies {
     implementation depend["adapter"]
     implementation depend["refresh"]
     implementation depend["refersh-header"]
-    implementation("com.github.hotchemi:permissionsdispatcher:3.2.0") {
+    implementation('com.github.hotchemi:permissionsdispatcher:3.2.0') {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
-//    implementation depend["permission"]
+    //    implementation depend["permission"]
     annotationProcessor depend["permission-processor"]
     implementation depend["pickerView"]
     compile 'com.wang.avi:library:2.1.3'
-
 }
