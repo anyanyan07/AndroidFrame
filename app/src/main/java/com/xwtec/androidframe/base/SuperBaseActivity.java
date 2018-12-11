@@ -33,7 +33,7 @@ public abstract class SuperBaseActivity extends AppCompatActivity implements Has
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        AppManager.get().addActivity(this);
+        AppManager.getInstance().addActivity(this);
         unbinder =  ButterKnife.bind(this);
         init();
     }
@@ -45,7 +45,7 @@ public abstract class SuperBaseActivity extends AppCompatActivity implements Has
         if (unbinder != null) {
             unbinder.unbind();
         }
-        AppManager.get().finishActivity();
+        AppManager.getInstance().removeActivity(this);
     }
 
     @Override

@@ -3,18 +3,18 @@ package com.xwtec.androidframe.ui.home.adapterProvider;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.annotation.ItemProviderTag;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.ui.home.HomeAdapter;
-import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
+import com.xwtec.androidframe.ui.home.bean.HomeMultiEntity;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import io.reactivex.functions.Consumer;
 public class BannerProvider extends BaseItemProvider<HomeMultiEntity<BannerBean>, BaseViewHolder> {
     @Override
     public void convert(BaseViewHolder helper, HomeMultiEntity<BannerBean> homeMultiEntity, int position) {
-        List<BannerBean> data = homeMultiEntity.getData();
+        final List<BannerBean> data = homeMultiEntity.getData();
         if (data == null) {
             return;
         }
@@ -56,12 +56,19 @@ public class BannerProvider extends BaseItemProvider<HomeMultiEntity<BannerBean>
         banner.setDelayTime(3000);
         banner.setIndicatorGravity(BannerConfig.CENTER);
         banner.setImages(imgUrls);
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+//                ARouter.getInstance().build(Constant.GOODS_DETAIL_ROUTER)
+//                        .withLong("goodId", data.get(position).getId())
+//                        .navigation();
+            }
+        });
         banner.start();
     }
 
     @Override
     public void onClick(BaseViewHolder helper, HomeMultiEntity<BannerBean> homeMultiEntity, int position) {
-        ToastUtils.showShort(homeMultiEntity.getData().get(position).getId());
     }
 
     @Override

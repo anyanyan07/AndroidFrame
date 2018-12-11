@@ -224,5 +224,38 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/c_eaeaea" />
+
+        <LinearLayout
+            android:id="@+id/ll_integral"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/integral"
+                android:textColor="@color/c_333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_integral"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                tools:text="100"
+                android:textColor="@color/c_333333"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/c_eaeaea" />
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.xwtec.androidframe.ui.paySuccess.PaySuccessActivity">
+
+    <include layout="@layout/title_layout" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp">
+
+        <ImageView
+            android:id="@+id/iv_pay_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/pay_success" />
+
+        <TextView
+            android:id="@+id/tv_pay_type_lab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/iv_pay_success"
+            android:text="@string/payTypeLab"
+            android:textColor="@color/c_434343"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_pay_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_pay_type_lab"
+            android:layout_toRightOf="@id/tv_pay_type_lab"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp"
+            tools:text="支付宝支付" />
+
+        <TextView
+            android:id="@+id/tv_pay_money_lab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pay_type_lab"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/iv_pay_success"
+            android:text="@string/payMoneyLab"
+            android:textColor="@color/c_434343"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_pay_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_pay_money_lab"
+            android:layout_toRightOf="@id/tv_pay_money_lab"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp"
+            tools:text="900.00元" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_go_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/login_btn_bg"
+        android:text="@string/goOrder"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

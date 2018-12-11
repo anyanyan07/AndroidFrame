@@ -15,13 +15,22 @@ import com.blankj.utilcode.util.KeyboardUtils;
 
 public class PopUtil {
     public static void popShowFromBottom(Activity activity, PopupWindow popupWindow) {
-        popupWindow.setOutsideTouchable(false);
         KeyboardUtils.hideSoftInput(activity);
         Window window = activity.getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         layoutParams.alpha = 0.5f;
         window.setAttributes(layoutParams);
         popupWindow.showAtLocation(window.getDecorView(), Gravity.BOTTOM, 0, 0);
+    }
+
+    public static void popShowAtCenter(Activity activity, PopupWindow popupWindow) {
+        popupWindow.setOutsideTouchable(true);
+        KeyboardUtils.hideSoftInput(activity);
+        Window window = activity.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.alpha = 0.5f;
+        window.setAttributes(layoutParams);
+        popupWindow.showAtLocation(window.getDecorView(), Gravity.CENTER, 0, 0);
     }
 
     public static void popDismiss(Activity activity, PopupWindow popupWindow) {

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            tools:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/iv_header"
+            android:textColor="@color/c_666666"
+            android:textSize="14sp"
+            tools:text="哈哈哈" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/c_666666"
+            android:textSize="13sp"
+            tools:text="2016-12-12"
+            android:id="@+id/tv_date"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c_666666"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        tools:text="哈哈机顶盒手机号多少机顶盒红色经典红色经典和手机的海底世界回到家收到货回家的时候的" />
+
+    <com.xwtec.androidframe.customView.NoScrollGridView
+        android:id="@+id/gv_imgs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnWidth="80dp"
+        android:horizontalSpacing="2dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="2dp" />
+
+</LinearLayout>

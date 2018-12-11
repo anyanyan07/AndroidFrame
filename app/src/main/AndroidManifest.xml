@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.xwtec.androidframe">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:name=".manager.App"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher_all"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_all_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.anyan.headerdemo.fileprovider"
@@ -78,7 +84,31 @@
         <activity android:name=".ui.refundDetail.RefundActivity" />
         <activity android:name=".ui.saleReturn.SaleReturnActivity" />
         <activity android:name=".ui.express.ExpressActivity" />
-        <activity android:name=".ui.moneyReturn.MoneyReturnActivity"></activity>
+        <activity android:name=".ui.moneyReturn.MoneyReturnActivity" />
+        <activity android:name=".ui.comment.CommentActivity" />
+        <activity android:name=".ui.comments.CommentsActivity" />
+        <activity android:name=".ui.expressInfo.ExpressInfoActivity" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true" />
+        <!-- alipay start -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- alipay end -->
+        <activity android:name=".ui.paySuccess.PaySuccessActivity" />
+        <activity android:name=".ui.test.TestActivity">
+
+        </activity>
     </application>
 
 </manifest>

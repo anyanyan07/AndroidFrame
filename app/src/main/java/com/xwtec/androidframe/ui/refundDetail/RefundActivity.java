@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
@@ -64,6 +65,7 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
     TextView tvReturnType;
 
     private long orderId;
+    private long goodId;
     private int status;
     private int position;
     private String token;
@@ -76,6 +78,7 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
         if (intent != null) {
             orderId = intent.getLongExtra("orderId", -1);
+            goodId = intent.getLongExtra("goodId", -1);
             status = intent.getIntExtra("status", -1);
             position = intent.getIntExtra("position", -1);
         }
@@ -121,6 +124,8 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
                 tvReturnType.setText("退货信息");
                 presenter.fetchSaleReturningInfo(orderId, token);
                 break;
+            default:
+                break;
         }
     }
 
@@ -157,7 +162,9 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         goodPrice.setPrice(info.getUnitPrice());
         tvGoodUnitNum.setText("x" + info.getGoodsNumber());
         SalesReturnedInfo.ReturnGoodsRecordBean returnRecord = info.getReturnGoodsRecord();
-        tvCaseContent.setText(returnRecord.getCause());
+        if (returnRecord != null) {
+            tvCaseContent.setText(returnRecord.getCause());
+        }
     }
 
     @Override
@@ -167,7 +174,9 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         goodPrice.setPrice(info.getUnitPrice());
         tvGoodUnitNum.setText("x" + info.getGoodsNumber());
         SalesReturningInfo.ReturnGoodsRecordBean returnRecord = info.getReturnGoodsRecord();
-        tvCaseContent.setText(returnRecord.getCause());
+        if (returnRecord != null) {
+            tvCaseContent.setText(returnRecord.getCause());
+        }
     }
 
     @Override
@@ -183,7 +192,7 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
         return R.layout.activity_refund;
     }
 
-    @OnClick({R.id.iv_left, R.id.tv_repeal, R.id.tv_update, R.id.tv_delete})
+    @OnClick({R.id.iv_left, R.id.tv_repeal, R.id.tv_update, R.id.tv_delete,R.id.ll_good_info})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_left:
@@ -195,6 +204,11 @@ public class RefundActivity extends BaseActivity<RefundPresenterImpl> implements
                 break;
             case R.id.tv_delete:
                 presenter.deleteOrder(orderId + "", token);
+                break;
+            case R.id.ll_good_info:
+                ARouter.getInstance().build(Constant.GOODS_DETAIL_ROUTER)
+                        .withLong("goodId", goodId)
+                        .navigation();
                 break;
             default:
                 break;

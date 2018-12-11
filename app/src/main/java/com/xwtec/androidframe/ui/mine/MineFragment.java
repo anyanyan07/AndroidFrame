@@ -1,7 +1,6 @@
 package com.xwtec.androidframe.ui.mine;
 
 
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,8 +17,6 @@ import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.RxBus.RxBus;
 import com.xwtec.androidframe.util.RxBus.RxBusMSG;
-
-import java.io.File;
 
 import javax.inject.Inject;
 
@@ -40,9 +37,7 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     ImageView ivLeft;
     @BindView(R.id.tv_username)
     TextView tvUsername;
-    private UserBean userBean;
 
-    private String filePath = "";
 
     @Inject
     public MineFragment() {
@@ -52,11 +47,6 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
     protected void init() {
         ivLeft.setVisibility(View.GONE);
         tvTitle.setText("我的");
-        if (TextUtils.isEmpty(filePath)) {
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            }
-        }
         refreshUserInfo();
         initRxBus();
     }
@@ -73,20 +63,17 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
                     case Constant.RX_LOGOUT:
                         ((MainActivity) getActivity()).goBackTab();
                         break;
+                    default:
+                        break;
                 }
             }
         });
     }
 
     private void refreshUserInfo() {
-        userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-        if (!TextUtils.isEmpty(userBean.getImgHead())) {
-            ImageLoadUtil.loadCenterCrop(context, userBean.getImgHead(), ivUserHeader);
-        } else {
-            File file = new File(filePath + "/header/" + userBean.getUserId() + ".jpg");
-            if (file.exists()) {
-                ImageLoadUtil.loadCircleImageFromFile(context, file, ivUserHeader);
-            }
+        UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+        if (!TextUtils.isEmpty(userBean.getHeadImg())) {
+            ImageLoadUtil.loadCircleImage(context, userBean.getHeadImg(), ivUserHeader);
         }
         tvUsername.setText(userBean.getNickName());
     }
@@ -139,6 +126,8 @@ public class MineFragment extends BaseFragment<MinePresenterImpl> implements Min
                 break;
             //在线客服
             case R.id.ll_online_service:
+                ARouter.getInstance().build(Constant.CONTACT_SERVICE_ROUTER)
+                        .navigation();
                 break;
             case R.id.ll_feedback:
                 ARouter.getInstance().build(Constant.HELP_ROUTER).navigation();

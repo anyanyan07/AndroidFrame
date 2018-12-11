@@ -4,9 +4,11 @@ import com.xwtec.androidframe.base.BasePresenter;
 import com.xwtec.androidframe.base.BaseResponse;
 import com.xwtec.androidframe.base.ResponseObserver;
 import com.xwtec.androidframe.manager.net.NetResourceRepo;
+import com.xwtec.androidframe.ui.goodDetail.bean.CommentInfo;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -72,5 +74,20 @@ public class GoodDetailPresenterImpl extends BasePresenter<GoodDetailContact.Goo
                     }
                 });
 
+    }
+
+    @Override
+    public void fetchComment(long goodId, int commentLevel, int startIndex, int showNum) {
+        netResourceRepo.fetchGoodComment(goodId,commentLevel,startIndex,showNum)
+                .subscribe(new ResponseObserver<BaseResponse<List<CommentInfo>>>(this) {
+                    @Override
+                    public void onNext(BaseResponse<List<CommentInfo>> baseResponse) {
+                        if (view != null){
+                            if (baseResponse.isSuccess()){
+                                view.fetchCommentSuccess(baseResponse.getContent());
+                            }
+                        }
+                    }
+                });
     }
 }

@@ -7,6 +7,8 @@ import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.express.Express;
+import com.xwtec.androidframe.ui.expressInfo.ExpressInfo;
+import com.xwtec.androidframe.ui.goodDetail.bean.CommentInfo;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
@@ -20,6 +22,7 @@ import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
+import com.xwtec.androidframe.ui.pay.PayBean;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundedInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturnedInfo;
@@ -29,6 +32,7 @@ import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -153,7 +157,7 @@ public interface NetResourceRepo {
     /**
      * 上传头像
      */
-    Observable<BaseResponse> uploadHeader(RequestBody token, MultipartBody.Part file);
+    Observable<BaseResponse<String>> uploadHeader(RequestBody token, MultipartBody.Part file);
 
     /**
      * 我的订单列表
@@ -259,4 +263,23 @@ public interface NetResourceRepo {
      * 已确认收货详情
      */
     Observable<BaseResponse<SureReceivedInfo>> fetchSureReceivedInfo(long orderId, String token);
+
+    /**
+     * 评论列表
+     */
+    Observable<BaseResponse<List<CommentInfo>>> fetchGoodComment(long goodsId, int commentLevel, int startIndex, int showNumber);
+
+    /**
+     * 物流信息
+     */
+    Observable<BaseResponse<List<ExpressInfo>>> fetchExpressInfo(String orderNum,String token);
+    /**
+     * 支付
+     */
+    Observable<BaseResponse<PayBean>> pay(RequestBody requestBody);
+
+    /**
+     * 提交评论
+     */
+    Observable<BaseResponse> submitComment(Map<String, RequestBody> map, List<MultipartBody.Part> parts);
 }

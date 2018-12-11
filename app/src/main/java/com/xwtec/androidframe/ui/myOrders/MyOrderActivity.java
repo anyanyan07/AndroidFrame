@@ -94,6 +94,13 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                             contentAdapter.remove(position);
                         }
                         break;
+                    case Constant.RX_COMMENT_CHANGE:
+                        int changePos = (int) rxBusMSG.getData();
+                        orderList.get(changePos).setIsComment(1);
+                        contentAdapter.notifyItemChanged(changePos);
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -139,16 +146,18 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                 TextView tvSure = helper.getView(R.id.tv_sure);
                 TextView tvCancel = helper.getView(R.id.tv_cancel);
                 TextView tvDelete = helper.getView(R.id.tv_delete);
+                TextView tvComment = helper.getView(R.id.tv_comment);
                 TextView tvPay = helper.getView(R.id.tv_pay);
                 TextView tvSureReceive = helper.getView(R.id.tv_sure_receive);
                 TextView tvSalesReturn = helper.getView(R.id.tv_sales_return);
                 TextView tvMoneyReturn = helper.getView(R.id.tv_money_return);
-                allGone(llManager, tvCancel, tvDelete, tvPay, tvSalesReturn, tvMoneyReturn, tvSalesReturn, tvSure, tvSureReceive);
+                TextView tvExpressInfo = helper.getView(R.id.tv_express_info);
+                allGone(llManager, tvCancel, tvDelete, tvPay, tvSalesReturn, tvMoneyReturn, tvSalesReturn, tvSure, tvSureReceive, tvComment, tvExpressInfo);
                 final int status = item.getStatus();
                 switch (status) {
                     case 0://订单完成
                         helper.setText(R.id.tv_status, "已完成");
-                        tvVisible(llManager, tvDelete);
+                        tvVisible(llManager, tvDelete, tvExpressInfo);
                         break;
                     case 1://已删除
                         break;
@@ -162,21 +171,26 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                         break;
                     case 4://已发货与路途中
                         helper.setText(R.id.tv_status, "已发货");
+                        tvVisible(llManager, tvExpressInfo);
                         break;
                     case 5://已收货
                         helper.setText(R.id.tv_status, "已收货");
-                        tvVisible(llManager, tvSureReceive, tvSalesReturn);
+                        tvVisible(llManager, tvSureReceive, tvSalesReturn,tvExpressInfo);
                         break;
                     case 6://用户确认收货
                         helper.setText(R.id.tv_status, "已确认收货");
-                        tvVisible(llManager, tvDelete);
+                        tvVisible(llManager, tvDelete,tvExpressInfo);
+                        if (item.getIsComment() == 0) {
+                            tvComment.setVisibility(View.VISIBLE);
+                        }
                         break;
                     case 7://退货中
                         helper.setText(R.id.tv_status, "退货中");
+                        tvVisible(llManager, tvExpressInfo);
                         break;
                     case 8://已退货与退货完成
                         helper.setText(R.id.tv_status, "已退货");
-                        tvVisible(llManager, tvDelete);
+                        tvVisible(llManager, tvDelete,tvExpressInfo);
                         break;
                     case 9://取消订单中
                         helper.setText(R.id.tv_status, "取消中");
@@ -199,7 +213,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                     @Override
                     public void onClick(View v) {
                         //跳转到订单详情页
-                        gotoDetail(item.getOrderId(), status, helper.getAdapterPosition());
+                        gotoDetail(item.getOrderId(),item.getGoodsId(), status, helper.getAdapterPosition());
                     }
                 });
                 //删除订单
@@ -209,6 +223,15 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                         presenter.deleteOrder(item.getOrderId() + "", token, helper.getAdapterPosition());
                     }
                 });
+                //查看物流
+                tvExpressInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build(Constant.EXPRESS_INFO_ROUTER)
+                                .withString("orderNum", item.getOrderNumber()).navigation();
+                    }
+                });
+
                 //立即付款
                 tvPay.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -236,15 +259,25 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                     @Override
                     public void onClick(View v) {
                         ARouter.getInstance().build(Constant.SALE_RETURN_ROUTER)
-                                .withLong("orderId", item.getOrderId())
+                                .withSerializable("order", item)
                                 .withInt("position", helper.getAdapterPosition()).navigation();
                     }
                 });
+                //退款
                 tvMoneyReturn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ARouter.getInstance().build(Constant.MONEY_RETURN_ROUTER)
                                 .withLong("orderId", item.getOrderId())
+                                .withInt("position", helper.getAdapterPosition()).navigation();
+                    }
+                });
+                //评价
+                tvComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ARouter.getInstance().build(Constant.COMMENT_ROUTER)
+                                .withString("orderNumber", item.getOrderNumber())
                                 .withInt("position", helper.getAdapterPosition()).navigation();
                     }
                 });
@@ -254,7 +287,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         recyclerView.setAdapter(contentAdapter);
     }
 
-    private void gotoDetail(long orderId, int status, int position) {
+    private void gotoDetail(long orderId,long goodId, int status, int position) {
         switch (status) {
             case 1://已删除
                 break;
@@ -268,6 +301,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
             case 6://用户已确认收货
                 ARouter.getInstance().build(Constant.ORDER_DETAIL_ROUTER)
                         .withLong("orderId", orderId)
+                        .withLong("goodId", goodId)
                         .withInt("status", status)
                         .withInt("position", position)
                         .navigation();
@@ -278,6 +312,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
             case 12://已退款
                 ARouter.getInstance().build(Constant.REFUND_DETAIL_ROUTER)
                         .withLong("orderId", orderId)
+                        .withLong("goodId", goodId)
                         .withInt("status", status)
                         .withInt("position", position)
                         .navigation();
@@ -401,6 +436,8 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         switch (view.getId()) {
             case R.id.iv_left:
                 finish();
+                break;
+            default:
                 break;
         }
 

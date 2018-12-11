@@ -18,13 +18,20 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.interfaces.SimpleTextWatcher;
+import com.xwtec.androidframe.manager.App;
+import com.xwtec.androidframe.manager.AppManager;
 import com.xwtec.androidframe.manager.Constant;
+import com.xwtec.androidframe.ui.goodDetail.bean.CommentInfo;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailMultiEntity;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.main.MainActivity;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.PopUtil;
 import com.xwtec.androidframe.util.RxBus.RxBus;
@@ -44,7 +51,6 @@ import butterknife.OnClick;
 @Route(path = "/activity/goodDetail")
 public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> implements GoodDetailContact.GoodDetailView, View.OnClickListener {
 
-
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.iv_right)
@@ -63,25 +69,63 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
 
     private GoodDetailAdapter goodDetailAdapter;
     private List<GoodDetailMultiEntity> data;
+    private GoodDetailMultiEntity<CommentInfo> comment;
+    private GoodDetailMultiEntity<GoodDetailResponse.DetailImgListBean> banner;
+    private GoodDetailMultiEntity<GoodDetailResponse> description;
+    private GoodDetailMultiEntity<GoodDetailResponse.DetailImgTextListBean> imgs;
     private GoodDetailResponse goodDetailResponse;
+    private PopupWindow popupWindow;
+    private long goodId;
+
+    private ImageView ivGood;
+    private TextView tvName;
+    private TextView tvPrice;
+    private TextView tvFlavor;
+    private TextView tvNum;
+    private TextView tvAdd;
+    private TextView tvReduce;
+    private Button btnSure;
 
     @Override
     protected void init() {
         super.init();
+        Intent intent = getIntent();
+        if (intent != null) {
+            goodId = intent.getLongExtra("goodId", -1);
+        }
+        if (goodId == -1) {
+            ToastUtils.showShort("sorry,出错了");
+            finish();
+            return;
+        }
         tvTitle.setText("产品详情");
         ivLeft.setVisibility(View.VISIBLE);
         btnBuy.setEnabled(false);
         btnAdd.setEnabled(false);
         initRecyclerView();
-        Intent intent = getIntent();
-        if (intent != null) {
-            long goodId = intent.getLongExtra("goodId", 1);
-            presenter.fetchGoodDetail(goodId);
-        }
+        presenter.fetchGoodDetail(goodId);
+        presenter.fetchComment(goodId, -1, Constant.FIRST_PAGE_INDEX, 3);
     }
 
     private void initRecyclerView() {
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        if (data == null) {
+            data = new ArrayList<>();
+        }
+        banner = new GoodDetailMultiEntity<>(GoodDetailAdapter.BANNER_TYPE);
+        description = new GoodDetailMultiEntity<>(GoodDetailAdapter.DESCRIPTION_TYPE);
+        GoodDetailMultiEntity txt = new GoodDetailMultiEntity(GoodDetailAdapter.TXT_TYPE);
+        GoodDetailMultiEntity allComment = new GoodDetailMultiEntity(GoodDetailAdapter.ALL_COMMENT_TYPE);
+        imgs = new GoodDetailMultiEntity<>(GoodDetailAdapter.IMGS_TYPE);
+        comment = new GoodDetailMultiEntity<>(GoodDetailAdapter.COMMENT_TYPE);
+        data.add(banner);
+        data.add(description);
+        data.add(txt);
+        data.add(imgs);
+        data.add(allComment);
+        data.add(comment);
+        goodDetailAdapter = new GoodDetailAdapter(data, goodId);
+        rv.setAdapter(goodDetailAdapter);
     }
 
     @Override
@@ -97,10 +141,10 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
                 break;
             case R.id.iv_shop_cart:
                 RxBus.getInstance().post(new RxBusMSG(Constant.RX_GO_SHOP_CART, null));
-                finish();
+                AppManager.getInstance().backToActivity(MainActivity.class);
                 break;
             case R.id.iv_share:
-                ToastUtils.showShort("分享,待开发");
+                showSharePop();
                 break;
             case R.id.btn_add_to_shop_cart:
                 showPop();
@@ -132,17 +176,6 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
                 break;
         }
     }
-
-    private PopupWindow popupWindow;
-
-    private ImageView ivGood;
-    private TextView tvName;
-    private TextView tvPrice;
-    private TextView tvFlavor;
-    private TextView tvNum;
-    private TextView tvAdd;
-    private TextView tvReduce;
-    private Button btnSure;
 
     private void showPop() {
         if (popupWindow == null) {
@@ -190,7 +223,7 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
         tvNum.setText("1");
         tvName.setText(goodDetailResponse.getTitle() + goodDetailResponse.getIntroduction());
         tvPrice.setText(goodDetailResponse.getDiscountPrice());
-        tvFlavor.setText("原味");
+//        tvFlavor.setText("原味");
         getWindow().getAttributes().alpha = 0.5f;
         getWindow().setAttributes(getWindow().getAttributes());
         popupWindow.showAtLocation(llRoot, Gravity.BOTTOM, 0, 0);
@@ -201,22 +234,10 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
         this.goodDetailResponse = goodDetailResponse;
         btnBuy.setEnabled(true);
         btnAdd.setEnabled(true);
-        if (data == null) {
-            data = new ArrayList<>();
-        }
-        GoodDetailMultiEntity<GoodDetailResponse.DetailImgListBean> banner = new GoodDetailMultiEntity<>(GoodDetailAdapter.BANNER_TYPE);
         banner.setDataList(goodDetailResponse.getDetailImgList());
-        GoodDetailMultiEntity<GoodDetailResponse> description = new GoodDetailMultiEntity<>(GoodDetailAdapter.DESCRIPTION_TYPE);
         description.setData(goodDetailResponse);
-        GoodDetailMultiEntity txt = new GoodDetailMultiEntity(GoodDetailAdapter.TXT_TYPE);
-        GoodDetailMultiEntity<GoodDetailResponse.DetailImgTextListBean> imgs = new GoodDetailMultiEntity<>(GoodDetailAdapter.IMGS_TYPE);
         imgs.setDataList(goodDetailResponse.getDetailImgTextList());
-        data.add(banner);
-        data.add(description);
-        data.add(txt);
-        data.add(imgs);
-        goodDetailAdapter = new GoodDetailAdapter(data);
-        rv.setAdapter(goodDetailAdapter);
+        goodDetailAdapter.updateDetail();
     }
 
     private void addSure() {
@@ -237,6 +258,11 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
         ToastUtils.showShort("添加购物车成功");
     }
 
+    @Override
+    public void fetchCommentSuccess(List<CommentInfo> commentInfoList) {
+        comment.setDataList(commentInfoList);
+        goodDetailAdapter.updateComment();
+    }
 
     @Override
     public void onClick(View v) {
@@ -256,8 +282,68 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
             case R.id.iv_dismiss:
                 popupWindow.dismiss();
                 break;
+            case R.id.ll_share_wx:
+                shareWx(SendMessageToWX.Req.WXSceneSession);
+                PopUtil.popDismiss(this, sharePop);
+                break;
+            case R.id.ll_share_friend_circle:
+                shareWx(SendMessageToWX.Req.WXSceneTimeline);
+                PopUtil.popDismiss(this, sharePop);
+                break;
             default:
                 break;
         }
+    }
+
+    private PopupWindow sharePop;
+
+    /**
+     * 分享弹窗
+     */
+    private void showSharePop() {
+        if (sharePop == null) {
+            View contentView = LayoutInflater.from(this).inflate(R.layout.share_pop, null);
+            sharePop = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            sharePop.setOutsideTouchable(true);
+            LinearLayout llShareWx = contentView.findViewById(R.id.ll_share_wx);
+            LinearLayout llShareFriendCircle = contentView.findViewById(R.id.ll_share_friend_circle);
+            llShareWx.setOnClickListener(this);
+            llShareFriendCircle.setOnClickListener(this);
+            sharePop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    getWindow().getAttributes().alpha = 1.0f;
+                    getWindow().setAttributes(getWindow().getAttributes());
+                }
+            });
+        }
+        PopUtil.popShowFromBottom(this, sharePop);
+
+    }
+
+    private void shareWx(int scene) {
+        WXWebpageObject wxWebpageObject = new WXWebpageObject();
+        wxWebpageObject.webpageUrl = "http://a.app.qq.com/o/simple.jsp?pkgname=com.xwtec.androidframe";
+        WXMediaMessage wxMediaMessage = new WXMediaMessage(wxWebpageObject);
+        wxMediaMessage.title = "东北农场";
+        wxMediaMessage.description = "生活就应该吃点不一样的，“东北农场”一个食于特色、食出健康的品牌！";
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = "webPage" + String.valueOf(System.currentTimeMillis());
+        req.message = wxMediaMessage;
+        req.scene = scene;
+        ((App) getApplication()).getWxApi().sendReq(req);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (sharePop != null && sharePop.isShowing()) {
+            PopUtil.popDismiss(this, sharePop);
+            return;
+        }
+        if (popupWindow != null && popupWindow.isShowing()) {
+            PopUtil.popDismiss(this, popupWindow);
+            return;
+        }
+        super.onBackPressed();
     }
 }

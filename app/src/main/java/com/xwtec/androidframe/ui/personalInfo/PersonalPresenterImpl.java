@@ -45,12 +45,12 @@ public class PersonalPresenterImpl extends BasePresenter<PersonalContact.Persona
     @Override
     public void uploadHeader(RequestBody token, MultipartBody.Part file) {
         netResourceRepo.uploadHeader(token, file)
-                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                .subscribe(new ResponseObserver<BaseResponse<String>>(this) {
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
+                    public void onNext(BaseResponse<String> baseResponse) {
                         if (view != null) {
                             if (baseResponse.isSuccess()) {
-                                view.uploadHeaderSuccess();
+                                view.uploadHeaderSuccess(baseResponse.getContent());
                             } else {
                                 view.showLoadFail(baseResponse.getMsg());
                             }

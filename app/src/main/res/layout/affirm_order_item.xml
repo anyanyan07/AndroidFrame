@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingEnd="12dp"
@@ -67,6 +67,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="3dp"
         android:gravity="center_vertical|right"
         android:orientation="horizontal">
 
@@ -77,6 +79,19 @@
             android:textColor="@color/c_333333"
             android:textSize="13sp"
             tools:text="共1件商品" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expressPriceLab"
+            android:textColor="@color/c_333333"
+            android:layout_marginStart="10dp"
+            android:textSize="13sp" />
+
+        <com.xwtec.androidframe.customView.PriceView
+            android:id="@+id/express_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"

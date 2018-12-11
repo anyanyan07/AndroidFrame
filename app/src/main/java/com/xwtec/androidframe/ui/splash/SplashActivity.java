@@ -1,11 +1,6 @@
 package com.xwtec.androidframe.ui.splash;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xwtec.androidframe.R;
@@ -19,10 +14,10 @@ import butterknife.OnClick;
 public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
     @BindView(R.id.circle_progress_bar)
     CircleProgressbar circleProgressbar;
-    @BindView(R.id.view_pager)
-    ViewPager viewPager;
+//    @BindView(R.id.view_pager)
+//    ViewPager viewPager;
 
-    private int[] startRedIds = {R.mipmap.start01, R.mipmap.start02};
+//    private int[] startRedIds = {R.mipmap.start01, R.mipmap.start02};
 
     @Override
     protected void init() {
@@ -63,29 +58,29 @@ public class SplashActivity extends BaseActivity<SplashPresenterImpl> {
         }
     }
 
-    class StartAdapter extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return startRedIds.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            ImageView imageView = new ImageView(SplashActivity.this);
-            imageView.setImageResource(startRedIds[position]);
-            container.addView(imageView);
-            return imageView;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        }
-    }
+//    class StartAdapter extends PagerAdapter {
+//
+//        @Override
+//        public int getCount() {
+//            return startRedIds.length;
+//        }
+//
+//        @Override
+//        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+//            return view == object;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+//            ImageView imageView = new ImageView(SplashActivity.this);
+//            imageView.setImageResource(startRedIds[position]);
+//            container.addView(imageView);
+//            return imageView;
+//        }
+//
+//        @Override
+//        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+//        }
+//    }
 }

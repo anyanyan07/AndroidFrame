@@ -89,5 +89,6 @@ public class FeedbackActivity extends BaseActivity<FeedbackPresenterImpl> implem
     @Override
     public void feedbackSuccess(String msg) {
         ToastUtils.showShort(msg);
+        finish();
     }
 }

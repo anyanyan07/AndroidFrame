@@ -157,7 +157,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center_vertical|right"
-        android:paddingEnd="12dp"
+        android:paddingEnd="7dp"
         android:paddingStart="12dp"
         android:visibility="gone">
 
@@ -165,7 +165,8 @@
             android:id="@+id/tv_money_return"
             android:layout_width="70dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/red_btn_bg"
             android:gravity="center"
             android:text="@string/moneyReturn"
@@ -177,7 +178,8 @@
             android:id="@+id/tv_sales_return"
             android:layout_width="70dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/red_btn_bg"
             android:gravity="center"
             android:text="@string/salesReturn"
@@ -189,7 +191,8 @@
             android:id="@+id/tv_sure_receive"
             android:layout_width="70dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/login_btn_bg"
             android:gravity="center"
             android:text="@string/sureReceive"
@@ -201,7 +204,8 @@
             android:id="@+id/tv_sure"
             android:layout_width="70dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/login_btn_bg"
             android:gravity="center"
             android:text="@string/sureOrder"
@@ -213,7 +217,8 @@
             android:id="@+id/tv_delete"
             android:layout_width="70dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/red_btn_bg"
             android:gravity="center"
             android:text="@string/deleteOrder"
@@ -222,10 +227,24 @@
             android:visibility="gone" />
 
         <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="70dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/buy_btn_bg"
+            android:gravity="center"
+            android:text="@string/commentOrder"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tv_cancel"
             android:layout_width="70dp"
             android:layout_height="28dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/red_btn_bg"
             android:gravity="center"
             android:text="@string/cancelOrder"
@@ -234,15 +253,31 @@
             android:visibility="gone" />
 
         <TextView
+            android:id="@+id/tv_express_info"
+            android:layout_width="70dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/orange_btn_bg"
+            android:gravity="center"
+            android:text="@string/expressInfo"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tv_pay"
             android:layout_width="70dp"
             android:layout_height="28dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/register_btn_bg"
             android:gravity="center"
             android:text="@string/payNow"
             android:textColor="@color/white"
             android:textSize="13sp"
             android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>

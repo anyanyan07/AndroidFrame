@@ -60,6 +60,8 @@ public class SettingActivity extends BaseActivity<SettingPresenterImpl> implemen
                     presenter.logout(userBean.getToken());
                 }
                 break;
+            default:
+                break;
         }
     }
 }

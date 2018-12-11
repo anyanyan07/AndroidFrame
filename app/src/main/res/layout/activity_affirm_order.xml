@@ -18,36 +18,76 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingEnd="12dp"
-        android:paddingStart="12dp">
+        android:paddingStart="12dp"
+        android:paddingBottom="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/discountCode"
+                android:textColor="@color/c_2eb167"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_discount_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/get_code_bg"
+                android:gravity="center"
+                android:hint="请输入折扣码"
+                android:inputType="number"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textColor="@color/c_666666"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/totalMoney"
-            android:textColor="@color/c_333333"
-            android:textSize="13sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <com.xwtec.androidframe.customView.PriceView
-            android:id="@+id/total_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/totalMoney"
+                android:textColor="@color/c_333333"
+                android:textSize="13sp" />
 
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="85dp"
-            android:layout_height="35dp"
-            android:background="@drawable/submit_bg"
-            android:enabled="false"
-            android:text="@string/submitOrder"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
+            <com.xwtec.androidframe.customView.PriceView
+                android:id="@+id/total_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="85dp"
+                android:layout_height="35dp"
+                android:background="@drawable/submit_bg"
+                android:enabled="false"
+                android:text="@string/submitOrder"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

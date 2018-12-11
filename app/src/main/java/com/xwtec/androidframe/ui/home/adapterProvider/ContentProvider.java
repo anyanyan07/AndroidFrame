@@ -32,6 +32,7 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
 
     private HomeFragment homeFragment;
     private GridSpacingItemDecoration gridSpacingItemDecoration;
+    private RecyclerView recyclerView;
 
     public ContentProvider(HomeFragment homeFragment) {
         this.homeFragment = homeFragment;
@@ -41,7 +42,7 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
     @Override
     public void convert(BaseViewHolder helper, HomeMultiEntity<GoodListBean> data, int position) {
         final List<GoodListBean> goodBeanList = data.getData();
-        RecyclerView recyclerView = helper.getView(R.id.rv);
+        recyclerView = helper.getView(R.id.rv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.removeItemDecoration(gridSpacingItemDecoration);
@@ -84,4 +85,5 @@ public class ContentProvider extends BaseItemProvider<HomeMultiEntity<GoodListBe
     public boolean onLongClick(BaseViewHolder helper, HomeMultiEntity<GoodListBean> data, int position) {
         return false;
     }
+
 }

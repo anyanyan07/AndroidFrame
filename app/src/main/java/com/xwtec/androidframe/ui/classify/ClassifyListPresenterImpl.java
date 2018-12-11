@@ -49,4 +49,21 @@ public class ClassifyListPresenterImpl extends BasePresenter<ClassifyListContact
                     }
                 });
     }
+
+    @Override
+    public void addShopCart(HashMap<String, Object> map) {
+        netResourceRepo.addShopCart(map)
+                .subscribe(new ResponseObserver<BaseResponse>(this) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (view != null) {
+                            if (baseResponse.isSuccess()){
+                                view.addShopCartSuccess();
+                            }else{
+                                view.showLoadFail(baseResponse.getMsg());
+                            }
+                        }
+                    }
+                });
+    }
 }

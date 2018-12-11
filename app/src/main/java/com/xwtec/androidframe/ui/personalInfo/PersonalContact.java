@@ -15,7 +15,7 @@ public interface PersonalContact {
     interface PersonalView extends BaseView {
         void updateSuccess(String msg);
 
-        void uploadHeaderSuccess();
+        void uploadHeaderSuccess(String headerUrl);
 
         void fetchUserInfoSuccess(UserBean userBean);
     }

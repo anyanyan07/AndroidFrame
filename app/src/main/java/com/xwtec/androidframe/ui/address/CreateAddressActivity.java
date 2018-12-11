@@ -62,7 +62,6 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
     @BindView(R.id.rl_set_default)
     RelativeLayout rlSetDefault;
 
-    //类型：新增，修改
     private String type;
     private static final String ADD_TYPE = "ADD";
     private static final String EDIT_TYPE = "EDIT";
@@ -79,6 +78,7 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
+        @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LOAD_DATA:
@@ -96,6 +96,8 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
                     showCityPop();
                     break;
                 case MSG_LOAD_FAILED:
+                    break;
+                default:
                     break;
             }
         }
@@ -163,8 +165,8 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
             return;
         }
         String phoneNum = etPhoneNum.getText().toString().trim();
-        if (TextUtils.isEmpty(phoneNum)) {
-            ToastUtils.showShort("请输入手机号码");
+        if (TextUtils.isEmpty(phoneNum) || phoneNum.length() != 11) {
+            ToastUtils.showShort("请输入11位手机号码");
             return;
         }
         String address = tvAddress.getText().toString().trim();
@@ -223,49 +225,54 @@ public class CreateAddressActivity extends BaseActivity<CreateAddPresenterImpl> 
                 }
             }).setTitleText("城市选择")
                     .setDividerColor(Color.BLACK)
-                    .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                    .setTextColorCenter(Color.BLACK)
                     .setContentTextSize(20)
                     .build();
-            cityPickerView.setPicker(options1Items, options2Items, options3Items);//三级选择器
+            //三级选择器
+            cityPickerView.setPicker(options1Items, options2Items, options3Items);
 
         }
         cityPickerView.show();
     }
 
-    private void initJsonData() {//解析数据
-        String JsonData = getJson(this, "province.json");//获取assets目录下的json文件数据
-        ArrayList<JsonBean> jsonBean = parseData(JsonData);//用Gson 转成实体
+    /**
+     * 解析数据
+     */
+    private void initJsonData() {
+        //获取assets目录下的json文件数据
+        String jsondata = getJson(this, "province.json");
+        //用Gson 转成实体
+        ArrayList<JsonBean> jsonBean = parseData(jsondata);
         options1Items = jsonBean;
-        for (int i = 0; i < jsonBean.size(); i++) {//遍历省份
-            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
-            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
-
-            for (int c = 0; c < jsonBean.get(i).getCityList().size(); c++) {//遍历该省份的所有城市
+        //遍历省份
+        for (int i = 0; i < jsonBean.size(); i++) {
+            //该省的城市列表（第二级）
+            ArrayList<String> CityList = new ArrayList<>();
+            //该省的所有地区列表（第三极）
+            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();
+            //遍历该省份的所有城市
+            for (int c = 0; c < jsonBean.get(i).getCityList().size(); c++) {
                 String CityName = jsonBean.get(i).getCityList().get(c).getName();
-                CityList.add(CityName);//添加城市
-                ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
+                //添加城市
+                CityList.add(CityName);
+                //该城市的所有地区列表
+                ArrayList<String> cityAreaList = new ArrayList<>();
 
                 //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
                 if (jsonBean.get(i).getCityList().get(c).getArea() == null
                         || jsonBean.get(i).getCityList().get(c).getArea().size() == 0) {
-                    City_AreaList.add("");
+                    cityAreaList.add("");
                 } else {
-                    City_AreaList.addAll(jsonBean.get(i).getCityList().get(c).getArea());
+                    cityAreaList.addAll(jsonBean.get(i).getCityList().get(c).getArea());
                 }
-                Province_AreaList.add(City_AreaList);//添加该省所有地区数据
+                //添加该省所有地区数据
+                Province_AreaList.add(cityAreaList);
             }
-
-            /**
-             * 添加城市数据
-             */
+            //添加城市数据
             options2Items.add(CityList);
-
-            /**
-             * 添加地区数据
-             */
+            //添加地区数据
             options3Items.add(Province_AreaList);
         }
-
         mHandler.sendEmptyMessage(MSG_LOAD_SUCCESS);
 
     }

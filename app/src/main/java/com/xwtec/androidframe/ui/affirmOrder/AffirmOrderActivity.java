@@ -5,12 +5,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
+import com.xwtec.androidframe.base.MessageEvent;
 import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.MultiEntity;
@@ -18,6 +20,7 @@ import com.xwtec.androidframe.ui.address.bean.Address;
 import com.xwtec.androidframe.ui.affirmOrder.bean.AffirmResponse;
 import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,6 +46,8 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
     PriceView totalPrice;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.et_discount_code)
+    EditText etDiscountCode;
 
     public static final int ADDRESS_LIST_REQ_CODE = 0x01;
     private AffirmAdapter adapter;
@@ -69,6 +74,7 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
         contentMultiEntity = new MultiEntity<>(AffirmAdapter.GOODS_TYPE);
         data.add(addressMultiEntity);
         data.add(contentMultiEntity);
+//        data.add(new MultiEntity<>(AffirmAdapter.DISCOUNT_TYPE));
         adapter = new AffirmAdapter(data, this);
         rv.setAdapter(adapter);
     }
@@ -87,6 +93,8 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
             case R.id.btn_submit:
                 submitOrder();
                 break;
+            default:
+                break;
         }
     }
 
@@ -94,6 +102,7 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
         try {
             JSONObject jsonObject = new JSONObject(json);
             jsonObject.put("receiverId", receiverId);
+            jsonObject.put("discountCode", etDiscountCode.getText().toString().trim()/*adapter.getDiscountCode()*/);
             presenter.submitOrder(RequestBody.create(MediaType.parse("application/json"), jsonObject.toString()));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -127,21 +136,39 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
 
     @Override
     public void affirmSuccess(AffirmResponse affirmResponse) {
-        addressMultiEntity.setData(affirmResponse.getReceiveAddress());
-        contentMultiEntity.setDataList(affirmResponse.getOrderGoods());
         if (affirmResponse.getReceiveAddress() != null) {
             btnSubmit.setEnabled(true);
             receiverId = affirmResponse.getReceiveAddress().getId();
+            addressMultiEntity.setData(affirmResponse.getReceiveAddress());
+            adapter.updateAddress();
         }
+        contentMultiEntity.setDataList(affirmResponse.getOrderGoods());
+        adapter.updateContent();
         totalPrice.setPrice(affirmResponse.getTotalPrice());
-        adapter.notifyDataSetChanged();
     }
 
-    //提交订单成功，跳转到支付页面
+    /**
+     * 提交订单成功，跳转到支付页面
+     */
     @Override
     public void submitSuccess(SubmitOrderBean submitOrderBean) {
-        ARouter.getInstance().build(Constant.PAY_ROUTER)
-                .withString("totalMoney", submitOrderBean.getTotalPrice()).navigation();
-        finish();
+        if (submitOrderBean != null) {
+            List<SubmitOrderBean.OrderNumbersBean> orderNumbers = submitOrderBean.getOrderNumbers();
+            if (orderNumbers != null && orderNumbers.size() > 0) {
+                ArrayList<String> orderNumberList = new ArrayList<>();
+                for (SubmitOrderBean.OrderNumbersBean orderNumbersBean : orderNumbers) {
+                    String orderNumber = orderNumbersBean.getOrderNumber();
+                    orderNumberList.add(orderNumber);
+                }
+                //通知购物车刷新数据
+                EventBus.getDefault().post(new MessageEvent(Constant.RX_SHOP_CART_REFRESH));
+                ARouter.getInstance().build(Constant.PAY_ROUTER)
+                        .withString("totalMoney", submitOrderBean.getTotalPrice())
+                        .withLong("addressId", receiverId)
+                        .withString("discountCode", "")
+                        .withStringArrayList("orderNumbers", orderNumberList).navigation();
+                finish();
+            }
+        }
     }
 }

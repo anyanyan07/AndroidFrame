@@ -1,11 +1,12 @@
 package com.xwtec.androidframe.ui.home;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CacheUtils;
@@ -34,18 +35,20 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 
 public class HomeFragment extends BaseFragment<HomePresenterImpl> implements HomeContact.HomeView, OnRefreshLoadMoreListener {
 
-    @BindView(R.id.rl_title)
-    RelativeLayout rlTitle;
+    private static final String TAG = "HomeFragment";
+    @BindView(R.id.ll_title)
+    LinearLayout rlTitle;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     @BindView(R.id.iv_right)
     ImageView ivRight;
-    @BindView(R.id.iv_left)
-    ImageView ivLeft;
     @BindView(R.id.smart_refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
     @BindView(R.id.rv_tab_title)
@@ -62,6 +65,7 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     private BaseQuickAdapter<TabBean, BaseViewHolder> tabAdapter;
     private int scrollY;
     private int selectedPosition;
+    private int tabScrollX;
 
     @Inject
     public HomeFragment() {
@@ -69,7 +73,6 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
     @Override
     protected void init() {
-        ivLeft.setVisibility(View.GONE);
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.mipmap.xiaoxi);
         initRv();
@@ -89,6 +92,22 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
         rvTabTitle.setVisibility(View.GONE);
         rvTabTitle.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        rvTabTitle.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                tabScrollX += dx;
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == SCROLL_STATE_IDLE) {
+                    homeAdapter.scrollTab(tabScrollX);
+                    tabScrollX = 0;
+                }
+            }
+        });
         tabAdapter = new BaseQuickAdapter<TabBean, BaseViewHolder>(R.layout.home_title_layout) {
             @Override
             protected void convert(BaseViewHolder helper, TabBean tabBean) {
@@ -99,6 +118,9 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         tabAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (position == selectedPosition) {
+                    return;
+                }
                 updateTab(position);
                 homeAdapter.updateTab(position);
                 fetchGoodsData(tabBeanList.get(position).getId(), 0);
@@ -108,27 +130,22 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 scrollY += dy;
                 int titleHeight = ConvertUtils.dp2px(44);
                 if (scrollY <= 0) {
-                    rlTitle.getBackground().setAlpha(0);
+                    rlTitle.setBackgroundColor(Color.argb(0, 0, 0, 0));
                 } else if (scrollY > 0 && scrollY <= titleHeight) {
-                    if (recyclerView.getChildAt(0).getY() == 0f) {
-                        rlTitle.getBackground().setAlpha(0);
+                    if (recyclerView.getChildAt(0).getY() == 0) {
+                        rlTitle.setBackgroundColor(Color.argb(0, 0, 0, 0));
                     } else {
                         float scale = (float) scrollY / titleHeight;
-                        float alpha = (255 * scale);
-                        rlTitle.getBackground().setAlpha((int) alpha);
+                        int alpha = Math.round(255 * scale);
+                        rlTitle.setBackgroundColor(Color.argb(alpha, 46, 177, 103));
                     }
                 } else {
-                    rlTitle.getBackground().setAlpha(255);
+                    rlTitle.setBackgroundColor(Color.argb(255, 46, 177, 103));
                 }
                 int bannerHeight = ConvertUtils.dp2px(150);
                 View banner = recyclerView.getChildAt(0);
@@ -172,16 +189,19 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
             this.contentData = goodListBeanList;
             goodsDataEntity.setData(contentData);
             smartRefreshLayout.finishRefresh(true);
+            smartRefreshLayout.setNoMoreData(false);
         } else {
-            if (resultSize < Constant.PER_PAGE_NUM) {
-                smartRefreshLayout.finishLoadMoreWithNoMoreData();
-            } else {
-                smartRefreshLayout.finishLoadMore(true);
-            }
+            smartRefreshLayout.finishLoadMore(true);
             this.contentData.addAll(goodListBeanList);
+        }
+        if (resultSize < Constant.PER_PAGE_NUM) {
+            smartRefreshLayout.setNoMoreData(true);
         }
         curStartIndex = curStartIndex + resultSize;
         homeAdapter.updateGoodContent();
+        if (rvTabTitle.getVisibility() == View.VISIBLE) {
+            ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(1, ConvertUtils.dp2px(44));
+        }
     }
 
     @Override
@@ -201,7 +221,7 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
         }
         this.tabBeanList = tabBeanList;
         tabDataEntity.setData(tabBeanList);
-        homeAdapter.updateTab(0);
+        homeAdapter.setTabData();
         tabAdapter.setNewData(tabBeanList);
         TabBean tabBean = tabBeanList.get(0);
         if (tabBean != null) {
@@ -252,5 +272,25 @@ public class HomeFragment extends BaseFragment<HomePresenterImpl> implements Hom
     public void updateTab(int selectedPosition) {
         this.selectedPosition = selectedPosition;
         tabAdapter.notifyDataSetChanged();
+    }
+
+    public void scrollTab(int scrollX) {
+        if (scrollX != -1 && rvTabTitle != null) {
+            rvTabTitle.scrollBy(scrollX, 0);
+            tabScrollX = 0;
+        }
+    }
+
+
+    @OnClick({R.id.iv_right})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_right:
+                ARouter.getInstance().build(Constant.CONTACT_SERVICE_ROUTER)
+                        .navigation();
+                break;
+            default:
+                break;
+        }
     }
 }

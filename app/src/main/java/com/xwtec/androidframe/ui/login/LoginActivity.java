@@ -149,15 +149,17 @@ public class LoginActivity extends BaseActivity<LoginPresenterImpl> implements L
         Intent intent = getIntent();
         if (intent != null) {
             String target = intent.getStringExtra("target");
-            switch (target) {
-                case Constant.SHOP_CART_FRAG:
-                    RxBus.getInstance().post(new RxBusMSG(Constant.SHOP_CART_FRAG, null));
-                    break;
-                case Constant.MINE_FRAG:
-                    RxBus.getInstance().post(new RxBusMSG(Constant.MINE_FRAG, null));
-                    break;
-                default:
-                    break;
+            if (!TextUtils.isEmpty(target)) {
+                switch (target) {
+                    case Constant.SHOP_CART_FRAG:
+                        RxBus.getInstance().post(new RxBusMSG(Constant.SHOP_CART_FRAG, null));
+                        break;
+                    case Constant.MINE_FRAG:
+                        RxBus.getInstance().post(new RxBusMSG(Constant.MINE_FRAG, null));
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         finish();

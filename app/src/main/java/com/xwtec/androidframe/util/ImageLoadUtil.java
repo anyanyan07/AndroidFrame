@@ -44,7 +44,9 @@ public class ImageLoadUtil {
         }
         RequestOptions requestOptions = new RequestOptions();
         GlideCircleTransform glideCircleTransform = new GlideCircleTransform(context);
-        requestOptions = requestOptions.transform(glideCircleTransform);
+        requestOptions = requestOptions.transform(glideCircleTransform)
+                .placeholder(R.mipmap.header_default)
+                .error(R.mipmap.header_default);
         Glide.with(context).load(url).apply(requestOptions).into(imageView);
     }
 

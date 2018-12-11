@@ -7,6 +7,8 @@ import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.express.Express;
+import com.xwtec.androidframe.ui.expressInfo.ExpressInfo;
+import com.xwtec.androidframe.ui.goodDetail.bean.CommentInfo;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
@@ -20,6 +22,7 @@ import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
+import com.xwtec.androidframe.ui.pay.PayBean;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundedInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturnedInfo;
@@ -29,6 +32,7 @@ import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -43,6 +47,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -213,7 +218,7 @@ public interface Service {
      */
     @Multipart
     @POST("user/upHeadImg")
-    Observable<BaseResponse> uploadHeader(@Part("token") RequestBody token, @Part MultipartBody.Part file);
+    Observable<BaseResponse<String>> uploadHeader(@Part("token") RequestBody token, @Part MultipartBody.Part file);
 
     /**
      * 获取个人信息
@@ -344,4 +349,27 @@ public interface Service {
      */
     @GET("expressCompanys/getExpressCompanys")
     Observable<BaseResponse<List<Express>>> fetchExpressList();
+
+    /**
+     * 评论列表
+     */
+    @GET("comments/selectGoodsComment")
+    Observable<BaseResponse<List<CommentInfo>>> fetchGoodComment(@Query("goodsId") long goodId,
+                                                                 @Query("commentLevel") int commentLevel,
+                                                                 @Query("startIndex") int startIndex,
+                                                                 @Query("showNumber") int showNumber);
+    @GET("express/getExpressInfo")
+    Observable<BaseResponse<List<ExpressInfo>>> fetchExpressInfo(@Query("orderNumber") String orderNum,
+                                                                 @Query("token") String token);
+
+    @POST("orders/orderPay")
+    Observable<BaseResponse<PayBean>> pay(@Body RequestBody body);
+
+//    @POST("comments/saveGoodsComment")
+//    Observable<BaseResponse> submitComment(@Body MultipartBody multipartBody);
+
+    @Multipart
+    @POST("comments/saveGoodsComment")
+    Observable<BaseResponse> submitComment(@PartMap Map<String, RequestBody > map, @Part List<MultipartBody.Part> parts);
+
 }

@@ -16,6 +16,8 @@ import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.login.UserBean;
+import com.xwtec.androidframe.ui.myOrders.bean.Order;
+import com.xwtec.androidframe.util.ImageLoadUtil;
 import com.xwtec.androidframe.util.RxBus.RxBus;
 import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 
@@ -59,13 +61,15 @@ public class SaleReturnActivity extends BaseActivity<SaleReturnPresenterImpl> im
         super.init();
         Intent intent = getIntent();
         if (intent != null) {
-            orderId = intent.getLongExtra("orderId", -1);
+            Order order = ((Order) intent.getSerializableExtra("order"));
+            orderId = order.getOrderId();
+            ImageLoadUtil.loadCenterCrop(this, order.getImgUrl(), ivGood);
+            tvGoodName.setText(order.getTitle() + order.getIntroduction());
+            goodPrice.setPrice(order.getUnitPrice());
+            tvGoodUnitNum.setText("x" + order.getGoodsNumber());
             position = intent.getIntExtra("position", -1);
         }
-//        orderId = order.getOrderId();
         tvTitle.setText("退货");
-//        ImageLoadUtil.loadFitCenter(this, order.getImgUrl(), ivGood);
-//        tvGoodName.setText(order.getTitle() + order.getIntroduction());
     }
 
     @Override
@@ -135,6 +139,8 @@ public class SaleReturnActivity extends BaseActivity<SaleReturnPresenterImpl> im
                         String expressName = data.getStringExtra("expressName");
                         tvExpress.setText(expressName);
                     }
+                    break;
+                default:
                     break;
             }
         }

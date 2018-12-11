@@ -28,7 +28,6 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.blankj.utilcode.util.CacheUtils;
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
@@ -69,6 +68,8 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     TextView tvSex;
     @BindView(R.id.iv_header)
     ImageView ivHeader;
+    @BindView(R.id.tv_integral)
+    TextView tvIntegral;
 
     private UserBean userBean;
     private int userId = -1;
@@ -78,6 +79,12 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     private static final int CROP_REQUEST_CODE = 2;//裁剪图片的请求码
     private TimePickerView birthPickerView;
     private PopupWindow headerPop;
+    private Dialog sexDialog;
+    private LinearLayout llFemale;
+    private LinearLayout llMale;
+    private String curNickName;
+    private String curSex;
+    private String curBirthday;
 
     @Override
     protected int getLayoutId() {
@@ -88,6 +95,11 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
     protected void init() {
         super.init();
         tvTitle.setText(R.string.personalInfo);
+        if (TextUtils.isEmpty(filePath)) {
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            }
+        }
         refreshUserInfo();
         presenter.fetchUserInfo(userBean.getToken());
     }
@@ -102,7 +114,8 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         String nickName = userBean.getNickName();
         String sex = userBean.getSex();
         String birthday = userBean.getBirth();
-        String imgHead = userBean.getImgHead();
+        String imgHead = userBean.getHeadImg();
+        tvIntegral.setText(userBean.getIntegral()+"");
         if (!TextUtils.isEmpty(nickName)) {
             tvNickName.setText(nickName);
         }
@@ -113,20 +126,11 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
             tvBirthday.setText(DateFormat.format("yyyy-MM-dd", Long.parseLong(birthday)));
         }
         if (!TextUtils.isEmpty(imgHead)) {
-            ImageLoadUtil.loadCenterCrop(this, imgHead, ivHeader);
-        } else {
-            if (TextUtils.isEmpty(filePath)) {
-                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                }
-            }
-            File file = new File(filePath + "/header/" + userBean.getUserId() + ".jpg");
-            if (file.exists()) {
-                ImageLoadUtil.loadCircleImageFromFile(this, file, ivHeader);
-            }
+            ImageLoadUtil.loadCircleImage(this, imgHead, ivHeader);
         }
     }
 
+    @Override
     @OnClick({R.id.iv_left, R.id.ll_header, R.id.ll_nick_name, R.id.ll_sex, R.id.ll_birthday, R.id.ll_update_password, R.id.ll_address})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -196,13 +200,6 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         PersonalInfoActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    private Dialog sexDialog;
-    private LinearLayout llFemale;
-    private LinearLayout llMale;
-    private String curNickName;
-    private String curSex;
-    private String curBirthday;
-
     private void dismissDialog(Dialog dialog) {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
@@ -247,7 +244,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
 
     private void showBirthPop() {
         if (birthPickerView == null) {
-            Calendar selectedDate = Calendar.getInstance();//系统当前时间
+            Calendar selectedDate = Calendar.getInstance();
             Calendar startDate = Calendar.getInstance();
             startDate.set(1900, 0, 01);
             Calendar endDate = Calendar.getInstance();
@@ -336,17 +333,18 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
             }
         }
         CacheUtils.getInstance().put(Constant.USER_KEY, userBean);
+        RxBus.getInstance().post(new RxBusMSG(Constant.RX_USER_INFO, ""));
     }
 
     @Override
-    public void uploadHeaderSuccess() {
+    public void uploadHeaderSuccess(String headerUrl) {
         ToastUtils.showShort("上传成功");
-        //头像上传成功后，显示头像
-        File file = new File(filePath + "/crop/" + userId + ".jpg");
-        File headerFile = new File(filePath + "/header/" + userId + ".jpg");
-        FileUtils.copyFile(file, headerFile, null);
-        ImageLoadUtil.loadCircleImageFromFile(this, headerFile, ivHeader);
-        RxBus.getInstance().post(new RxBusMSG(Constant.RX_USER_INFO, ""));
+        if (!TextUtils.isEmpty(headerUrl)){
+            ImageLoadUtil.loadCircleImage(this,headerUrl,ivHeader);
+            userBean.setHeadImg(headerUrl);
+            CacheUtils.getInstance().put(Constant.USER_KEY, userBean);
+            RxBus.getInstance().post(new RxBusMSG(Constant.RX_USER_INFO, ""));
+        }
     }
 
     @Override
@@ -365,13 +363,10 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         requestAlbum();
     }
 
-    //调用系统相机
+    /**
+     * 调用系统相机
+     */
     private void requestCamera() {
-        if (TextUtils.isEmpty(filePath)) {
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            }
-        }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(filePath + "/camera/" + userId + ".jpg");
         if (!file.getParentFile().exists()) {
@@ -383,19 +378,25 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
         file = new File(filePath + "/camera/" + userId + ".jpg");
         //兼容7.0的写法
         Uri desUri = FileProvider.getUriForFile(this, "com.anyan.headerdemo.fileprovider", file);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//授予目标应用临时权限
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, desUri);//保存在指定的位置
+        //授予目标应用临时权限
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        //保存在指定的位置
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, desUri);
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
     }
 
-    //调用系统相册
+    /**
+     * 调用系统相册
+     */
     private void requestAlbum() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, ALBUM_REQUEST_CODE);
     }
 
-    //调用裁剪功能
+    /**
+     * 调用裁剪功能
+     */
     private void crop(Uri fromUri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -449,6 +450,8 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
                     //调用裁剪回调
                     //请求服务器上传图片
                     updateHeader();
+                    break;
+                default:
                     break;
             }
         }

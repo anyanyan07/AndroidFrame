@@ -23,7 +23,7 @@
             android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/telephone"
+            android:text="@string/QQ"
             android:textColor="@color/c_999999"
             android:textSize="14sp" />
 
@@ -32,13 +32,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/telephone"
+            android:text="738219729"
             android:textColor="@color/c_333333"
             android:textSize="14sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:src="@mipmap/jinru" />
     </LinearLayout>
 
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/northeastFarm"
+            android:text="sh15721439620"
             android:textColor="@color/c_333333"
             android:textSize="14sp" />
     </LinearLayout>

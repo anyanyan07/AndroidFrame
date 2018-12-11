@@ -67,7 +67,8 @@
         android:layout_height="45dp"
         android:gravity="center_vertical"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingRight="12dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,7 +91,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/c_eaeaea" />
+        android:background="@color/c_eaeaea"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -117,9 +119,9 @@
                 android:id="@+id/tv_reduce"
                 android:layout_width="21dp"
                 android:layout_height="match_parent"
+                android:clickable="false"
                 android:gravity="center"
                 android:text="@string/reduce"
-                android:clickable="false"
                 android:textColor="@color/c_333333"
                 android:textSize="13sp" />
 

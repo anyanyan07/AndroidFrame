@@ -24,6 +24,9 @@ import java.util.List;
 public class ImgsProvider extends BaseItemProvider<GoodDetailMultiEntity<GoodDetailResponse.DetailImgTextListBean>, BaseViewHolder> {
     @Override
     public void convert(BaseViewHolder helper, GoodDetailMultiEntity<GoodDetailResponse.DetailImgTextListBean> data, int position) {
+        if (data==null){
+            return;
+        }
         List<GoodDetailResponse.DetailImgTextListBean> dataList = data.getDataList();
         RecyclerView recyclerView = helper.getView(R.id.rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));

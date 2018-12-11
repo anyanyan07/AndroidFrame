@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -21,6 +23,7 @@ import com.xwtec.androidframe.base.BaseActivity;
 import com.xwtec.androidframe.customView.PriceView;
 import com.xwtec.androidframe.manager.Constant;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
+import com.xwtec.androidframe.ui.login.UserBean;
 import com.xwtec.androidframe.util.GridSpacingItemDecoration;
 import com.xwtec.androidframe.util.ImageLoadUtil;
 
@@ -44,7 +47,7 @@ public class ClassifyListActivity extends BaseActivity<ClassifyListPresenterImpl
     private int id;
     private int curIndex = 0;
     private BaseQuickAdapter<CategoryContentBean, BaseViewHolder> adapter;
-    private List<CategoryContentBean> data;
+    private List<CategoryContentBean> data = new ArrayList<>();
 
     @Override
     protected void init() {
@@ -62,13 +65,20 @@ public class ClassifyListActivity extends BaseActivity<ClassifyListPresenterImpl
         rv.addItemDecoration(new GridSpacingItemDecoration(2, ConvertUtils.dp2px(8), true));
         adapter = new BaseQuickAdapter<CategoryContentBean, BaseViewHolder>(R.layout.home_content_layout, data) {
             @Override
-            protected void convert(BaseViewHolder helper, CategoryContentBean item) {
+            protected void convert(BaseViewHolder helper, final CategoryContentBean item) {
                 ImageLoadUtil.loadFitCenter(mContext, item.getImgUrl(), (ImageView) helper.getView(R.id.iv_good));
                 helper.setText(R.id.tv_good_name, item.getTitle());
                 helper.setText(R.id.tv_good_num, item.getIntroduction());
                 PriceView priceView = helper.getView(R.id.tv_cur_price);
                 priceView.setPrice(item.getDiscountPrice());
                 helper.setText(R.id.tv_old_price, item.getOriginalPrice());
+                ImageView ivShopCart = helper.getView(R.id.iv_shop_cart);
+                ivShopCart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addShopCart(item.getId());
+                    }
+                });
             }
         };
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -100,15 +110,16 @@ public class ClassifyListActivity extends BaseActivity<ClassifyListPresenterImpl
     public void fetchContentSuccess(List<CategoryContentBean> categoryContentList) {
         if (curIndex == 0) {
             refreshLayout.finishRefresh(true);
-            data = new ArrayList<>();
-        }
-        if (categoryContentList.size() < Constant.PER_PAGE_NUM) {//不足一页数据,没有更多数据
-            refreshLayout.setNoMoreData(true);
+            data.clear();
         } else {
-            refreshLayout.setNoMoreData(false);
+            if (categoryContentList.size() < Constant.PER_PAGE_NUM) {
+                refreshLayout.finishLoadMoreWithNoMoreData();
+            } else {
+                refreshLayout.finishLoadMore(true);
+            }
         }
         data.addAll(categoryContentList);
-        adapter.addData(curIndex, categoryContentList);
+        adapter.notifyDataSetChanged();
         curIndex += categoryContentList.size();
     }
 
@@ -136,5 +147,26 @@ public class ClassifyListActivity extends BaseActivity<ClassifyListPresenterImpl
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         curIndex = 0;
         fetchContent(id, curIndex);
+    }
+
+    /**
+     * 加入购物车
+     */
+    public void addShopCart(long goodId) {
+        UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
+        if (userBean == null) {
+            ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
+            return;
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("goodsId", goodId);
+        map.put("goodsNumber", 1);
+        map.put("token", userBean.getToken());
+        presenter.addShopCart(map);
+    }
+
+    @Override
+    public void addShopCartSuccess() {
+        ToastUtils.showShort("加入购物车成功");
     }
 }

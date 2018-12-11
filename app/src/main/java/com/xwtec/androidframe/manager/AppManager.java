@@ -24,9 +24,13 @@ public class AppManager {
     /**
      * 单一实例
      */
-    public static AppManager get() {
+    public static AppManager getInstance() {
         if (instance == null) {
-            instance = new AppManager();
+            synchronized (AppManager.class) {
+                if (instance == null) {
+                    instance = new AppManager();
+                }
+            }
         }
         return instance;
     }
@@ -44,7 +48,7 @@ public class AppManager {
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
-    public Activity currentActivity() {
+    public Activity getCurrentActivity() {
         Activity activity = activityStack.lastElement();
         return activity;
     }
@@ -52,15 +56,15 @@ public class AppManager {
     /**
      * 结束当前Activity（堆栈中最后一个压入的）
      */
-    public void finishActivity() {
+    public void removeCurrentActivity() {
         Activity activity = activityStack.lastElement();
-        finishActivity(activity);
+        removeActivity(activity);
     }
 
     /**
      * 结束指定的Activity
      */
-    public void finishActivity(Activity activity) {
+    public void removeActivity(Activity activity) {
         if (activity != null) {
             activityStack.remove(activity);
         }
@@ -72,7 +76,21 @@ public class AppManager {
     public void finishActivity(Class<?> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
-                finishActivity(activity);
+                activity.finish();
+            }
+        }
+    }
+
+    /**
+     * 回到指定的Activity,弹出其上的activity
+     */
+    public void backToActivity(Class<?> cls) {
+        for (int i = activityStack.size() - 1; i >= 0; i--) {
+            Activity activity = activityStack.get(i);
+            if (activity.getClass().equals(cls)) {
+                return;
+            } else {
+                activity.finish();
             }
         }
     }
@@ -80,7 +98,6 @@ public class AppManager {
     /**
      * 退出应用程序
      */
-    @SuppressWarnings("deprecation")
     public void AppExit(Context context) {
         try {
             finishAllActivity();

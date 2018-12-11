@@ -1,9 +1,11 @@
 package com.xwtec.androidframe.ui.goodDetail;
 
 import com.xwtec.androidframe.base.BaseView;
+import com.xwtec.androidframe.ui.goodDetail.bean.CommentInfo;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by ayy on 2018/6/18.
@@ -15,6 +17,8 @@ public interface GoodDetailContact {
         void fetchGoodDetailSuccess(GoodDetailResponse goodDetailResponse);
 
         void addShopCartSuccess();
+
+        void fetchCommentSuccess(List<CommentInfo> commentInfoList);
     }
 
     interface GoodDetailPresenter {
@@ -24,5 +28,7 @@ public interface GoodDetailContact {
          * 加入购物车
          */
         void addShopCart(HashMap<String, Object> map);
+
+        void fetchComment(long goodId,int commentLevel,int startIndex,int showNum);
     }
 }

@@ -40,6 +40,8 @@ public abstract class ResponseObserver<T> implements Observer<T> {
                     CacheUtils.getInstance().remove(Constant.USER_KEY);
 //                    ARouter.getInstance().build(Constant.LOGIN_ROUTER).navigation();
                     break;
+                default:
+                    break;
             }
         }
     }

@@ -6,7 +6,7 @@ package com.xwtec.androidframe.manager;
  */
 
 public class Constant {
-    public static final String BASE_URL = "http://118.31.11.130:8080/farm/";
+    public static final String BASE_URL = "http://farm.cnguangu.com/farm/";
 
     //********页面路由路径管理**********
     public static final String REGISTER_ROUTER = "/activity/register";
@@ -33,6 +33,12 @@ public class Constant {
     public static final String SALE_RETURN_ROUTER = "/activity/saleReturn";
     public static final String EXPRESS_ROUTER = "/activity/express";
     public static final String MONEY_RETURN_ROUTER = "/activity/moneyReturn";
+    public static final String ALL_COMMENT_ROUTER = "/activity/allComment";
+    public static final String EXPRESS_INFO_ROUTER = "/activity/expressInfo";
+    public static final String COMMENT_ROUTER = "/activity/comment";
+    public static final String PAY_SUCCESS_ROUTER = "/activity/paySuccess";
+    //startActivityForResult请求码
+    public static final int SETTING_MUST_PERMISSION_CODE = 001;
     //********页面路由路径管理**********
     public static final int FIRST_PAGE_INDEX = 0;//分页加载时首页页码
     public static final int PER_PAGE_NUM = 20;//分页加载时每页数量
@@ -52,6 +58,8 @@ public class Constant {
     public static final String RX_ADDRESS_REFRESH = "RX_ADDRESS_REFRESH";//收货地址改变
     public static final String RX_ORDER_CHANGE = "RX_ORDER_CHANGE";//订单状态改变
     public static final String RX_GO_SHOP_CART = "RX_GO_SHOP_CART";//其他页面跳转到购物车
+    public static final String RX_COMMENT_CHANGE = "RX_COMMENT_CHANGE";//订单评论状态改变
+    public static final String RX_SHOP_CART_REFRESH = "RX_SHOP_CART_REFRESH";//购物车刷新通知
 
     public static final String ORDER_STATUS = "ORDER_STATUS";
     /**

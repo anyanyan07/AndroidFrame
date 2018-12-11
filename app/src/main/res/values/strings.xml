@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidFrame</string>
+    <string name="app_name">东北农场</string>
     <string name="mine">我的</string>
     <string name="shop_cart">购物车</string>
     <string name="classify">分类</string>
@@ -53,7 +53,7 @@
     <string name="helpAndFeedback">帮助与反馈</string>
     <string name="telephone">电话</string>
     <string name="northeastFarm">东北农场</string>
-    <string name="wxNum">微信公众号</string>
+    <string name="wxNum">微信号</string>
     <string name="feedback_">反馈</string>
     <string name="feedbackPath"><![CDATA[个人中心>帮助与反馈>意见反馈]]></string>
     <string name="serviceTime">客服时间</string>
@@ -132,4 +132,28 @@
     <string name="saleReturnCaseHint">请填写退货原因</string>
     <string name="moneyReturnCase">退款原因</string>
     <string name="skip">跳过</string>
+    <string name="company">研发公司</string>
+    <string name="companyName">南京关谷信息科技有限公司</string>
+    <string name="goodComment">商品评价</string>
+    <string name="seeAllComments">查看全部评价</string>
+    <string name="all">全部</string>
+    <string name="goodComment1">好评</string>
+    <string name="mediumComment">中评</string>
+    <string name="badComment">差评</string>
+    <string name="haveImg">有图</string>
+    <string name="discountCode">折扣码</string>
+    <string name="commentHint">宝贝符合您的期待吗?写下你的使用心得,分享给想买的他们吧.</string>
+    <string name="starLevel">星级</string>
+    <string name="commentOrder">评价商品</string>
+    <string name="phoneNumLab">手机号码：</string>
+    <string name="integral">积分</string>
+    <string name="expressInfo">查看物流</string>
+    <string name="expressPriceLab">运费：</string>
+    <string name="wx">微信</string>
+    <string name="friendCircle">朋友圈</string>
+    <string name="slogan">生活就应该吃点不一样的哦</string>
+    <string name="payTypeLab">支付方式：</string>
+    <string name="payMoneyLab">支付金额：</string>
+    <string name="goOrder">查看订单</string>
+    <string name="QQ">QQ</string>
 </resources>

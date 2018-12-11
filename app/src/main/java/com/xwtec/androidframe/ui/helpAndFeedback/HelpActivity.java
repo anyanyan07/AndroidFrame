@@ -44,6 +44,8 @@ public class HelpActivity extends SuperBaseActivity {
             case R.id.ll_contact_service:
                 ARouter.getInstance().build(Constant.CONTACT_SERVICE_ROUTER).navigation();
                 break;
+            default:
+                break;
         }
     }
 }

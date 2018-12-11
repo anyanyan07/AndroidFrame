@@ -14,9 +14,13 @@ import java.util.List;
 public interface ClassifyListContact {
     interface ClassifyListView extends BaseView{
         void fetchContentSuccess(List<CategoryContentBean> categoryContentList);
+
+        void addShopCartSuccess();
     }
 
     interface ClassifyListPresenter {
         void fetchCategoryContent(HashMap<String, Object> map);
+
+        void addShopCart(HashMap<String,Object> map);
     }
 }

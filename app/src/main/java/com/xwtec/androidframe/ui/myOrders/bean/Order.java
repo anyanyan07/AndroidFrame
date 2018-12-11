@@ -20,6 +20,7 @@ public class Order implements Serializable{
      * goodsNumber : 1
      * totalPrice : 48.90
      * expressPrice : 12.00
+     * isComment : 0
      * imgUrl : https://ne-farm.oss-cn-beijing.aliyuncs.com/farm_img/IMG_20140530_081246.jpg
      */
 
@@ -34,6 +35,15 @@ public class Order implements Serializable{
     private String totalPrice;
     private String expressPrice;
     private String imgUrl;
+    private int isComment;
+
+    public int getIsComment() {
+        return isComment;
+    }
+
+    public void setIsComment(int isComment) {
+        this.isComment = isComment;
+    }
 
     public int getGoodsId() {
         return goodsId;

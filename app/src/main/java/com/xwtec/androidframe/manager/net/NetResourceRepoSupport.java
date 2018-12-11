@@ -7,6 +7,8 @@ import com.xwtec.androidframe.ui.affirmOrder.bean.SubmitOrderBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryBean;
 import com.xwtec.androidframe.ui.classify.bean.CategoryContentBean;
 import com.xwtec.androidframe.ui.express.Express;
+import com.xwtec.androidframe.ui.expressInfo.ExpressInfo;
+import com.xwtec.androidframe.ui.goodDetail.bean.CommentInfo;
 import com.xwtec.androidframe.ui.goodDetail.bean.GoodDetailResponse;
 import com.xwtec.androidframe.ui.home.bean.BannerBean;
 import com.xwtec.androidframe.ui.home.bean.GoodListBean;
@@ -20,6 +22,7 @@ import com.xwtec.androidframe.ui.orderDetail.bean.SendedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.SureReceivedInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitPayInfo;
 import com.xwtec.androidframe.ui.orderDetail.bean.WaitSendInfo;
+import com.xwtec.androidframe.ui.pay.PayBean;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundedInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.RefundingInfo;
 import com.xwtec.androidframe.ui.refundDetail.bean.SalesReturnedInfo;
@@ -29,6 +32,7 @@ import com.xwtec.androidframe.ui.shopCart.bean.ShopCartBean;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -318,11 +322,11 @@ public class NetResourceRepoSupport implements NetResourceRepo {
     }
 
     @Override
-    public Observable<BaseResponse> uploadHeader(RequestBody token, MultipartBody.Part file) {
+    public Observable<BaseResponse<String>> uploadHeader(RequestBody token, MultipartBody.Part file) {
         return service.uploadHeader(token, file)
-                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                .compose(new ObservableTransformer<BaseResponse<String>, BaseResponse<String>>() {
                     @Override
-                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
+                    public ObservableSource<BaseResponse<String>> apply(Observable<BaseResponse<String>> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }
@@ -576,6 +580,55 @@ public class NetResourceRepoSupport implements NetResourceRepo {
                 .compose(new ObservableTransformer<BaseResponse<SureReceivedInfo>, BaseResponse<SureReceivedInfo>>() {
                     @Override
                     public ObservableSource<BaseResponse<SureReceivedInfo>> apply(Observable<BaseResponse<SureReceivedInfo>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<List<CommentInfo>>> fetchGoodComment(long goodsId, int commentLevel, int startIndex, int showNumber) {
+        return service.fetchGoodComment(goodsId,commentLevel,startIndex,showNumber)
+                .compose(new ObservableTransformer<BaseResponse<List<CommentInfo>>, BaseResponse<List<CommentInfo>>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<List<CommentInfo>>> apply(Observable<BaseResponse<List<CommentInfo>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<List<ExpressInfo>>> fetchExpressInfo(String orderNum,String token) {
+        return service.fetchExpressInfo(orderNum,token)
+                .compose(new ObservableTransformer<BaseResponse<List<ExpressInfo>>, BaseResponse<List<ExpressInfo>>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<List<ExpressInfo>>> apply(Observable<BaseResponse<List<ExpressInfo>>> upstream) {
+                        return upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse<PayBean>> pay(RequestBody requestBody) {
+        return service.pay(requestBody)
+                .compose(new ObservableTransformer<BaseResponse<PayBean>, BaseResponse<PayBean>>() {
+                    @Override
+                    public ObservableSource<BaseResponse<PayBean>> apply(Observable<BaseResponse<PayBean>> upstream) {
+                        return  upstream.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    @Override
+    public Observable<BaseResponse> submitComment(/*MultipartBody multipartBody*/
+                                                  Map<String, RequestBody> map, List<MultipartBody.Part> parts) {
+        return service.submitComment(map, parts)
+                .compose(new ObservableTransformer<BaseResponse, BaseResponse>() {
+                    @Override
+                    public ObservableSource<BaseResponse> apply(Observable<BaseResponse> upstream) {
                         return upstream.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread());
                     }

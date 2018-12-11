@@ -80,6 +80,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenterImpl> 
     TextView tvSaleReturn;
 
     private long orderId;
+    private long goodId;
     private String token;
     private int status;
     private int position;
@@ -92,6 +93,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenterImpl> 
         super.init();
         tvTitle.setText(R.string.orderDetail);
         orderId = getIntent().getLongExtra("orderId", -1);
+        goodId = getIntent().getLongExtra("goodId", -1);
         status = getIntent().getIntExtra("status", -1);
         position = getIntent().getIntExtra("position", -1);
         UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
@@ -161,7 +163,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenterImpl> 
     }
 
     @OnClick({R.id.tv_cancel, R.id.tv_pay, R.id.tv_delete, R.id.iv_left, R.id.tv_sure_receive,
-            R.id.tv_money_return, R.id.tv_sale_return})
+            R.id.tv_money_return, R.id.tv_sale_return, R.id.ll_good_info})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_left:
@@ -195,6 +197,12 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenterImpl> 
                 ARouter.getInstance().build(Constant.SALE_RETURN_ROUTER)
                         .withInt("position", position)
                         .withLong("orderId", orderId).navigation(this, SALE_RETURN_REQ_CODE);
+                break;
+            //跳转到商品详情
+            case R.id.ll_good_info:
+                ARouter.getInstance().build(Constant.GOODS_DETAIL_ROUTER)
+                        .withLong("goodId", goodId)
+                        .navigation();
                 break;
             default:
                 break;
@@ -369,6 +377,8 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenterImpl> 
                 case MONEY_RETURN_REQ_CODE:
                 case SALE_RETURN_REQ_CODE:
                     finish();
+                    break;
+                default:
                     break;
             }
         }

@@ -1,5 +1,9 @@
 package com.xwtec.androidframe.ui.main;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -8,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.base.BaseActivity;
@@ -18,6 +23,7 @@ import com.xwtec.androidframe.ui.classify.ClassifyFragment;
 import com.xwtec.androidframe.ui.home.HomeFragment;
 import com.xwtec.androidframe.ui.mine.MineFragment;
 import com.xwtec.androidframe.ui.shopCart.ShopCartFragment;
+import com.xwtec.androidframe.util.DialogUtils;
 import com.xwtec.androidframe.util.RxBus.RxBus;
 import com.xwtec.androidframe.util.RxBus.RxBusMSG;
 
@@ -26,8 +32,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
 @Route(path = Constant.MAIN_ROUTER)
+@RuntimePermissions
 public class MainActivity extends BaseActivity<MainPresenterImpl> implements MainContact.MainView {
 
     @Inject
@@ -56,6 +67,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
 
     @Override
     protected void init() {
+        MainActivityPermissionsDispatcher.mustPermissionWithPermissionCheck(this);
         setCurFragment(tabHome, homeFragment);
         initRxBus();
     }
@@ -108,12 +120,18 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
                     setCurFragment(tabMine, mineFragment);
                 }
                 break;
+            default:
+                break;
         }
     }
 
     private void setCurFragment(TextView tab, Fragment targetFragment) {
-        if (tabHome.isSelected()) fromTab = "home";
-        if (tabClassify.isSelected()) fromTab = "classify";
+        if (tabHome.isSelected()) {
+            fromTab = "home";
+        }
+        if (tabClassify.isSelected()) {
+            fromTab = "classify";
+        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         setAllTabsUnselected();
         hideAllFragments(fragmentTransaction);
@@ -162,19 +180,64 @@ public class MainActivity extends BaseActivity<MainPresenterImpl> implements Mai
         return rlMain;
     }
 
-    public View getShopCartTabView(){
+    public View getShopCartTabView() {
         return tabShopCart;
     }
 
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - lastBackTime <= 2000) {
-            AppManager.get().finishAllActivity();
+            AppManager.getInstance().finishAllActivity();
             System.exit(0);
             super.onBackPressed();
         } else {
             lastBackTime = System.currentTimeMillis();
             ToastUtils.showShort("再按一次退出");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this,requestCode,grantResults);
+    }
+
+    @NeedsPermission({Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void mustPermission() {
+
+    }
+
+    @OnPermissionDenied({Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void noPermission() {
+        DialogUtils.showDeniedDialog(this, "拒绝此权限将无法使用我们的应用，请授权给我们", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivityPermissionsDispatcher.mustPermissionWithPermissionCheck(MainActivity.this);
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityUtils.finishAllActivities();
+                System.exit(0);
+            }
+        });
+    }
+
+    @OnNeverAskAgain({Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+    public void neverAsk() {
+        DialogUtils.showSettingPermissionDialog(this, this, "拒绝此权限将无法使用我们的应用，请授权给我们", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityUtils.finishAllActivities();
+                System.exit(0);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constant.SETTING_MUST_PERMISSION_CODE) {
+            MainActivityPermissionsDispatcher.mustPermissionWithPermissionCheck(this);
         }
     }
 }

@@ -186,6 +186,7 @@ public class AffirmResponse {
          * imgUrl : https://ne-farm.oss-cn-beijing.aliyuncs.com/farm_img/IMG_20140530_081246.jpg
          * createTime : null
          * updateTime : null
+         * freight:
          */
 
         private int shopCarId;
@@ -202,6 +203,15 @@ public class AffirmResponse {
         private String imgUrl;
         private Object createTime;
         private Object updateTime;
+        private String freight;
+
+        public String getFreight() {
+            return freight;
+        }
+
+        public void setFreight(String freight) {
+            this.freight = freight;
+        }
 
         public int getShopCarId() {
             return shopCarId;

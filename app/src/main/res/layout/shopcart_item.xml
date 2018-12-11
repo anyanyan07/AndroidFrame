@@ -5,7 +5,6 @@
     android:layout_height="105dp"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingLeft="12dp"
     android:paddingRight="12dp">
 
     <LinearLayout
@@ -18,16 +17,17 @@
 
         <ImageView
             android:id="@+id/iv_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/check_bg" />
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/check_bg" />
 
         <ImageView
             android:id="@+id/iv_item"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="12dp" />
+            android:layout_marginEnd="8dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
