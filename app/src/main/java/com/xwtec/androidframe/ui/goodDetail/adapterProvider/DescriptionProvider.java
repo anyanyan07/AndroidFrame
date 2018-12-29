@@ -23,6 +23,8 @@ public class DescriptionProvider extends BaseItemProvider<GoodDetailMultiEntity<
             PriceView priceView = helper.getView(R.id.tv_cur_price);
             priceView.setPrice(goodDetailResponse.getDiscountPrice());
             helper.setText(R.id.tv_old_price, goodDetailResponse.getOriginalPrice());
+            helper.setText(R.id.tv_sale_num,"已售："+goodDetailResponse.getSalesNumber());
+            helper.setText(R.id.tv_plus_num,"剩余："+goodDetailResponse.getOverplusNumber());
         }
     }
 

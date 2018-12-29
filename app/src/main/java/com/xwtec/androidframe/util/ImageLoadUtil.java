@@ -1,13 +1,18 @@
 package com.xwtec.androidframe.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.xwtec.androidframe.R;
 import com.xwtec.androidframe.util.glide.GlideCircleTransform;
 
@@ -60,5 +65,22 @@ public class ImageLoadUtil {
                 .placeholder(R.mipmap.header_default)
                 .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
         Glide.with(context).load(file).apply(requestOptions).into(imageView);
+    }
+
+    //图片宽度一定，高按比列进行缩放
+    public static void loadFitWidth(final Context context, Object path, final ImageView imageView, final int width) {
+        Glide.with(context).asBitmap().load(path).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                int imageWidth = resource.getWidth();
+                int imageHeight = resource.getHeight();
+                int height = width * imageHeight / imageWidth;
+                ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+                layoutParams.height = height;
+                layoutParams.width = width;
+                imageView.setLayoutParams(layoutParams);
+                imageView.setImageBitmap(resource);
+            }
+        });
     }
 }

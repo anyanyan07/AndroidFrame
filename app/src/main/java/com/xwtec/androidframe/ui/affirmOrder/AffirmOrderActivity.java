@@ -57,6 +57,8 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
 
     private String json;
     private int receiverId = -1;
+    private boolean affirmSuccess;
+    private boolean addressSuccess;
 
     @Override
     protected void init() {
@@ -125,7 +127,8 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
                         receiver.setReceiveArea(address.getReceiveArea());
                         addressMultiEntity.setData(receiver);
                         adapter.updateAddress();
-                        btnSubmit.setEnabled(true);
+                        addressSuccess = true;
+                        btnSubmit.setEnabled(affirmSuccess);
                     }
                     break;
                 default:
@@ -136,8 +139,9 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
 
     @Override
     public void affirmSuccess(AffirmResponse affirmResponse) {
+        affirmSuccess = true;
         if (affirmResponse.getReceiveAddress() != null) {
-            btnSubmit.setEnabled(true);
+            addressSuccess = true;
             receiverId = affirmResponse.getReceiveAddress().getId();
             addressMultiEntity.setData(affirmResponse.getReceiveAddress());
             adapter.updateAddress();
@@ -145,6 +149,7 @@ public class AffirmOrderActivity extends BaseActivity<AffirmOrderPresenterImpl> 
         contentMultiEntity.setDataList(affirmResponse.getOrderGoods());
         adapter.updateContent();
         totalPrice.setPrice(affirmResponse.getTotalPrice());
+        btnSubmit.setEnabled(addressSuccess);
     }
 
     /**

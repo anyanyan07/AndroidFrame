@@ -1,5 +1,7 @@
 package com.xwtec.androidframe.base;
 
+import android.text.TextUtils;
+
 /**
  * Created by ayy on 2018/5/28.
  * Describe:xxx
@@ -17,6 +19,9 @@ public class BaseResponse<T> {
     }
 
     public String getMsg() {
+        if (TextUtils.isEmpty(msg)){
+            return "";
+        }
         return msg;
     }
 

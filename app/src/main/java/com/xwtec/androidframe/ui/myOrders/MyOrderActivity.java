@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -71,10 +72,15 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         initRv();
         initRxBus();
         UserBean userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
-        token = userBean.getToken();
-        refreshLayout.setOnRefreshLoadMoreListener(this);
-        //请求订单列表
-        fetchOrderList(curStatus, curIndex);
+        if (userBean != null) {
+            token = userBean.getToken();
+            refreshLayout.setOnRefreshLoadMoreListener(this);
+            //请求订单列表
+            fetchOrderList(curStatus, curIndex);
+        } else {
+            ToastUtils.showShort("登录失效，请重新登录");
+            finish();
+        }
     }
 
     private void initRxBus() {
@@ -91,7 +97,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                             contentAdapter.notifyItemChanged(position);
                         } else {
                             orderList.remove(position);
-                            contentAdapter.remove(position);
+                            contentAdapter.notifyItemRemoved(position);
                         }
                         break;
                     case Constant.RX_COMMENT_CHANGE:
@@ -175,11 +181,11 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                         break;
                     case 5://已收货
                         helper.setText(R.id.tv_status, "已收货");
-                        tvVisible(llManager, tvSureReceive, tvSalesReturn,tvExpressInfo);
+                        tvVisible(llManager, tvSureReceive, tvSalesReturn, tvExpressInfo);
                         break;
                     case 6://用户确认收货
                         helper.setText(R.id.tv_status, "已确认收货");
-                        tvVisible(llManager, tvDelete,tvExpressInfo);
+                        tvVisible(llManager, tvDelete, tvExpressInfo);
                         if (item.getIsComment() == 0) {
                             tvComment.setVisibility(View.VISIBLE);
                         }
@@ -190,7 +196,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                         break;
                     case 8://已退货与退货完成
                         helper.setText(R.id.tv_status, "已退货");
-                        tvVisible(llManager, tvDelete,tvExpressInfo);
+                        tvVisible(llManager, tvDelete, tvExpressInfo);
                         break;
                     case 9://取消订单中
                         helper.setText(R.id.tv_status, "取消中");
@@ -213,7 +219,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
                     @Override
                     public void onClick(View v) {
                         //跳转到订单详情页
-                        gotoDetail(item.getOrderId(),item.getGoodsId(), status, helper.getAdapterPosition());
+                        gotoDetail(item.getOrderId(), item.getGoodsId(), status, helper.getAdapterPosition());
                     }
                 });
                 //删除订单
@@ -287,7 +293,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         recyclerView.setAdapter(contentAdapter);
     }
 
-    private void gotoDetail(long orderId,long goodId, int status, int position) {
+    private void gotoDetail(long orderId, long goodId, int status, int position) {
         switch (status) {
             case 1://已删除
                 break;
@@ -404,14 +410,14 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
     @Override
     public void deleteSuccess(int position) {
         orderList.remove(position);
-        contentAdapter.remove(position);
+        contentAdapter.notifyItemRemoved(position);
     }
 
     @Override
     public void cancelSuccess(int position) {
         if (curStatus == Constant.WAIT_PAY) {
             orderList.remove(position);
-            contentAdapter.remove(position);
+            contentAdapter.notifyItemRemoved(position);
         } else {
             //改变订单状态
             orderList.get(position).setStatus(Constant.CANCELING);
@@ -423,7 +429,7 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
     public void sureReceiveSuccess(int position) {
         if (curStatus == Constant.RECEIVED) {
             orderList.remove(position);
-            contentAdapter.remove(position);
+            contentAdapter.notifyItemRemoved(position);
         } else {
             //改变订单状态
             orderList.get(position).setStatus(Constant.SURE_RECEIVED);
@@ -431,11 +437,29 @@ public class MyOrderActivity extends BaseActivity<MyOrderPresenterImpl> implemen
         }
     }
 
-    @OnClick({R.id.iv_left})
+    @OnClick({R.id.iv_left, R.id.btnTest,R.id.btnCancel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_left:
                 finish();
+                break;
+            case R.id.btnTest:
+                List<Order> data = new ArrayList<>();
+                for (int i = 0; i < 3; i++) {
+                    Order order = new Order();
+                    order.setExpressPrice("23.00");
+                    order.setGoodsId(i);
+                    order.setGoodsNumber(i*8);
+                    order.setIntroduction("哈哈哈");
+                    order.setStatus(Constant.FINISHED);
+                    order.setTitle("title");
+                    data.add(order);
+                }
+                contentAdapter.addData(data);
+                break;
+            case R.id.btnCancel:
+                orderList.remove(0);
+                contentAdapter.notifyItemRemoved(0);
                 break;
             default:
                 break;

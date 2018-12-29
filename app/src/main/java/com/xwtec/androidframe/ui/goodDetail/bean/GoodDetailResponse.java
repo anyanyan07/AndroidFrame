@@ -26,6 +26,33 @@ public class GoodDetailResponse {
     private String originalPrice;
     private List<DetailImgListBean> detailImgList;
     private List<DetailImgTextListBean> detailImgTextList;
+    private String salesNumber;
+    private String stockNumber;
+    private String overplusNumber;
+
+    public String getSalesNumber() {
+        return salesNumber;
+    }
+
+    public void setSalesNumber(String salesNumber) {
+        this.salesNumber = salesNumber;
+    }
+
+    public String getStockNumber() {
+        return stockNumber;
+    }
+
+    public void setStockNumber(String stockNumber) {
+        this.stockNumber = stockNumber;
+    }
+
+    public String getOverplusNumber() {
+        return overplusNumber;
+    }
+
+    public void setOverplusNumber(String overplusNumber) {
+        this.overplusNumber = overplusNumber;
+    }
 
     public long getId() {
         return id;

@@ -101,13 +101,16 @@ public class PersonalInfoActivity extends BaseActivity<PersonalPresenterImpl> im
             }
         }
         refreshUserInfo();
-        presenter.fetchUserInfo(userBean.getToken());
+        if (userBean != null) {
+            presenter.fetchUserInfo(userBean.getToken());
+        }
     }
 
     private void refreshUserInfo() {
         userBean = (UserBean) CacheUtils.getInstance().getSerializable(Constant.USER_KEY);
         if (userBean == null) {
-            ToastUtils.showShort("出错了");
+            ToastUtils.showShort("登录失效，请重新登录");
+            finish();
             return;
         }
         userId = userBean.getUserId();

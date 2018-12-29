@@ -4,6 +4,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.annotation.ItemProviderTag;
@@ -24,7 +26,7 @@ import java.util.List;
 public class ImgsProvider extends BaseItemProvider<GoodDetailMultiEntity<GoodDetailResponse.DetailImgTextListBean>, BaseViewHolder> {
     @Override
     public void convert(BaseViewHolder helper, GoodDetailMultiEntity<GoodDetailResponse.DetailImgTextListBean> data, int position) {
-        if (data==null){
+        if (data == null) {
             return;
         }
         List<GoodDetailResponse.DetailImgTextListBean> dataList = data.getDataList();
@@ -33,7 +35,7 @@ public class ImgsProvider extends BaseItemProvider<GoodDetailMultiEntity<GoodDet
         recyclerView.setAdapter(new BaseQuickAdapter<GoodDetailResponse.DetailImgTextListBean, BaseViewHolder>(R.layout.good_detail_imgs_item, dataList) {
             @Override
             protected void convert(BaseViewHolder helper, GoodDetailResponse.DetailImgTextListBean item) {
-                ImageLoadUtil.loadCenterCrop(mContext, item.getImgUrl(), (ImageView) helper.getView(R.id.iv));
+                ImageLoadUtil.loadFitWidth(mContext, item.getImgUrl(), (ImageView) helper.getView(R.id.iv), ScreenUtils.getScreenWidth() - ConvertUtils.dp2px(24));
             }
         });
     }

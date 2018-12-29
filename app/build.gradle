@@ -4,7 +4,7 @@ def config = rootProject.ext.appConfigVersion
 def depend = rootProject.ext.dependencies
 android {
     compileSdkVersion config.compileVersion
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId config.applicationId
         minSdkVersion config.minSdkVersion
@@ -106,5 +106,5 @@ dependencies {
     implementation depend["pictureSelector"]
     implementation depend["eventbus"]
     implementation depend["bugly"]
-    compile 'com.zhy:magic-viewpager:1.0.1'
+    implementation 'com.zhy:magic-viewpager:1.0.1'
 }

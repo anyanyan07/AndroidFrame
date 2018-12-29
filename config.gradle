@@ -4,8 +4,8 @@ ext {
             compileVersion  : 27,
             minSdkVersion   : 17,
             targetSdkVersion: 27,
-            versionCode     : 7,
-            versionName     : "1.0.6"
+            versionCode     : 10,
+            versionName     : "1.0.9"
     ]
     dependVersion = [
             support    : "27+",
