@@ -63,7 +63,7 @@ public class SaleReturnActivity extends BaseActivity<SaleReturnPresenterImpl> im
         if (intent != null) {
             Order order = ((Order) intent.getSerializableExtra("order"));
             orderId = order.getOrderId();
-            ImageLoadUtil.loadCenterCrop(this, order.getImgUrl(), ivGood);
+            ImageLoadUtil.loadFitCenter(this, order.getImgUrl(), ivGood);
             tvGoodName.setText(order.getTitle() + order.getIntroduction());
             goodPrice.setPrice(order.getUnitPrice());
             tvGoodUnitNum.setText("x" + order.getGoodsNumber());

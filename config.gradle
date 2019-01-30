@@ -13,7 +13,7 @@ ext {
             rxjava     : "2.1.10",
             rxandroid  : "2.0.2",
             okhttp     : "3.9.1",
-            dagger2    : "2.14.1",
+            dagger2    : "2.21",
             permission : "2.0.0-rc4",
             butterknife: "8.8.1",
             glide      : "4.6.1",
@@ -22,6 +22,7 @@ ext {
     ]
     dependencies = [
             "appcompat-v7"             : "com.android.support:appcompat-v7:${dependVersion.support}",
+            "support-v4"               : "com.android.support:support-v4:${dependVersion.support}",
             //rx
             "rxjava"                   : "io.reactivex.rxjava2:rxjava:${dependVersion.rxjava}",
             "rxandroid"                : "io.reactivex.rxjava2:rxandroid:${dependVersion.rxandroid}",

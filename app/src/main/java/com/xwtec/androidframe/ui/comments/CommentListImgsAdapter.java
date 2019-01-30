@@ -50,7 +50,7 @@ public class CommentListImgsAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.comment_img_item, parent, false);
         ImageView iv = convertView.findViewById(R.id.iv);
-        ImageLoadUtil.loadCenterCrop(context, imgUrlList.get(position), iv);
+        ImageLoadUtil.loadFitCenter(context, imgUrlList.get(position), iv);
         return convertView;
     }
 }

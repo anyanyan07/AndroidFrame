@@ -218,7 +218,7 @@ public class GoodDetailActivity extends BaseActivity<GoodDetailPresenterImpl> im
         }
         List<GoodDetailResponse.DetailImgListBean> detailImgList = goodDetailResponse.getDetailImgList();
         if (detailImgList != null && detailImgList.size() > 0) {
-            ImageLoadUtil.loadCenterCrop(this, detailImgList.get(0).getImgUrl(), ivGood);
+            ImageLoadUtil.loadFitCenter(this, detailImgList.get(0).getImgUrl(), ivGood);
         }
         tvNum.setText("1");
         tvName.setText(goodDetailResponse.getTitle() + goodDetailResponse.getIntroduction());

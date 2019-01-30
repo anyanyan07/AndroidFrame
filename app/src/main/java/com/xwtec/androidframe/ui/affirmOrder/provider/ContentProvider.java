@@ -35,7 +35,7 @@ public class ContentProvider extends BaseItemProvider<MultiEntity<AffirmResponse
             @Override
             protected void convert(BaseViewHolder helper, AffirmResponse.OrderGoodsBean item) {
                 ImageView ivGood = helper.getView(R.id.iv_good);
-                ImageLoadUtil.loadCenterCrop(mContext, item.getImgUrl(), ivGood);
+                ImageLoadUtil.loadFitCenter(mContext, item.getImgUrl(), ivGood);
                 helper.setText(R.id.tv_good_name, item.getTitle() + item.getIntroduction());
                 PriceView unitPriceView = helper.getView(R.id.good_price);
                 unitPriceView.setPrice(item.getUnitPrice());

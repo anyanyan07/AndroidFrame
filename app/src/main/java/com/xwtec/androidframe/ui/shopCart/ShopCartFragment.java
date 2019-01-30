@@ -107,7 +107,7 @@ public class ShopCartFragment extends BaseFragment<ShopCartPresenterImpl> implem
             @Override
             protected void convert(final BaseViewHolder helper, final ShopCartBean shopCartBean) {
                 helper.getView(R.id.iv_check).setSelected(shopCartBean.isSelected());
-                ImageLoadUtil.loadCenterCrop(context, shopCartBean.getImgUrl(), (ImageView) helper.getView(R.id.iv_item));
+                ImageLoadUtil.loadFitCenter(context, shopCartBean.getImgUrl(), (ImageView) helper.getView(R.id.iv_item));
                 helper.setText(R.id.tv_name, shopCartBean.getTitle() + shopCartBean.getIntroduction());
                 PriceView priceView = helper.getView(R.id.tv_price);
                 priceView.setPrice(shopCartBean.getDiscountPrice());

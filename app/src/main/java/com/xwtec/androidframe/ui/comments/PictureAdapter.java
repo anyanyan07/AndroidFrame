@@ -44,7 +44,7 @@ public class PictureAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         ImageView imageView = new ImageView(context);
         container.addView(imageView);
-        ImageLoadUtil.loadCenterCrop(context,imgUrls.get(position),imageView);
+        ImageLoadUtil.loadFitCenter(context,imgUrls.get(position),imageView);
         return imageView;
     }
 
